@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EA9BDD2D-E8FD-4D03-8CDB-CCC34CA3C85E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Faz.SideWinderSC.Logic</RootNamespace>
+    <AssemblyName>Faz.SideWinderSC.Logic</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Faz.SideWinderSC.Logic.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MoveAxisEventArgs.cs" />
+    <Compile Include="ButtonsEventArgs.cs" />
+    <Compile Include="KeypadController.cs" />
+    <Compile Include="KeypadStatus.cs" />
+    <Compile Include="KeypadButton.cs" />
+    <Compile Include="SwgvButtonStateEventArgs.cs" />
+    <Compile Include="TmThrottleSwitchEventArgs.cs" />
+    <Compile Include="TmThrottleButtonEventArgs.cs" />
+    <Compile Include="TmThrottleButton.cs" />
+    <Compile Include="Swff2ButtonEventArgs.cs" />
+    <Compile Include="HatEventArgs.cs" />
+    <Compile Include="SliderEventArgs.cs" />
+    <Compile Include="Swff2Button.cs" />
+    <Compile Include="TmThrottleStatus.cs" />
+    <Compile Include="TmThrottleSwitches.cs" />
+    <Compile Include="TMWartHogThrottleController.cs" />
+    <Compile Include="SwgvButtonEventArgs.cs" />
+    <Compile Include="ButtonEventArgs.cs" />
+    <Compile Include="Controller.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="HidStream.cs" />
+    <Compile Include="LazyCollection.cs" />
+    <Compile Include="LazyModel.cs" />
+    <Compile Include="LazyProfile.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Mapping.cs" />
+    <Compile Include="MappingComparer.cs" />
+    <Compile Include="Model.cs" />
+    <Compile Include="MoveEventArgs.cs" />
+    <Compile Include="Profile.cs" />
+    <Compile Include="ProfileChangedEventArgs.cs" />
+    <Compile Include="ReadEventArgs.cs" />
+    <Compile Include="RotateEventArgs.cs" />
+    <Compile Include="ServiceFactory.cs" />
+    <Compile Include="SwgvButton.cs" />
+    <Compile Include="CHPedalsController.cs" />
+    <Compile Include="SwscButton.cs" />
+    <Compile Include="SwscButtonExtensions.cs" />
+    <Compile Include="SwgvController.cs" />
+    <Compile Include="Swff2Controller.cs" />
+    <Compile Include="SwscController.cs" />
+    <Compile Include="SwscLight.cs" />
+    <Compile Include="ModelService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SwgvStatus.cs" />
+    <Compile Include="CHPedalsStatus.cs" />
+    <Compile Include="Swff2Status.cs" />
+    <Compile Include="SwscStatus.cs" />
+    <Compile Include="Win32Api\DeviceInterfaceDetailData.cs" />
+    <Compile Include="Win32Api\DeviceInterfaceData.cs" />
+    <Compile Include="Win32Api\HidpStatus.cs" />
+    <Compile Include="Win32Api\SafeDeviceSetHandle.cs" />
+    <Compile Include="Win32Api\DiGetClassFlags.cs" />
+    <Compile Include="Win32Api\SafePreparsedDataHandle.cs" />
+    <Compile Include="Win32Api\Win32FileAttributes.cs" />
+    <Compile Include="Win32Api\HidCaps.cs" />
+    <Compile Include="Win32Api\HidMethods.cs" />
+    <Compile Include="Win32Api\Kernel32Methods.cs" />
+    <Compile Include="Win32Api\SetupApiMethods.cs" />
+    <Compile Include="Win32Api\Win32FileAccess.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Win32Api\readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

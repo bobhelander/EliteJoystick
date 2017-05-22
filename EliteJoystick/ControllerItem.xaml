@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="EliteJoystick.ControllerItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EliteJoystick"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <local:Button32Converter x:Key="Button32Converter" />
+    </UserControl.Resources>
+    <Border BorderThickness="2" Margin="3" Padding="5" CornerRadius="10">
+        <Border.BorderBrush>
+            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+        </Border.BorderBrush>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="5,0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}" VerticalAlignment="Center" TextAlignment="Left"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Path=Message}" VerticalAlignment="Center" TextAlignment="Left"/>
+                </Grid>
+                <local:ButtonStates Grid.Row="1" DataContext="{Binding Path=ButtonStates, 
+                    Converter={StaticResource Button32Converter}, Mode=OneWay}" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <ProgressBar Grid.Row="0" Value="{Binding Path=Axis1}" Maximum="32000" />
+                <ProgressBar Grid.Row="1" Value="{Binding Path=Axis2}" Maximum="32000" />
+                <ProgressBar Grid.Row="2" Value="{Binding Path=Axis3}" Maximum="32000" />
+            </Grid>
+
+        </Grid>
+    </Border>
+</UserControl>
