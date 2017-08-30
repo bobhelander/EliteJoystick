@@ -48,12 +48,12 @@ namespace EliteJoystick
         {
             try
             {
-                EliteSharedState sharedState = new EliteSharedState();
+                EliteSharedState sharedState = new EliteSharedState { OrbitLines = true, HeadsUpDisplay = true };
                 eliteControllers = new EliteControllers();
 
                 eliteVirtualJoysticks = new EliteVirtualJoysticks();
 
-                for (uint joyId = 1; joyId < 6; joyId++)
+                for (uint joyId = 1; joyId <= 6; joyId++)
                 {
                     eliteVirtualJoysticks.Controllers.Add(new EliteVirtualJoystick
                     {
@@ -119,6 +119,16 @@ namespace EliteJoystick
                             eliteVirtualJoysticks.Joystick, 
                             vJoyMapper));
                 }
+                if (true == bbi32CheckBox.IsChecked)
+                {
+                    eliteControllers.Controllers.Add(
+                        Other.BBI32.ButtonBoxController.Create(
+                            sharedState,
+                            eliteVirtualJoysticks.Joystick,
+                            vJoyMapper,
+                            arduino));
+                }
+                
                 if (true == kpCheckBox.IsChecked)
                 {
                     eliteControllers.Controllers.Add(
@@ -369,15 +379,10 @@ namespace EliteJoystick
             chPedalsCheckBox.IsChecked = true;
             scCheckBox.IsChecked = true;
             gvCheckBox.IsChecked = true;
-            kpCheckBox.IsChecked = true;
+            bbi32CheckBox.IsChecked = true;
+            //kpCheckBox.IsChecked = true;
 
             StartControllers();
-        }
-
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            Utils.FocusWindow("EliteDangerous64");
-            //StartControllers();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -404,6 +409,7 @@ namespace EliteJoystick
         {
             vJoyMapper.Save();
             settings.Save();
+            eliteVirtualJoysticks?.Release();
         }
     }
 }

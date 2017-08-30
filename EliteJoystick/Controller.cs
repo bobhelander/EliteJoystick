@@ -10,21 +10,24 @@ using vJoyInterfaceWrap;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// Base class for the mapping of the events from a physical joystick to the virtual joysticks or actions
+    /// </summary>
     public class Controller 
     {
         public virtual void Initialize() { }
 
         public vJoy vJoy { get; set; }
+
         public vJoyMapper vJoyMapper { get; set; }
-        //public String vJoyType0 { get; set; }
-        //public String vJoyType1 { get; set; }
-        //public String vJoyType2 { get; set; }
 
         public VisualState VisualState { get; set; }
 
         public bool Use { get; set; }
 
         public ArduinoCommunication.Arduino Arduino { get; set; }
+
+        #region  Virtual Joystick Actions
 
         public void SetJoystickButton(bool down, uint vButton, string vJoyType)
         {
@@ -40,6 +43,10 @@ namespace EliteJoystick
         {
             vJoy.SetDiscPov(value, vJoyMapper.GetJoystickId(vJoyType), hatNumber);
         }
+
+        #endregion
+
+        #region  Arduino keyboard actions
 
         public void DepressKey(byte key)
         {
@@ -65,6 +72,10 @@ namespace EliteJoystick
         {
             ArduinoCommunication.Utils.KeyCombo(Arduino, modifier, key);
         }
+
+        #endregion
+
+        #region Asynchronous Actions
 
         public class ActivateButtonClass
         {
@@ -117,5 +128,31 @@ namespace EliteJoystick
 
             Disable(activateButton);
         }
+
+        #endregion
+
+        #region Helper Functions
+
+        public bool TestButtonPressed(UInt32 state, UInt32 button)
+        {
+            return (state & button) == button;
+        }
+
+        public bool TestButtonChanged(UInt32 previousState, UInt32 state, UInt32 button)
+        {
+            return ((previousState & button) == 0 && (state & button) == button);
+        }
+
+        public bool TestButtonReleased(UInt32 previousState, UInt32 state, UInt32 button)
+        {
+            return ((previousState & button) == button && (state & button) == 0);
+        }
+
+        public bool TestButtonPressedOrReleased(UInt32 previousState, UInt32 state, UInt32 button)
+        {
+            return (TestButtonReleased(previousState, state, button) || TestButtonPressed(state, button));
+        }
+
+        #endregion
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Faz.SideWinderSC.Logic
 {
+    /// <summary>
+    /// Names of the Thrustmaster Warthog switches
+    /// </summary>
     public static class TmThrottleSwitches
     {
         static AllSwitches[] DefaultState = new AllSwitches[]

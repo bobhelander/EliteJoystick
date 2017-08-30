@@ -37,6 +37,9 @@ namespace Faz.SideWinderSC.Logic
             this.Read += this.OnRead;
         }
 
+        /// <summary>
+        /// Occurs when the buttons change
+        /// </summary>
         public event EventHandler<SwgvButtonStateEventArgs> ButtonsChanged;
 
         /// <summary>
@@ -50,9 +53,9 @@ namespace Faz.SideWinderSC.Logic
         public event EventHandler<SwgvButtonEventArgs> ButtonUp;
 
         /// <summary>
-        /// Retrieves all the active Strategic Commander controllers.
+        /// Retrieves all the active Sidewinder Game Voice controllers.
         /// </summary>
-        /// <returns>The active Strategic Commander controllers.</returns>
+        /// <returns>The active Sidewinder Game Voice controllers.</returns>
         public static ICollection<SwgvController> RetrieveAll()
         {
             ICollection<SwgvController> result = new LinkedList<SwgvController>();
@@ -76,7 +79,6 @@ namespace Faz.SideWinderSC.Logic
         /// <summary>
         /// Defines the enabled lights on the controller.
         /// </summary>
-        /// <param name="lights">The enabled lights on the controller.</param>
         public byte Lights
         {
             get
@@ -126,8 +128,6 @@ namespace Faz.SideWinderSC.Logic
             this.previousRead = current;
         }
 
-        
-
         /// <summary>
         /// Raised the <see cref="SwgvController.ButtonUp"/> event.
         /// </summary>
@@ -152,6 +152,11 @@ namespace Faz.SideWinderSC.Logic
             }
         }
 
+        /// <summary>
+        /// Raised when the buttons state changes
+        /// </summary>
+        /// <param name="currentButtons"></param>
+        /// <param name="previousButtons"></param>
         private void OnButtonStateChanged(byte currentButtons, byte previousButtons)
         {
             if (ButtonsChanged != null)

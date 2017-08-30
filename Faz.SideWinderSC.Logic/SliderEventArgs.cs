@@ -3,12 +3,12 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Provides data for the <see cref="Swff2Controller.Slider"/> event.
+    /// Provides data for the slider event.
     /// </summary>
     public sealed class SliderEventArgs : EventArgs
     {
         /// <summary>
-        /// The rotation level.
+        /// The slider level.
         /// </summary>
         private readonly int slider;
 
@@ -22,7 +22,7 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Gets the rotation level.
+        /// Gets the slider level.
         /// </summary>
         public int Slider { get { return this.slider; } }
     }

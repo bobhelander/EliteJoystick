@@ -68,14 +68,14 @@ namespace Faz.SideWinderSC.Logic
         public event EventHandler<HatEventArgs> Hat;
 
         /// <summary>
-        /// Occurs when the hat is moved.
+        /// Occurs when the button states change
         /// </summary>
         public event EventHandler<ButtonsEventArgs> ButtonsChanged;
 
         /// <summary>
-        /// Retrieves all the active Strategic Commander controllers.
+        /// Retrieves all the active Force Feedback 2 controllers.
         /// </summary>
-        /// <returns>The active Strategic Commander controllers.</returns>
+        /// <returns>The active Force Feedback 2 controllers.</returns>
         public static ICollection<Swff2Controller> RetrieveAll()
         {
             ICollection<Swff2Controller> result = new LinkedList<Swff2Controller>();
@@ -147,7 +147,8 @@ namespace Faz.SideWinderSC.Logic
         /// <summary>
         /// Raised the <see cref="Swff2Controller.ButtonDown"/> event.
         /// </summary>
-        /// <param name="buttons">The pressed button.</param>
+        /// <param name="buttons">The button states.</param>
+        /// <param name="previousButtons">The last button states.</param>
         private void OnButtonsChange(uint buttons, uint previousButtons)
         {
             if (null != this.ButtonsChanged)

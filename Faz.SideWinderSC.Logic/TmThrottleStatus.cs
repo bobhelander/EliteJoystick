@@ -6,7 +6,7 @@ using System.Linq;
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Represents the state of a Strategic Commander.
+    /// Represents the state of a Warthog.
     /// </summary>
     public struct TmThrottleStatus
     {
@@ -89,16 +89,16 @@ namespace Faz.SideWinderSC.Logic
             ushort z = BitConverter.ToUInt16(values, 12);
             ushort zr = BitConverter.ToUInt16(values, 14);
 
-            short rawX = BitConverter.ToInt16(values, 16);
-            short rawY = BitConverter.ToInt16(values, 18);
-            short rawZ = BitConverter.ToInt16(values, 20);
-            short rawZr = BitConverter.ToInt16(values, 22);
+            //short rawX = BitConverter.ToInt16(values, 16);
+            //short rawY = BitConverter.ToInt16(values, 18);
+            //short rawZ = BitConverter.ToInt16(values, 20);
+            //short rawZr = BitConverter.ToInt16(values, 22);
 
             byte ledLights = values[26];
             byte ledBrightness = values[27];
 
             if (hat == 15)
-                hat = 8;
+                hat = 8; // Centered
 
             return new TmThrottleStatus()
             {

@@ -6,13 +6,16 @@ using System.IO;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// Allow dynamic changing of the virtual joystick output identifiers 
+    /// </summary>
     public class vJoyMapper : INotifyPropertyChanged
     {
         public class vJoyMapItem
         {
             public vJoyMapper vJoyMapper { get; set; }
             public String Key { get; set; }
-            public List<String> Values { get { return new List<string> { "1", "2", "3", "4", "5" }; } }
+            public List<String> Values { get { return new List<string> { "1", "2", "3", "4", "5", "6" }; } }
             public String Selected
             {
                 get { return vJoyMapper.vJoyMap[Key].ToString(); }
@@ -42,6 +45,7 @@ namespace EliteJoystick
                 {vJoyTypes.Commander, 3 },
                 {vJoyTypes.Voice, 4 },
                 {vJoyTypes.Virtual, 5 },
+                {vJoyTypes.Buttons, 6 },
             };
         }
 
@@ -56,7 +60,8 @@ namespace EliteJoystick
                     new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Throttle },
                     new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Commander },
                     new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Voice },
-                    new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Virtual }
+                    new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Virtual },
+                    new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Buttons }
                 };
             }
         }

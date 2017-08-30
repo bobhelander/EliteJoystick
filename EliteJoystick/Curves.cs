@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// Add axis curves to the output
+    /// Allows axis movements of the physical joystick to be translated into finer movements of the virtual joystick
+    /// until a threshold is reached.  Then the movement is mapped 1 to 1.
+    /// This makes a zone where fine movements can be made with larger movements of the physical joystick
+    /// </summary>
     public static class Curves
     {
         // Use simple Polynomials to make a curve that goes from 0 to 1

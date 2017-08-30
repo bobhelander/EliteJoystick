@@ -25,6 +25,9 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         private SwscStatus previousRead;
 
+        /// <summary>
+        /// Current status of the device
+        /// </summary>
         public SwscStatus CurrentStatus { get; private set; }
 
         /// <summary>
@@ -63,6 +66,11 @@ namespace Faz.SideWinderSC.Logic
         /// Occurs when the controller is turned.
         /// </summary>
         public event EventHandler<RotateEventArgs> Rotate;
+
+        /// <summary>
+        /// Occurs when the buttons changed.
+        /// </summary>
+        public event EventHandler<ButtonsEventArgs> ButtonsChanged;
 
         /// <summary>
         /// Retrieves all the active Strategic Commander controllers.
@@ -150,6 +158,10 @@ namespace Faz.SideWinderSC.Logic
                 this.OnButtonDown(button);
             }
 
+            // Check whether the buttons change
+            if (previous.Buttons != current.Buttons)
+                this.OnButtonsChange(current.Buttons, previous.Buttons);
+
             // Store the current status
             this.previousRead = current;
         }
@@ -188,6 +200,17 @@ namespace Faz.SideWinderSC.Logic
             {
                 this.ButtonDown(this, new ButtonEventArgs(button, true));
             }
+        }
+
+        /// <summary>
+        /// Raised the <see cref="Swff2Controller.ButtonDown"/> event.
+        /// </summary>
+        /// <param name="buttons">The button state.</param>
+        /// <param name="previousButtons">The previous button state.</param>
+        private void OnButtonsChange(uint buttons, uint previousButtons)
+        {
+            if (null != this.ButtonsChanged)
+                this.ButtonsChanged(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -21,6 +22,26 @@ namespace Faz.SideWinderSC.Logic
         private byte[] readBuffer;
 
         /// <summary>
+        /// Last buffer read
+        /// </summary>
+        private byte[] lastReadBuffer;
+
+        /// <summary>
+        /// Last processed state
+        /// </summary>
+        private byte[] currentBuffer;
+
+        /// <summary>
+        /// Process every report or check against previous
+        /// </summary>
+        public bool ProcessAllReports { get; set; }
+
+        /// <summary>
+        /// Remove jitter from continuous button events
+        /// </summary>
+        public Stopwatch Stopwatch { get; set; }
+
+        /// <summary>
         /// The buffer used when getting the feature report.
         /// </summary>
         private readonly byte[] featureBuffer;
@@ -33,6 +54,9 @@ namespace Faz.SideWinderSC.Logic
         {
             this.stream = new HidStream(devicePath);
             this.featureBuffer = new byte[this.FeatureLength];
+            ProcessAllReports = true;
+            Stopwatch = new Stopwatch();
+            Stopwatch.Start();
         }
 
         /// <summary>
@@ -56,6 +80,11 @@ namespace Faz.SideWinderSC.Logic
             get { return this.stream.Capabilities.OutputReportByteLength; }
         }
 
+        /// <summary>
+        /// Write a buffer to the USB device
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="length"></param>
         public void Write(byte[] buffer, int length)
         {
             if (this.stream.CanWrite)
@@ -87,6 +116,9 @@ namespace Faz.SideWinderSC.Logic
             }
         }
 
+        /// <summary>
+        /// Gets a feature value
+        /// </summary>
         public byte[] FeatureValue
         {
             get
@@ -107,7 +139,7 @@ namespace Faz.SideWinderSC.Logic
         public virtual void Initialize()
         {
             this.readBuffer = new byte[this.ReadLength];
-            this.BeginAsyncRead();
+            this.BeginAsyncRead((ulong) 0);
         }
 
         /// <summary>
@@ -129,9 +161,9 @@ namespace Faz.SideWinderSC.Logic
         /// <summary>
         /// Starts an asynchronous read.
         /// </summary>
-        private void BeginAsyncRead()
+        private void BeginAsyncRead(ulong counter)
         {
-            this.stream?.BeginRead(this.readBuffer, 0, this.ReadLength, this.OnReadCompleted, null);
+            this.stream?.BeginRead(this.readBuffer, 0, this.ReadLength, this.OnReadCompleted, counter);
         }
 
         /// <summary>
@@ -151,13 +183,42 @@ namespace Faz.SideWinderSC.Logic
                 {
                     if (this.Read != null)
                     {
-                        this.Read(this, new ReadEventArgs(this.readBuffer, size));
+                        if (ProcessAllReports)
+                        {
+                            // Process the change
+                            this.Read(this, new ReadEventArgs(this.readBuffer, size, (ulong)asyncResult.AsyncState));
+                        }
+                        else
+                        {
+                            // Remove jitter around the buttons
+
+                            if (false == this.readBuffer.SequenceEqual(this.lastReadBuffer))
+                            {
+                                // The read buffer changed since the last read
+                                // Restart the stopwatch
+                                Stopwatch.Restart();
+                            }
+
+                            // After the state remains stable
+                            if (Stopwatch.ElapsedMilliseconds > 100)
+                            {
+                                if (false == this.readBuffer.SequenceEqual(this.currentBuffer))
+                                {
+                                    // Process the change
+                                    this.Read(this, new ReadEventArgs(this.readBuffer, size, (ulong)asyncResult.AsyncState));
+                                    this.currentBuffer = this.readBuffer.ToArray();
+                                }
+                            }
+
+                            // Update the last buffer
+                            this.lastReadBuffer = this.readBuffer.ToArray();
+                        }
                     }
                 }
                 finally
                 {
                     // Start a new read
-                    this.BeginAsyncRead();
+                    this.BeginAsyncRead((ulong)asyncResult.AsyncState + 1);
                 }
             }
             catch (IOException)

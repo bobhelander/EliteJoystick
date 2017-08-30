@@ -3,7 +3,7 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Provides data for the <see cref="SwscController.Rotate"/> event.
+    /// Provides data for the rotate event.
     /// </summary>
     public sealed class RotateEventArgs : EventArgs
     {

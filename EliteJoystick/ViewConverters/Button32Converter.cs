@@ -7,8 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace EliteJoystick
+namespace EliteJoystick.ViewConverters
 {
+    /// <summary>
+    /// XAML Value Converter to change to bits of a UInt32 to a boolean array.
+    /// </summary>
     [ValueConversion(typeof(UInt32), typeof(bool))]
     public class Button32Converter : IValueConverter
     {

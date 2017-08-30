@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// Container for the Controller objects
+    /// </summary>
     public class EliteControllers
     {
         public EliteControllers()

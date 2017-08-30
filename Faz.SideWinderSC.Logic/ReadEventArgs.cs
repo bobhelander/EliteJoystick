@@ -27,13 +27,15 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         /// <param name="buffer">The buffer containing the output values.</param>
         /// <param name="size">The length of the output in the buffer.</param>
+        /// <param name="counter">Sequential event counter.</param>
         /// <remarks>
         /// The values of the buffer are copied to avoid a link to a modifiable buffer.
         /// </remarks>
-        internal ReadEventArgs(byte[] buffer, int size)
+        internal ReadEventArgs(byte[] buffer, int size, ulong counter)
         {
             this.values = new byte[size];
             Buffer.BlockCopy(buffer, 0, this.values, 0, size);
+            Counter = counter;
         }
 
         /// <summary>
@@ -43,5 +45,10 @@ namespace Faz.SideWinderSC.Logic
         {
             get { return this.values; }
         }
+
+        /// <summary>
+        /// Sequential event counter
+        /// </summary>
+        public ulong Counter { get; private set; }
     }
 }

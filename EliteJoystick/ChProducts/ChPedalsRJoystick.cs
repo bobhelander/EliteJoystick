@@ -37,8 +37,8 @@ namespace EliteJoystick.ChProducts
             int z = e.R * 128;
             chPedals.SetJoystickAxis(z, HID_USAGES.HID_USAGE_RZ, vJoyTypes.StickAndPedals);
 
-            ChPedalsController.SetJoystickButton(button3, 23, vJoyTypes.StickAndPedals);
-            ChPedalsController.SetJoystickButton(button4, 24, vJoyTypes.StickAndPedals);
+            //ChPedalsController.SetJoystickButton(button3, 23, vJoyTypes.StickAndPedals);
+            //ChPedalsController.SetJoystickButton(button4, 24, vJoyTypes.StickAndPedals);
 
             this.ChPedalsController.VisualState.UpdateAxis3((UInt32)z);
         }

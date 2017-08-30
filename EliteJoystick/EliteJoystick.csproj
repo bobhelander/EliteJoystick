@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>elite-logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -68,13 +71,17 @@
     <Compile Include="GearHead\Keypad\GhKpController.cs" />
     <Compile Include="GearHead\Keypad\GhKpButtonsStateHandler.cs" />
     <Compile Include="GearHead\Keypad\GhKpUtilCommandsStateHandler.cs" />
+    <Compile Include="Other\BBI32\ButtonBoxController.cs" />
+    <Compile Include="Other\BBI32\BBI32GameStateHandler.cs" />
+    <Compile Include="Other\BBI32\BBI32UtilCommandsStateHandler.cs" />
+    <Compile Include="Sidewinder\Commander\SwCommanderButtonsStateHandler.cs" />
     <Compile Include="StartUpApplication.cs" />
     <Compile Include="Button.cs" />
-    <Compile Include="Button32Converter.cs" />
-    <Compile Include="ButtonStates.xaml.cs">
+    <Compile Include="ViewConverters\Button32Converter.cs" />
+    <Compile Include="ViewControls\ButtonStates.xaml.cs">
       <DependentUpon>ButtonStates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ControllerItem.xaml.cs">
+    <Compile Include="ViewControls\ControllerItem.xaml.cs">
       <DependentUpon>ControllerItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Curves.cs" />
@@ -134,16 +141,17 @@
     <Compile Include="Sidewinder\Commander\SwCommanderZJoystick.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="VisualState.cs" />
+    <Compile Include="MappedButtons.cs" />
     <Compile Include="vJoyMapper.cs" />
-    <Compile Include="vJoyMappingCtrl.xaml.cs">
+    <Compile Include="ViewControls\vJoyMappingCtrl.xaml.cs">
       <DependentUpon>vJoyMappingCtrl.xaml</DependentUpon>
     </Compile>
     <Compile Include="vJoyTypes.cs" />
-    <Page Include="ButtonStates.xaml">
+    <Page Include="ViewControls\ButtonStates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ControllerItem.xaml">
+    <Page Include="ViewControls\ControllerItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,7 +167,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="vJoyMappingCtrl.xaml">
+    <Page Include="ViewControls\vJoyMappingCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -214,6 +222,7 @@
     <Resource Include="Resources\elite-logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="elite-logo.ico" />
     <Content Include="vJoyInstall.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

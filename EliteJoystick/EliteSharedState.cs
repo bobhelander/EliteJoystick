@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// Holds the shared state values for all the controllers.   
+    /// </summary>
     public class EliteSharedState
     {
         public class ModeChangedEventArgs : EventArgs
@@ -121,6 +124,9 @@ namespace EliteJoystick
                 }
             }
         }
+
+        public bool OrbitLines { get; set; }
+        public bool HeadsUpDisplay { get; set; }
 
         private void OnModeChanged(Mode mode)
         {

@@ -41,6 +41,11 @@ namespace Faz.SideWinderSC.Logic
         public SwscButton[] DownButtons { get; set; }
 
         /// <summary>
+        /// Gets or sets the button states of the controller.
+        /// </summary>
+        public uint Buttons { get; set; }
+
+        /// <summary>
         /// Creates a <see cref="SwscStatus"/> from the output bytes of the controller.
         /// </summary>
         /// <param name="values">The output bytes of the controller.</param>
@@ -81,6 +86,7 @@ namespace Faz.SideWinderSC.Logic
                 Y = (0x200 & y) == 0x200 ? (y & 0x1ff) - 0x200 : y,
                 R = (0x200 & r) == 0x200 ? (r & 0x1ff) - 0x200 : r,
                 DownButtons = buttons.ToArray(),
+                Buttons = (uint)b,
             };
         }
 

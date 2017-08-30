@@ -3,7 +3,7 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Specifies the standard buttons of the Strategic Commander.
+    /// Specifies the standard buttons of the Force Feedback 2.
     /// </summary>
     [Serializable]
     public enum Swff2Button : uint

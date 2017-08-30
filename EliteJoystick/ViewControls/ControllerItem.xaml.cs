@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EliteJoystick
+namespace EliteJoystick.ViewControls
 {
     /// <summary>
     /// Interaction logic for ControllerItem.xaml

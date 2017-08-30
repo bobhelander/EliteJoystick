@@ -3,7 +3,7 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Specifies the standard buttons of the Strategic Commander.
+    /// Specifies the standard buttons of the Thrustmaster Warthog
     /// </summary>
     [Serializable]
     public enum TmThrottleButton : UInt32
@@ -49,122 +49,122 @@ namespace Faz.SideWinderSC.Logic
         Button08 = 0x00000080,
 
         /// <summary>
-        /// The 8 button.
+        /// The 9 button.
         /// </summary>
         Button09 = 0x00000100,
 
         /// <summary>
-        /// The 8 button.
+        /// The 10 button.
         /// </summary>
         Button10 = 0x00000200,
 
         /// <summary>
-        /// The 8 button.
+        /// The 11 button.
         /// </summary>
         Button11 = 0x00000400,
 
         /// <summary>
-        /// The 8 button.
+        /// The 12 button.
         /// </summary>
         Button12 = 0x00000800,
 
         /// <summary>
-        /// The 8 button.
+        /// The 13 button.
         /// </summary>
         Button13 = 0x00001000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 14 button.
         /// </summary>
         Button14 = 0x00002000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 15 button.
         /// </summary>
         Button15 = 0x00004000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 16 button.
         /// </summary>
         Button16 = 0x00008000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 17 button.
         /// </summary>
         Button17 = 0x00010000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 18 button.
         /// </summary>
         Button18 = 0x00020000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 19 button.
         /// </summary>
         Button19 = 0x00040000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 20 button.
         /// </summary>
         Button20 = 0x00080000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 21 button.
         /// </summary>
         Button21 = 0x00100000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 22 button.
         /// </summary>
         Button22 = 0x00200000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 23 button.
         /// </summary>
         Button23 = 0x00400000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 24 button.
         /// </summary>
         Button24 = 0x00800000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 25 button.
         /// </summary>
         Button25 = 0x01000000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 26 button.
         /// </summary>
         Button26 = 0x02000000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 27 button.
         /// </summary>
         Button27 = 0x04000000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 28 button.
         /// </summary>
         Button28 = 0x08000000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 29 button.
         /// </summary>
         Button29 = 0x10000000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 30 button.
         /// </summary>
         Button30 = 0x20000000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 31 button.
         /// </summary>
         Button31 = 0x40000000,
 
         /// <summary>
-        /// The 8 button.
+        /// The 32 button.
         /// </summary>
         Button32 = 0x80000000,
     }
@@ -248,6 +248,9 @@ namespace Faz.SideWinderSC.Logic
         LEFT = 0x80,
     }
 
+    /// <summary>
+    /// Light on the device
+    /// </summary>
     [Serializable]
     public enum TmThrottleLights
     {

@@ -71,6 +71,7 @@ namespace EliteJoystick.Sidewinder.Commander
                     };
                     StateHandlers = new List<StateHandler>
                     {
+                        new SwCommanderButtonsStateHandler { ScController = this },
                         new SwCommanderShiftHandler { ScController = this },
                         new SwCommanderProfileHandler { ScController = this },
                     };

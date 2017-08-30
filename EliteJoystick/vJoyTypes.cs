@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// List of the different virtual joystick types in use
+    /// </summary>
     static public class vJoyTypes
     {
         public static String StickAndPedals = "StickAndPedals";
@@ -13,5 +16,6 @@ namespace EliteJoystick
         public static String Commander = "Commander";
         public static String Voice = "Voice";
         public static String Virtual = "Virtual";
+        public static String Buttons = "Buttons";
     }
 }

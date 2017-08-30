@@ -6,7 +6,7 @@ using System.Linq;
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Represents the state of a Strategic Commander.
+    /// Represents the state of a Force Feedback 2 Controller
     /// </summary>
     public struct Swff2Status
     {
@@ -26,7 +26,7 @@ namespace Faz.SideWinderSC.Logic
         public int Y { get; set; }
 
         /// <summary>
-        /// Gets or sets the rotation of the controller.
+        /// Gets or sets the rotation (twist) of the controller.
         /// </summary>
         public int R { get; set; }
 
@@ -41,14 +41,9 @@ namespace Faz.SideWinderSC.Logic
         public int Hat { get; set; }
         
         /// <summary>
-        /// Gets or sets the rotation of the controller.
+        /// Gets or sets the button states controller.
         /// </summary>
         public uint Buttons { get; set; }
-
-        /// <summary>
-        /// Gets of sets the pressed buttons.
-        /// </summary>
-        //public Swff2Button[] DownButtons { get; set; }
 
         /// <summary>
         /// Creates a <see cref="Swff2Status"/> from the output bytes of the controller.
@@ -59,16 +54,17 @@ namespace Faz.SideWinderSC.Logic
         /// The bytes of the <paramref name="values"/> parameter are in reverse order.
         /// </remarks>
         internal static Swff2Status Create(byte[] values)
-        {            
+        {
+            //   0  1  2  3  4  5  6  7    8        9        10       11
+            // [ ?, X, X, Y, Y, R, S, HAT, BUTTONS, BUTTONS, BUTTONS, BUTTONS]            
             short x = BitConverter.ToInt16(values, 1);
             short y = BitConverter.ToInt16(values, 3);
 
-            int rotation = values[5];
+            int rotation = (int)(sbyte)values[5];
             int slider = values[6];
             int hat = values[7];
             uint buttons = values[8];
 
-            // Return result with a final correction on (x, y, r) to manage negative figures (two-components encoding)
             return new Swff2Status()
             {                
                 X = x,
@@ -76,7 +72,6 @@ namespace Faz.SideWinderSC.Logic
                 R = rotation,
                 Slider = slider,
                 Hat = hat,
-                //DownButtons = buttons.ToArray(),
                 Buttons = buttons,
             };
         }

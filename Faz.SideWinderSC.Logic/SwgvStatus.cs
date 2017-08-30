@@ -52,7 +52,6 @@ namespace Faz.SideWinderSC.Logic
                 }
             }
 
-            // Return result with a final correction on (x, y, r) to manage negative figures (two-components encoding)
             return new SwgvStatus()
             {
                 Buttons = b,

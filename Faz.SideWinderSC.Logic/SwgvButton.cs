@@ -3,7 +3,7 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Specifies the standard buttons of the Strategic Commander.
+    /// Specifies the standard buttons of the Game Voice.
     /// </summary>
     [Serializable]
     public enum SwgvButton : byte

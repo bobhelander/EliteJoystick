@@ -10,12 +10,6 @@ namespace EliteJoystick
 {
     public class TmThrottleCameraCommand : StateHandler
     {
-        private Timer timer;
-        private bool pressed;
-
-        public long Delay { get; set; }
-        public uint vButton { get; set; }
-
         public Faz.SideWinderSC.Logic.TmThrottleButton ButtonId { get; set; }
 
         private TmThrottleController tmThrottleController;
@@ -37,53 +31,38 @@ namespace EliteJoystick
         {
             // Flaps Up : Debug Camera
             var button22 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button22;
+            var button15 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button15;
 
-            if (0 == (e.PreviousButtons & button22) && button22 == (e.Buttons & button22))
+            // Camera On/Off
+            if (tmThrottleController.TestButtonPressedOrReleased(e.PreviousButtons, e.Buttons, button22))
             {
-                tmThrottleController.SharedState.CameraActive = true;
-                if (null == timer)
-                    Activate();
-                tmThrottleController.VisualState.UpdateMessage("Camera Activated");
+                if (tmThrottleController.SharedState.CameraActive)
+                {
+                    // Quit Camera
+                    tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraDisabled, 150);
+                    tmThrottleController.VisualState.UpdateMessage("Camera Activated");
+                }
+                else
+                {
+                    // Start Camera
+                    tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
+                    tmThrottleController.VisualState.UpdateMessage("Camera Activated");
+                }
+                tmThrottleController.SharedState.CameraActive = !tmThrottleController.SharedState.CameraActive;
             }
 
-            if (button22 == (e.PreviousButtons & button22) && 0 == (e.Buttons & button22))
+            // Momentary Camera On/Off
+            // Camera turns on so we can switch views quickly
+            if (tmThrottleController.TestButtonChanged(e.PreviousButtons, e.Buttons, button15))
             {
-                tmThrottleController.SharedState.CameraActive = false;
-                if (null == timer)
-                    Activate();
-                tmThrottleController.VisualState.UpdateMessage("Camera Deactivated");
+                // Start Camera
+                tmThrottleController.CallActivateButton(vJoyTypes.Virtual, 16, 150);
             }
-        }
-
-        public void Activate()
-        {
-            timer = new Timer(new TimerCallback(Action), null, 0, Timeout.Infinite);
-        }
-
-        public void Disable()
-        {            
-            if (null != timer)
+            else if (tmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button15))
             {
-                var temp = timer;
-                timer = null;
-                temp.Dispose();
-                tmThrottleController.SetJoystickButton(false, vButton, vJoyTypes.Virtual);
-                pressed = false;
+                // Quit Camera
+                tmThrottleController.CallActivateButton(vJoyTypes.Virtual, 18, 150);
             }
-        }
-
-        public virtual void Action(object o)
-        {
-            pressed = !pressed;
-            tmThrottleController.SetJoystickButton(pressed, vButton, vJoyTypes.Virtual);
-
-            if (pressed)
-            {
-                timer.Change(Delay, Timeout.Infinite);
-                return;
-            }
-
-            Disable();
         }
     }
 }

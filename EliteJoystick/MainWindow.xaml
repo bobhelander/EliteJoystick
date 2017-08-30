@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EliteJoystick"
+        xmlns:controls="clr-namespace:EliteJoystick.ViewControls"
         mc:Ignorable="d"
         Icon="/Resources/elite-logo.png"
         Title="Elite Combined Joystick" Closing="Window_Closing">
@@ -26,6 +27,7 @@
                 <CheckBox x:Name="chPedalsCheckBox" Content="CH Pedals"/>
                 <CheckBox x:Name="scCheckBox" Content="Microsoft Strategic Commander"/>
                 <CheckBox x:Name="gvCheckBox" Content="Microsoft Game Voice"/>
+                <CheckBox x:Name="bbi32CheckBox" Content="BBI32"/>
                 <CheckBox x:Name="kpCheckBox" Content="Keypad"/>
             </StackPanel>
             <StackPanel Grid.Column="1">
@@ -56,14 +58,14 @@
             <ListView Grid.Column="0" x:Name="controllersList" ItemsSource="{Binding Path=Controllers}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:ControllerItem DataContext="{Binding Path=VisualState}"/>
+                        <controls:ControllerItem DataContext="{Binding Path=VisualState}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <ListView Grid.Column="1" x:Name="vJoyMappingList" ItemsSource="{Binding Path=Values, Mode=OneWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:vJoyMappingCtrl DataContext="{Binding}"/>
+                        <controls:vJoyMappingCtrl DataContext="{Binding}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

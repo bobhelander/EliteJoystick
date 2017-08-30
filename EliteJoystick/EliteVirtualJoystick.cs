@@ -7,6 +7,9 @@ using vJoyInterfaceWrap;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// A vJoy virtual joystick container
+    /// </summary>
     public class EliteVirtualJoystick
     {
         public vJoy Joystick { get; set; }
@@ -17,6 +20,11 @@ namespace EliteJoystick
         {
             Joystick.AcquireVJD(JoystickId);
             Joystick.ResetVJD(JoystickId);
+        }
+
+        public void Release()
+        {
+            Joystick.RelinquishVJD(JoystickId);
         }
     }
 }

@@ -7,6 +7,9 @@ using vJoyInterfaceWrap;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// Container for all of the EliteVirtualJoystick controllers 
+    /// </summary>
     public class EliteVirtualJoysticks
     {
         public EliteVirtualJoysticks()
@@ -21,7 +24,15 @@ namespace EliteJoystick
         public void Initialize()
         {
             foreach (var controller in Controllers)
+            {
                 controller.Aquire();
+            }
+        }
+
+        public void Release()
+        {
+            foreach (var controller in Controllers)
+                controller.Release();
         }
     }
 }

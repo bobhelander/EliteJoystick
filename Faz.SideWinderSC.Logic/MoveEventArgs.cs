@@ -3,7 +3,7 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Provides data for the <see cref="SwscController.Move"/> event.
+    /// Provides data for the X Y Axis move event.
     /// </summary>
     public sealed class MoveEventArgs : EventArgs
     {

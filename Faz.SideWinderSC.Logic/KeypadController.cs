@@ -60,7 +60,7 @@ namespace Faz.SideWinderSC.Logic
                         break;
                     }
                 }
-                catch(Exception ex)
+                catch(Exception _ex)
                 {
                     ;
                 }

@@ -41,14 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MoveAxisEventArgs.cs" />
+    <Compile Include="ThrottleAxisEventArgs.cs" />
     <Compile Include="ButtonsEventArgs.cs" />
     <Compile Include="KeypadController.cs" />
     <Compile Include="KeypadStatus.cs" />
     <Compile Include="KeypadButton.cs" />
+    <Compile Include="BBI32Status.cs" />
+    <Compile Include="ButtonStateEventArgs.cs" />
     <Compile Include="SwgvButtonStateEventArgs.cs" />
+    <Compile Include="BBI32Controller.cs" />
+    <Compile Include="BBI32Button.cs" />
     <Compile Include="TmThrottleSwitchEventArgs.cs" />
-    <Compile Include="TmThrottleButtonEventArgs.cs" />
     <Compile Include="TmThrottleButton.cs" />
     <Compile Include="Swff2ButtonEventArgs.cs" />
     <Compile Include="HatEventArgs.cs" />

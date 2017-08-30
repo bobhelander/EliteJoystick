@@ -8,6 +8,9 @@ using System.Windows.Threading;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// DataContext for the input from a physical joystick
+    /// </summary>
     public class VisualState : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };

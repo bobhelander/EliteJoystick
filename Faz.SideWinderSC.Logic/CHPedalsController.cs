@@ -6,17 +6,17 @@ namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
     /// Overrides the <see cref="Controller"/> class to provides specific events for
-    /// the management of a 'Microsoft Sidewinder Game Voice'.
+    /// the management of a 'CH Pedals Controller'.
     /// </summary>
     public sealed class CHPedalsController : Controller
     {
         /// <summary>
-        /// The vendor id for the Sidewinder Game Voice device.
+        /// The vendor id for the CH Pedals device.
         /// </summary>
         public const int VendorId = 0x068e;
 
         /// <summary>
-        /// The product id for the Sidewinder Game Voice device.
+        /// The product id for the CH Pedals device.
         /// </summary>
         public const int ProductId = 0xc501;
 
@@ -26,7 +26,7 @@ namespace Faz.SideWinderSC.Logic
         private CHPedalsStatus previousRead;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SwgvController"/> class.
+        /// Initializes a new instance of the <see cref="CHPedalsController"/> class.
         /// </summary>
         /// <param name="devicePath">
         /// The path of the device.
@@ -63,9 +63,9 @@ namespace Faz.SideWinderSC.Logic
         public event EventHandler<RotateEventArgs> Rotate;
 
         /// <summary>
-        /// Retrieves all the active Strategic Commander controllers.
+        /// Retrieves all the active CH Pedals controllers.
         /// </summary>
-        /// <returns>The active Strategic Commander controllers.</returns>
+        /// <returns>The active CH Pedals controllers.</returns>
         public static ICollection<CHPedalsController> RetrieveAll()
         {
             ICollection<CHPedalsController> result = new LinkedList<CHPedalsController>();
@@ -87,19 +87,6 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Defines the enabled lights on the controller.
-        /// </summary>
-        /// <param name="lights">The enabled lights on the controller.</param>
-        public void SetLights(params SwscLight[] lights)
-        {
-            short lightsValue = (short)lights.Sum(l => (int)l);
-            byte[] values = new byte[this.FeatureLength];
-            values[1] = (byte)(lightsValue & 0x00ff);
-            values[2] = (byte)(lightsValue >> 8);
-            this.Feature = values;
-        }
-
-        /// <summary>
         /// Compares the current read with the previous one to determine the updates.
         /// </summary>
         /// <param name="sender">The parameter is not used.</param>
@@ -115,12 +102,6 @@ namespace Faz.SideWinderSC.Logic
                 Logger.Default.Verbose("{0:x8} {1}", e.Values.Reverse().Aggregate(0L, (l, b) => l << 8 | b), current);
             }
 
-            // Check whether the profile change
-            //if (previous.Profile != current.Profile)
-            //{
-            //    this.OnProfileChanged(current.Profile);
-            //}
-
             // Check whether the position change
             if (previous.X != current.X || previous.Y != current.Y)
             {
@@ -133,61 +114,12 @@ namespace Faz.SideWinderSC.Logic
                 this.OnRotate(current.R);
             }
 
-            // Check whether the buttons change
-            //var upButtons = previous.DownButtons.Except(current.DownButtons);
-            //foreach (SwscButton button in upButtons)
-            //{
-            //    this.OnButtonUp(button);
-            //}
-
-            //var downButtons = current.DownButtons.Except(previous.DownButtons);
-            //foreach (SwscButton button in downButtons)
-            //{
-            //    this.OnButtonDown(button);
-            //}
-
             // Store the current status
             this.previousRead = current;
         }
 
         /// <summary>
-        /// Raised the <see cref="SwgvController.ProfileChanged"/> event.
-        /// </summary>
-        /// <param name="profile">The new profile.</param>
-        private void OnProfileChanged(int profile)
-        {
-            if (this.ProfileChanged != null)
-            {
-                this.ProfileChanged(this, new ProfileChangedEventArgs(profile));
-            }
-        }
-
-        /// <summary>
-        /// Raised the <see cref="SwgvController.ButtonUp"/> event.
-        /// </summary>
-        /// <param name="button">The released button.</param>
-        private void OnButtonUp(SwscButton button)
-        {
-            if (this.ButtonUp != null)
-            {
-                this.ButtonUp(this, new ButtonEventArgs(button, false));
-            }
-        }
-
-        /// <summary>
-        /// Raised the <see cref="SwgvController.ButtonDown"/> event.
-        /// </summary>
-        /// <param name="button">The pressed button.</param>
-        private void OnButtonDown(SwscButton button)
-        {
-            if (this.ButtonDown != null)
-            {
-                this.ButtonDown(this, new ButtonEventArgs(button, true));
-            }
-        }
-
-        /// <summary>
-        /// Raised the <see cref="SwgvController.Move"/> event.
+        /// Raised the <see cref="CHPedalsController.Move"/> event.
         /// </summary>
         /// <param name="x">The x part of the position.</param>
         /// <param name="y">The y part of the position.</param>
@@ -200,7 +132,7 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Raised the <see cref="SwgvController.Rotate"/> event.
+        /// Raised the <see cref="CHPedalsController.Rotate"/> event.
         /// </summary>
         /// <param name="r">The current rotation level.</param>
         private void OnRotate(int r)

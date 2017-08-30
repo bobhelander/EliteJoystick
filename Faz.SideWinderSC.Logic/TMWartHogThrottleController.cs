@@ -6,7 +6,7 @@ namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
     /// Overrides the <see cref="Controller"/> class to provides specific events for
-    /// the management of a 'Microsoft Sidewinder Force Feedback 2'.
+    /// the management of a 'Thrustmaster Warthog'.
     /// </summary>
     public sealed class TMWartHogThrottleController : Controller
     {
@@ -25,7 +25,11 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         private TmThrottleStatus previousRead;
 
+        /// <summary>
+        /// Device current status
+        /// </summary>
         public TmThrottleStatus CurrentStatus { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TMWartHogThrottleController"/> class.
         /// </summary>
@@ -46,12 +50,12 @@ namespace Faz.SideWinderSC.Logic
         /// <summary>
         /// Occurs when the controller is turned.
         /// </summary>
-        public event EventHandler<MoveAxisEventArgs> ThrottleRight;
+        public event EventHandler<ThrottleAxisEventArgs> ThrottleRight;
 
         /// <summary>
         /// Occurs when the controller is turned.
         /// </summary>
-        public event EventHandler<MoveAxisEventArgs> ThrottleLeft;
+        public event EventHandler<ThrottleAxisEventArgs> ThrottleLeft;
 
         /// <summary>
         /// Occurs when the throttle is moved.
@@ -69,9 +73,9 @@ namespace Faz.SideWinderSC.Logic
         public event EventHandler<TmThrottleSwitchEventArgs> SwitchState;
 
         /// <summary>
-        /// Retrieves all the active Strategic Commander controllers.
+        /// Retrieves all the active Thrustmaster Warthog controllers.
         /// </summary>
-        /// <returns>The active Strategic Commander controllers.</returns>
+        /// <returns>The active Thrustmaster Warthog controllers.</returns>
         public static ICollection<TMWartHogThrottleController> RetrieveAll()
         {
             ICollection<TMWartHogThrottleController> result = new LinkedList<TMWartHogThrottleController>();
@@ -197,7 +201,7 @@ namespace Faz.SideWinderSC.Logic
         {
             if (this.ThrottleRight != null)
             {
-                this.ThrottleRight(this, new MoveAxisEventArgs(z));
+                this.ThrottleRight(this, new ThrottleAxisEventArgs(z));
             }
         }
 
@@ -209,14 +213,14 @@ namespace Faz.SideWinderSC.Logic
         {
             if (this.ThrottleLeft != null)
             {
-                this.ThrottleLeft(this, new MoveAxisEventArgs(z));
+                this.ThrottleLeft(this, new ThrottleAxisEventArgs(z));
             }
         }
 
         /// <summary>
         /// Raised the <see cref="Swff2Controller.Slider"/> event.
         /// </summary>
-        /// <param name="r">The current rotation level.</param>
+        /// <param name="slider">The current slider level.</param>
         private void OnSlider(int slider)
         {
             if (this.Slider != null)
@@ -228,7 +232,8 @@ namespace Faz.SideWinderSC.Logic
         /// <summary>
         /// Raised the <see cref="Swff2Controller.Hat"/> event.
         /// </summary>
-        /// <param name="r">The current rotation level.</param>
+        /// <param name="hat">The hat position.</param>
+        /// <param name="hatSwitch">The hat position.</param>
         private void OnHat(int hat, int hatSwitch)
         {
             if (this.Hat != null)

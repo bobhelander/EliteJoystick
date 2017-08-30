@@ -29,11 +29,11 @@ namespace EliteJoystick.Thrustmaster.Warthog
 
         public bool RightEnabled { get; set; }
 
-        private void Controller_ThrottleLeft(object sender, MoveAxisEventArgs e)
+        private void Controller_ThrottleLeft(object sender, ThrottleAxisEventArgs e)
         {
             if (LeftEnabled)
             {
-                int z = e.Z * 2;
+                int z = e.AxisValue * 2;
 
                 this.tmThrottleController.VisualState.UpdateAxis1((UInt32)z);
 
@@ -53,11 +53,11 @@ namespace EliteJoystick.Thrustmaster.Warthog
             }
         }
 
-        private void Controller_ThrottleRight(object sender, MoveAxisEventArgs e)
+        private void Controller_ThrottleRight(object sender, ThrottleAxisEventArgs e)
         {
             if (RightEnabled)
             {
-                int z = e.Z * 2;
+                int z = e.AxisValue * 2;
 
                 this.tmThrottleController.VisualState.UpdateAxis2((UInt32)z);
 

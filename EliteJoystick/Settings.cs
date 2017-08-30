@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick
 {
+    /// <summary>
+    /// Settings Object to save and load the settings from disk
+    /// </summary>
     public class Settings
     {
         public Settings()
@@ -53,7 +56,7 @@ namespace EliteJoystick
                     return (Settings)serializer.Deserialize(file, typeof(Settings));
                 }
             }
-            catch(Exception ex)
+            catch(Exception _ex)
             {
                 return new Settings
                 {
@@ -66,10 +69,10 @@ namespace EliteJoystick
         static List<StartUpApplication> Initialize()
         {
             return new List<StartUpApplication> {
-                new StartUpApplication { Name = "VoiceMeeter", Command = "C:\\Program Files (x86)\\VB\\Voicemeeter\\voicemeeterpro.exe" },
-                new StartUpApplication { Name = "Elite Launcher", Command = "H:\\Steam\\steamapps\\common\\Elite Dangerous\\EDLaunch.exe" },
-                new StartUpApplication { Name = "EDDI", Command = "C:\\Program Files (x86)\\VoiceAttack\\Apps\\EDDI\\EDDI.exe" },
-                new StartUpApplication { Name = "ED Profiler", Command = "C:\\Users\\Bob\\Desktop\\EDProfiler.appref-ms" },
+                new StartUpApplication { Name = "VoiceMeeter", Command = @"C:\Program Files (x86)\VB\Voicemeeter\voicemeeterpro.exe" },
+                new StartUpApplication { Name = "Elite Launcher", Command = @"H:\Steam\steamapps\common\Elite Dangerous\EDLaunch.exe" },
+                new StartUpApplication { Name = "EDDI", Command = @"C:\Program Files (x86)\VoiceAttack\Apps\EDDI\EDDI.exe" },
+                new StartUpApplication { Name = "ED Profiler", Command = @"C:\Users\Bob\Desktop\EDProfiler.appref-ms" },
             };
         }
     }

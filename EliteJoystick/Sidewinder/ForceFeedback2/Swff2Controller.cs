@@ -56,7 +56,7 @@ namespace EliteJoystick.Sidewinder.ForceFeedback2
                     {
                         new Swff2Hat {
                             Swff2Controller = this,
-                            vButtons = new List<uint> { 9, 10, 11, 12, 13}
+                            vButtons = new List<uint> { 9, 10, 11, 12, 13 }
                         },
                     };
 
