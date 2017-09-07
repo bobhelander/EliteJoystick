@@ -21,6 +21,7 @@ namespace EliteJoystick
 
         public vJoyMapper vJoyMapper { get; set; }
         public List<StartUpApplication> StartUpApplications { get; set; }
+        public String ArduinoCommPort { get; set; }
 
         public void Save()
         {
@@ -53,7 +54,13 @@ namespace EliteJoystick
                 using (StreamReader file = File.OpenText(fileName))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    return (Settings)serializer.Deserialize(file, typeof(Settings));
+                    var settings = (Settings)serializer.Deserialize(file, typeof(Settings));
+
+                    // Upgrade if necessary
+                    if (String.IsNullOrEmpty(settings.ArduinoCommPort))
+                        settings.ArduinoCommPort = "COM6";
+
+                    return settings;
                 }
             }
             catch(Exception _ex)

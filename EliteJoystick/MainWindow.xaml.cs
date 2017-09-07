@@ -70,7 +70,7 @@ namespace EliteJoystick
 
                 if (true == arduinoCheckBox.IsChecked)
                 {
-                    arduino = new ArduinoCommunication.Arduino();
+                    arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort);
                 }
 
                 if (true == swff2CheckBox.IsChecked)

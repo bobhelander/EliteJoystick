@@ -29,7 +29,6 @@ namespace EliteJoystick
         public static uint CameraAdvanceModeToggle = 21;
         public static uint SilentRunningToggle = 22;
 
-
         public static uint ThrottleHatUp = 29;
         public static uint ThrottleHatRight = 30;
         public static uint ThrottleHatDown = 31;

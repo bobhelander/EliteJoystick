@@ -10,9 +10,9 @@ namespace ArduinoCommunication
     {
         private System.IO.Ports.SerialPort serialPort { get; set; }
 
-        public Arduino()
+        public Arduino(String commPort)
         {
-            serialPort = new System.IO.Ports.SerialPort("COM6", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
+            serialPort = new System.IO.Ports.SerialPort(commPort, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
             serialPort.Open();
         }
 

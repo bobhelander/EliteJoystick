@@ -139,6 +139,8 @@ namespace Faz.SideWinderSC.Logic
         public virtual void Initialize()
         {
             this.readBuffer = new byte[this.ReadLength];
+            this.lastReadBuffer = new byte[this.ReadLength];
+            this.currentBuffer = new byte[this.ReadLength];
             this.BeginAsyncRead((ulong) 0);
         }
 
