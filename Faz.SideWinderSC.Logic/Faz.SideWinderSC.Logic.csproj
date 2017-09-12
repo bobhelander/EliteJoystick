@@ -106,6 +106,7 @@
     <Compile Include="Win32Api\Win32FileAccess.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Readme.txt" />
     <Content Include="Win32Api\readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

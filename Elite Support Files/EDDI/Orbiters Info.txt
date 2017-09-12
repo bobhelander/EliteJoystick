@@ -1,0 +1,75 @@
+{_ Set up the value tables }
+{_ Use https://forums.frontier.co.uk/showthread.php/339546-2-3-exploration-payouts-visual-guide  for surface scan values}
+
+{set star_types to ["O (Blue-White) Star":     ["scan": "false", "value": "6135"],
+       "B (Blue-White) Star":     ["scan": "false", "value": "3012"],       
+       "A (Blue-White) Star":     ["scan": "false", "value": "2949"],
+       "A (Blue-White super giant) Star": ["scan": "false", "value": "2949"],
+       "F (White) Star":      ["scan": "false", "value": "2932"],
+       "F (White super giant) Star":   ["scan": "false", "value": "2932"],
+       "G (White-Yellow) Star":    ["scan": "false", "value": "2919"],       
+       "K (Yellow-Orange) Star":    ["scan": "false", "value": "2916"],       
+       "K (Yellow-Orange giant) Star":   ["scan": "false", "value": "2916"],       
+       "M (Red dwarf) Star":     ["scan": "false", "value": "2903"],
+       "M (Red giant) Star":     ["scan": "false", "value": "2903"],       
+       "M (Red super giant) Star":    ["scan": "false", "value": "2903"],       
+       "L (Brown dwarf) Star":     ["scan": "false", "value": "2889"],       
+       "T (Brown dwarf) Star":     ["scan": "false", "value": "2895"],       
+       "Y (Brown dwarf) Star":     ["scan": "false", "value": "2881"],       
+       "T Tauri Star":       ["scan": "false", "value": "2895"],  
+       "Herbig Ae/Be Star":     ["scan": "false", "value": "3077"],       
+       "Wolf-Rayet Star":      ["scan": "false", "value": "2931"],       
+       "Wolf-Rayet N Star":     ["scan": "false", "value": "2931"],       
+       "Wolf-Rayet NC Star":     ["scan": "false", "value": "2931"],       
+       "Wolf-Rayet C Star":     ["scan": "false", "value": "2931"],
+       "Wolf-Rayet O Star":     ["scan": "false", "value": "2931"],
+       "C Star":        ["scan": "false", "value": "2930"],       
+       "CN Star":        ["scan": "false", "value": "2930"],       
+       "CJ Star":        ["scan": "false", "value": "2930"],       
+       "MS-type Star":       ["scan": "false", "value": "2930"], 
+       "S-type Star":       ["scan": "false", "value": "2930"],       
+       "D (White Dwarf) Star":     ["scan": "true",  "value": "34294"],       
+       "Neutron Star":       ["scan": "true",  "value": "54782"],        
+       "Black Hole":       ["scan": "true",  "value": "60589"]]
+}
+       
+{set body_types to ["Metal-rich body":      ["scan": "true",  "check_terraform": "false", "value": "65045"],
+       "High metal content world":    ["scan": "true",  "check_terraform": "true",  "value": "34310"],       
+       "Rocky body":       ["scan": "false", "check_terraform": "true",  "value": "928"],
+       "Rocky Ice world":      ["scan": "false", "check_terraform": "false", "value": "0"],
+       "Icy body":        ["scan": "false", "check_terraform": "false", "value": "1246"],
+       "Earth-like world":      ["scan": "true",  "check_terraform": "false", "value": "627885"],
+       "Water world":       ["scan": "true",  "check_terraform": "true",  "value": "301410"],       
+       "Water giant":       ["scan": "false", "check_terraform": "false", "value": "1824"],       
+       "Ammonia world":      ["scan": "true",  "check_terraform": "false", "value": "320203"],       
+       "Gas giant with water-based life":  ["scan": "false", "check_terraform": "false", "value": "2314"],
+       "Gas giant with ammonia-based life": ["scan": "false", "check_terraform": "false", "value": "1721"],       
+       "Class I gas giant":     ["scan": "false", "check_terraform": "false", "value": "7013"],       
+       "Class II gas giant":     ["scan": "true",  "check_terraform": "false", "value": "53663"],       
+       "Class III gas giant":     ["scan": "false", "check_terraform": "false", "value": "2693"],       
+       "Class IV gas giant":     ["scan": "false", "check_terraform": "false", "value": "2799"],       
+       "Class V gas giant":     ["scan": "false", "check_terraform": "false", "value": "2761"],       
+       "Helium-rich gas giant":    ["scan": "true",  "check_terraform": "false", "value": "2095"]]
+}
+ 
+{_ Tell the amount of bodys in the system} 
+
+{if len(SystemDetails(system.name).bodies) = 0:
+  No star chart information is available for this system.
+|else:
+ {len(SystemDetails(system.name).bodies)} known bodies orbit in this system {Pause(500)}
+}
+
+{_ Go through the bodys-array amd look for interesting/valuable bodies}
+ 
+{for i, bd in SystemDetails(system.name).bodies:
+  {if bd.type = "Star":
+    {if bd.stellarclass = "H" || bd.stellarclass = "N" || bd.stellarclass = "D":  
+  One interesting star is {Humanise(bd.distance)} lightseconds away {Pause(250)}
+ }
+  |else:
+    {if body_types[bd.planettype]["scan"] = "true" || (body_types[bd.planettype][check_terraform] = "true" && bd.terraformstate = "Terraformable"):
+   One {if bd.terraformstate = "Terraformable": terraformable} {bd.planettype} is {Humanise(bd.distance)} lightseconds away {Pause(250)}
+ }
+  }
+} 

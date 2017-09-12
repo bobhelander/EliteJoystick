@@ -77,6 +77,9 @@
     <Compile Include="Sidewinder\Commander\SwCommanderButtonsStateHandler.cs" />
     <Compile Include="StartUpApplication.cs" />
     <Compile Include="Button.cs" />
+    <Compile Include="ViewControls\LaunchAppControl.xaml.cs">
+      <DependentUpon>LaunchAppControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewConverters\Button32Converter.cs" />
     <Compile Include="ViewControls\ButtonStates.xaml.cs">
       <DependentUpon>ButtonStates.xaml</DependentUpon>
@@ -100,7 +103,7 @@
     <Compile Include="Thrustmaster\Warthog\TmThrottleClearMessages.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottle75Command.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottleCameraCommand.cs" />
-    <Compile Include="Thrustmaster\Warthog\TmThrottleMuteHandler.cs" />
+    <Compile Include="Thrustmaster\Warthog\TmThrottleVoiceCommandHandler.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottleLandingGearCommand.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottleHardpointsCommand.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottleCycleCommand.cs" />
@@ -167,6 +170,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ViewControls\LaunchAppControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewControls\vJoyMappingCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

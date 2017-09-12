@@ -10,14 +10,6 @@ namespace EliteJoystick
 {
     public class TmThrottleSilentCommand : StateHandler
     {
-        private Timer timer;
-        private bool pressed;
-
-        public long Delay { get; set; }
-        public uint vButton { get; set; }
-
-        public Faz.SideWinderSC.Logic.TmThrottleButton ButtonId { get; set; }
-
         private TmThrottleController tmThrottleController;
 
         public TmThrottleController TmThrottleController
@@ -36,54 +28,18 @@ namespace EliteJoystick
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
             // Fuel Right : Silent
-            var button = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button17;
+            var button = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button16;
 
-            if (0 == (e.PreviousButtons & button) && button == (e.Buttons & button))
+            if (TmThrottleController.TestButtonChanged(e.PreviousButtons, e.Buttons, button))
             {
-                if (null == timer)
-                    Activate();
-                tmThrottleController.VisualState.UpdateMessage("Silent Running Activated");
+                TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.SilentRunningToggle, 200);
+                TmThrottleController.VisualState.UpdateMessage("Silent Running Activated");
             }
-
-            if (button == (e.PreviousButtons & button) && 0 == (e.Buttons & button))
+            if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button))
             {
-                if (null == timer)
-                {
-                    Activate();
-                    tmThrottleController.VisualState.UpdateMessage("Silent Running Deactivated");
-                }
+                TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.SilentRunningToggle, 200);
+                tmThrottleController.VisualState.UpdateMessage("Silent Running Deactivated");
             }
-        }
-
-        public void Activate()
-        {
-            timer = new Timer(new TimerCallback(Action), null, 0, Timeout.Infinite);
-        }
-
-        public void Disable()
-        {            
-            if (null != timer)
-            {
-                var temp = timer;
-                timer = null;
-                temp.Dispose();
-                tmThrottleController.SetJoystickButton(false, vButton, vJoyTypes.Virtual);
-                pressed = false;
-            }
-        }
-
-        public virtual void Action(object o)
-        {
-            pressed = !pressed;
-            tmThrottleController.SetJoystickButton(pressed, vButton, vJoyTypes.Virtual);
-
-            if (pressed)
-            {
-                timer.Change(Delay, Timeout.Infinite);
-                return;
-            }
-
-            Disable();
         }
     }
 }

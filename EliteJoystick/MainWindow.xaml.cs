@@ -42,6 +42,7 @@ namespace EliteJoystick
             InitializeComponent();
 
             vJoyMappingList.DataContext = vJoyMapper;
+            launchAppList.DataContext = settings.StartUpApplications;
         }
 
         public void StartControllers()
@@ -387,21 +388,9 @@ namespace EliteJoystick
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            try
+            foreach(var launchApp in settings.StartUpApplications)
             {
-                if (voiceMeeterCheckBox.IsChecked == true)
-                    voiceMeeterCheckBox.DataContext = Utils.Launch(voiceMeeterCheckBox.Tag as string);
-                if (eddiCheckBox.IsChecked == true)
-                    eddiCheckBox.DataContext = Utils.Launch(eddiCheckBox.Tag as string);
-                if (eliteLauncherCheckBox.IsChecked == true)
-                    eliteLauncherCheckBox.DataContext = Utils.Launch(eliteLauncherCheckBox.Tag as string);
-                if (edProfilerCheckBox.IsChecked == true)
-                    edProfilerCheckBox.DataContext = Utils.Launch(edProfilerCheckBox.Tag as string);
-                
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                launchApp.LaunchApplication();
             }
         }
 

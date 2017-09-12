@@ -75,14 +75,14 @@ namespace EliteJoystick.Thrustmaster.Warthog
                         new TmThrottleCycleCommand { vButton = MappedButtons.CycleSubsystem, Delay=250, TmThrottleController = this },
                         new TmThrottleSecondaryFireCommand { vButton = MappedButtons.SecondaryFire, TmThrottleController = this },
                         new TmThrottleClearMessages { vButton = MappedButtons.TextMessageEntry, Delay=30, TmThrottleController = this },
-                        new TmThrottleHardpointsCommand { vButton = MappedButtons.HardpointsToggle, Delay = 400, TmThrottleController = this },
+                        new TmThrottleHardpointsCommand { TmThrottleController = this },
                         new TmThrottleLandedStateHandler { ZAxis = zAxis, TmThrottleController = this },
                         new TmThrottleLandingGearCommand { vButton = MappedButtons.LandingGearToggle, Delay = 400, TmThrottleController = this },
-                        new TmThrottle75Command { vButton = MappedButtons.Throttle75, Delay = 400, TmThrottleController = this },
-                        new TmThrottleMuteHandler { TmThrottleController = this },
+                        new TmThrottle75Command { TmThrottleController = this },
+                        new TmThrottleVoiceCommandHandler { TmThrottleController = this },
                         new TmThrottleCameraCommand { TmThrottleController = this },
-                        new TmThrottleLightsCommand { vButton = MappedButtons.LightsToggle, Delay = 400, TmThrottleController = this },
-                        new TmThrottleSilentCommand { vButton = MappedButtons.SilentRunningToggle, Delay = 400, TmThrottleController = this },
+                        new TmThrottleLightsCommand { TmThrottleController = this },
+                        new TmThrottleSilentCommand { TmThrottleController = this },
                     };
                 }
             }

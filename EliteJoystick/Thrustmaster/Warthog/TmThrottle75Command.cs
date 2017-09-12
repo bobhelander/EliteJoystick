@@ -10,14 +10,6 @@ namespace EliteJoystick
 {
     public class TmThrottle75Command : StateHandler
     {
-        private Timer timer;
-        private bool pressed;
-
-        public long Delay { get; set; }
-        public uint vButton { get; set; }
-
-        public Faz.SideWinderSC.Logic.TmThrottleButton ButtonId { get; set; }
-
         private TmThrottleController tmThrottleController;
 
         public TmThrottleController TmThrottleController
@@ -36,44 +28,11 @@ namespace EliteJoystick
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
             var rdrAlt = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button25;
-            if ((e.PreviousButtons & rdrAlt) == rdrAlt &&
-                (e.Buttons & rdrAlt) == 0 )
+            if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, rdrAlt))
             {
-                if (null == timer)
-                    Activate();
+                TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);
+                tmThrottleController.VisualState.UpdateMessage("75%");
             }
-        }
-
-        public void Activate()
-        {
-            timer = new Timer(new TimerCallback(Action), null, 0, Timeout.Infinite);
-            tmThrottleController.VisualState.UpdateMessage("75%");
-        }
-
-        public void Disable()
-        {            
-            if (null != timer)
-            {
-                var temp = timer;
-                timer = null;
-                temp.Dispose();
-                tmThrottleController.SetJoystickButton(false, vButton, vJoyTypes.Virtual);
-                pressed = false;
-            }
-        }
-
-        public virtual void Action(object o)
-        {
-            pressed = !pressed;
-            tmThrottleController.SetJoystickButton(pressed, vButton, vJoyTypes.Virtual);
-
-            if (pressed)
-            {
-                timer.Change(Delay, Timeout.Infinite);
-                return;
-            }
-
-            Disable();
         }
     }
 }

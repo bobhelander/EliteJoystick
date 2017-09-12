@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,5 +15,22 @@ namespace EliteJoystick
     {
         public string Name { get; set; }
         public string Command { get; set; }
+        public bool Launch { get; set; }
+
+        [JsonIgnore]
+        private Process Process { get; set; }
+
+        public void LaunchApplication()
+        {
+            try
+            {
+                if (Launch)
+                    Process = Utils.Launch(Command);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }            
+        }
     }
 }

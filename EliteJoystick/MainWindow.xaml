@@ -10,8 +10,7 @@
         Title="Elite Combined Joystick" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="115"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="175"/>
             <RowDefinition/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
@@ -20,37 +19,33 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <CheckBox x:Name="arduinoCheckBox" Content="Arduino" />
-                <CheckBox x:Name="swff2CheckBox" Content="Sidewinder Force Feedback 2" />
-                <CheckBox x:Name="tmWarthogCheckBox" Content="Thrustmaster Warthog Throttle"/>
-                <CheckBox x:Name="chPedalsCheckBox" Content="CH Pedals"/>
-                <CheckBox x:Name="scCheckBox" Content="Microsoft Strategic Commander"/>
-                <CheckBox x:Name="gvCheckBox" Content="Microsoft Game Voice"/>
-                <CheckBox x:Name="bbi32CheckBox" Content="BBI32"/>
-                <CheckBox x:Name="kpCheckBox" Content="Keypad"/>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-                <CheckBox x:Name="voiceMeeterCheckBox" Content="VoiceMeeter" IsChecked="True" 
-                          Tag="C:\\Program Files (x86)\\VB\\Voicemeeter\\voicemeeterpro.exe"/>
-                <CheckBox x:Name="eliteLauncherCheckBox" Content="Elite Launcher" IsChecked="True"
-                          Tag="H:\\Steam\\steamapps\common\\Elite Dangerous\\EDLaunch.exe" />
-                <CheckBox x:Name="eddiCheckBox" Content="EDDI" IsChecked="True"
-                           Tag="C:\\Program Files (x86)\\VoiceAttack\\Apps\\EDDI\\EDDI.exe" />
-                <CheckBox x:Name="edProfilerCheckBox" Content="ED Profiler" IsChecked="False"
-                          Tag="C:\\Users\\Bob\\Desktop\\EDProfiler.appref-ms" />
-               
-            </StackPanel>
+            <DockPanel Grid.Column="0">
+                <Button DockPanel.Dock="Bottom" x:Name="startAllbutton" Content="Start All" Click="startAllbutton_Click" Height="22"/>
+                <Button DockPanel.Dock="Bottom" x:Name="button" Content="Start" Click="button_Click" Height="22"/>
+                <StackPanel>
+                    <CheckBox x:Name="arduinoCheckBox" Content="Arduino" />
+                    <CheckBox x:Name="swff2CheckBox" Content="Sidewinder Force Feedback 2" />
+                    <CheckBox x:Name="tmWarthogCheckBox" Content="Thrustmaster Warthog Throttle"/>
+                    <CheckBox x:Name="chPedalsCheckBox" Content="CH Pedals"/>
+                    <CheckBox x:Name="scCheckBox" Content="Microsoft Strategic Commander"/>
+                    <CheckBox x:Name="gvCheckBox" Content="Microsoft Game Voice"/>
+                    <CheckBox x:Name="bbi32CheckBox" Content="BBI32"/>
+                    <CheckBox x:Name="kpCheckBox" Content="Keypad"/>
+                </StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Column="1">
+                <Button DockPanel.Dock="Bottom" Content="Launch" Click="Button_Click_1" Height="46"/>
+                <ListView x:Name="launchAppList" ItemsSource="{Binding}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:LaunchAppControl DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+            </DockPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" x:Name="startAllbutton" Content="Start All" Click="startAllbutton_Click" Height="22"/>
-            <Button Grid.Column="1" x:Name="button" Content="Start" Click="button_Click" Height="22"/>
-        </Grid>
-        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -71,13 +66,8 @@
             </ListView>
         </Grid>
 
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0"  x:Name="textBox" HorizontalAlignment="Left" Height="125" TextWrapping="Wrap" Text="TextBox"/>
-            <Button Grid.Column="1" Content="Launch" Click="Button_Click_1" />
+        <Grid Grid.Row="2">            
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="125" TextWrapping="Wrap" Text="TextBox"/>            
         </Grid>
     </Grid>
 </Window>
