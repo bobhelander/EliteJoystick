@@ -10,6 +10,8 @@ namespace EliteJoystick
 {
     public class TmThrottle75Command : StateHandler
     {
+        static UInt32 rdrAlt = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button25;
+
         private TmThrottleController tmThrottleController;
 
         public TmThrottleController TmThrottleController
@@ -26,8 +28,7 @@ namespace EliteJoystick
         }
 
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
-        {
-            var rdrAlt = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button25;
+        {            
             if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, rdrAlt))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);

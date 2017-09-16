@@ -8,6 +8,12 @@ namespace EliteJoystick.Sidewinder.ForceFeedback2
 {
     public class Swff2UtilCommandsStateHandler : StateHandler
     {
+        static UInt32 Button8 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button8;
+        static UInt32 Button7 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button7;
+        static UInt32 Button6 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button6;
+        static UInt32 Button5 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button5;
+        static UInt32 Button2 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button2;
+
         private Swff2Controller swff2Controller;
 
         public Swff2Controller Swff2Controller
@@ -25,30 +31,25 @@ namespace EliteJoystick.Sidewinder.ForceFeedback2
 
         private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonsEventArgs e)
         {
-            if ((e.Buttons & (uint)Faz.SideWinderSC.Logic.Swff2Button.Button8) == 
-                (uint)Faz.SideWinderSC.Logic.Swff2Button.Button8)
+            if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button8))
             {
                 // Oculus ASW off  CRTL+KP1
-                swff2Controller.SendKeyCombo(new byte[] { 0x80 }, 0x31);
+                Swff2Controller.SendKeyCombo(new byte[] { 0x80 }, 0x31);
             }
-            if ((e.Buttons & (uint)Faz.SideWinderSC.Logic.Swff2Button.Button7) == 
-                (uint)Faz.SideWinderSC.Logic.Swff2Button.Button7)
+            if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button7))
             {
                 // Take Picture  ALT-F10
-                swff2Controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB);
+                Swff2Controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB);
             }
 
-            if ((e.Buttons & (uint)Faz.SideWinderSC.Logic.Swff2Button.Button5) ==
-                (uint)Faz.SideWinderSC.Logic.Swff2Button.Button5)
+            if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button5))
             {
                 // HUD off  CRTL+ALT+G
-                swff2Controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
+                Swff2Controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
             }
 
-            if (((e.Buttons & (uint)Faz.SideWinderSC.Logic.Swff2Button.Button2) ==
-                  (uint)Faz.SideWinderSC.Logic.Swff2Button.Button2) &&
-                 (e.PreviousButtons & (uint)Faz.SideWinderSC.Logic.Swff2Button.Button2) == 0 &&
-                 swff2Controller.SharedState.ThrottleShiftStateValue == EliteSharedState.ThrottleShiftState.Shift1)
+            if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button2) &&
+                Swff2Controller.SharedState.ThrottleShiftStateValue == EliteSharedState.ThrottleShiftState.Shift1)
             {
                 // Focus window
                 System.Console.WriteLine(Utils.FocusWindow("EliteDangerous64"));

@@ -26,7 +26,7 @@ namespace EliteJoystick.Other.BBI32
         private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonStateEventArgs e)
         {
             // Orbit Lines Toggle Off
-            if (ButtonBoxController.TestButtonChanged(
+            if (ButtonBoxController.TestButtonPressed(
                 e.PreviousButtonsState, e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button8))
             {
                 // Orbit Lines Toggle
@@ -36,7 +36,7 @@ namespace EliteJoystick.Other.BBI32
                 ButtonBoxController.SharedState.OrbitLines = false;
             }
             // Orbit Lines Toggle On
-            if (ButtonBoxController.TestButtonChanged(
+            if (ButtonBoxController.TestButtonPressed(
                 e.PreviousButtonsState, e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button9))
             {
                 // Orbit Lines Toggle
@@ -47,7 +47,7 @@ namespace EliteJoystick.Other.BBI32
             }
 
             // HUD Toggle Off
-            if (ButtonBoxController.TestButtonChanged(
+            if (ButtonBoxController.TestButtonPressed(
                 e.PreviousButtonsState, e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button10))
             {
                 // HUD off  CRTL+ALT+G
@@ -58,7 +58,7 @@ namespace EliteJoystick.Other.BBI32
             }
 
             // HUD Toggle On
-            if (ButtonBoxController.TestButtonChanged(
+            if (ButtonBoxController.TestButtonPressed(
                      e.PreviousButtonsState, e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button11))
             {
                 // HUD off  CRTL+ALT+G
@@ -73,7 +73,7 @@ namespace EliteJoystick.Other.BBI32
             //    buttonBoxController.SendKeyCombo(new byte[] { 0x80 }, 0x31);
             //}
 
-            if (ButtonBoxController.TestButtonChanged(
+            if (ButtonBoxController.TestButtonPressed(
                 e.PreviousButtonsState, e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button7))
             {
                 // Take Picture  ALT-F10

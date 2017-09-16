@@ -10,6 +10,8 @@ namespace EliteJoystick
 {
     public class TmThrottleHardpointsCommand : StateHandler
     {
+        static UInt32 button19 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button19;
+
         public Faz.SideWinderSC.Logic.TmThrottleButton ButtonId { get; set; }
 
         private TmThrottleController tmThrottleController;
@@ -29,10 +31,8 @@ namespace EliteJoystick
 
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            var button19 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button19;
-
             if (tmThrottleController.SharedState.HardpointsDeployed == false &&
-                tmThrottleController.TestButtonChanged(e.PreviousButtons, e.Buttons, button19))
+                tmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, button19))
             {
                 tmThrottleController.SharedState.HardpointsDeployed = true;
                 tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
@@ -42,9 +42,9 @@ namespace EliteJoystick
             if (tmThrottleController.SharedState.HardpointsDeployed == true &&
                 tmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button19))
             {
-                tmThrottleController.SharedState.HardpointsDeployed = true;
+                tmThrottleController.SharedState.HardpointsDeployed = false;
                 tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
-                tmThrottleController.VisualState.UpdateMessage("Hardpoints Deployed");
+                tmThrottleController.VisualState.UpdateMessage("Hardpoints Retracted");
             }
         }
     }

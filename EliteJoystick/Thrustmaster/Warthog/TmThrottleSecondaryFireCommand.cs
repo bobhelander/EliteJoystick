@@ -8,7 +8,7 @@ namespace EliteJoystick.Thrustmaster.Warthog
 {
     public class TmThrottleSecondaryFireCommand : StateHandler
     {
-        public uint vButton { get; set; }
+        static UInt32 button07 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button07;
 
         private TmThrottleController tmThrottleController;
 
@@ -27,16 +27,21 @@ namespace EliteJoystick.Thrustmaster.Warthog
 
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            if ((e.Buttons & (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button07) != 0 &&
-               (tmThrottleController.SharedState.CurrentMode == EliteSharedState.Mode.Travel ||
-                tmThrottleController.SharedState.CurrentMode == EliteSharedState.Mode.Mining))
+            // Use the speedbrake to lock the secondary fire button down.  
+            // This will hold the mining laser or discovery scanner on until the switch is moved off.
+            // In fighting mode this switch is used to cycle the subsystem targeting.
+            if (TmThrottleController.TestButtonDown(e.Buttons, button07) &&
+               (TmThrottleController.SharedState.CurrentMode == EliteSharedState.Mode.Travel ||
+                TmThrottleController.SharedState.CurrentMode == EliteSharedState.Mode.Mining))
             {
-                tmThrottleController.SetJoystickButton(true, vButton, vJoyTypes.Virtual);
-                tmThrottleController.VisualState.UpdateMessage("Secondary Fire Activated");
+                TmThrottleController.SharedState.SecondaryFireActive = true;
+                TmThrottleController.SetJoystickButton(true, MappedButtons.SecondaryFire, vJoyTypes.Virtual);
+                TmThrottleController.VisualState.UpdateMessage("Secondary Fire Activated");
             }
-            else
+            else if (TmThrottleController.SharedState.SecondaryFireActive)
             {
-                tmThrottleController.SetJoystickButton(false, vButton, vJoyTypes.Virtual);
+                TmThrottleController.SharedState.SecondaryFireActive = false;
+                TmThrottleController.SetJoystickButton(false, MappedButtons.SecondaryFire, vJoyTypes.Virtual);
             }
         }
     }

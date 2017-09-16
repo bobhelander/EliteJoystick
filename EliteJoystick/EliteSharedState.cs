@@ -42,6 +42,7 @@ namespace EliteJoystick
         public enum ThrottleShiftState { None, Shift1, Shift2, Shift3 }
         public bool HardpointsDeployed { get; set; }
         public bool CameraActive { get; set; }
+        public bool SecondaryFireActive { get; set; }
 
         public enum Mode
         {

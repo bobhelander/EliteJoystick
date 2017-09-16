@@ -31,7 +31,7 @@ namespace EliteJoystick.Other.BBI32
             uint buttonIndex = 21;
             foreach (BBI32Button value in Enum.GetValues(typeof(BBI32Button)))
             {
-                bool pressed = ButtonBoxController.TestButtonPressed(e.ButtonsState, (UInt32)value);                
+                bool pressed = ButtonBoxController.TestButtonDown(e.ButtonsState, (UInt32)value);                
                 ButtonBoxController.SetJoystickButton(pressed, buttonIndex, vJoyTypes.StickAndPedals);
                 buttonIndex++;
             }

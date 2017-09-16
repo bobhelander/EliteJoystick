@@ -133,12 +133,12 @@ namespace EliteJoystick
 
         #region Helper Functions
 
-        public bool TestButtonPressed(UInt32 state, UInt32 button)
+        public bool TestButtonDown(UInt32 state, UInt32 button)
         {
             return (state & button) == button;
         }
 
-        public bool TestButtonChanged(UInt32 previousState, UInt32 state, UInt32 button)
+        public bool TestButtonPressed(UInt32 previousState, UInt32 state, UInt32 button)
         {
             return ((previousState & button) == 0 && (state & button) == button);
         }
@@ -150,7 +150,31 @@ namespace EliteJoystick
 
         public bool TestButtonPressedOrReleased(UInt32 previousState, UInt32 state, UInt32 button)
         {
-            return (TestButtonReleased(previousState, state, button) || TestButtonPressed(state, button));
+            return (TestButtonReleased(previousState, state, button) || TestButtonPressed(previousState, state, button));
+        }
+
+        /// <summary>
+        /// Used with Tri-state switches.  This tests if the switch was moved to the middle state
+        /// </summary>
+        /// <param name="previousState"></param>
+        /// <param name="state"></param>
+        /// <param name="switchValue"></param>
+        /// <returns></returns>
+        public bool TestMultiSwitchStateOff(UInt32 previousState, UInt32 state, UInt32 switchValue)
+        {
+            return ((previousState & switchValue) != 0 && (state & switchValue) == 0);
+        }
+
+        /// <summary>
+        /// Used with Tri-state switches.  This tests if the switch was moved from the middle state
+        /// </summary>
+        /// <param name="previousState"></param>
+        /// <param name="state"></param>
+        /// <param name="switchValue"></param>
+        /// <returns></returns>
+        public bool TestMultiSwitchStateOn(UInt32 previousState, UInt32 state, UInt32 switchValue)
+        {
+            return ((previousState & switchValue) == 0 && (state & switchValue) != 0);
         }
 
         #endregion

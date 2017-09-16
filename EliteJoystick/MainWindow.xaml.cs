@@ -84,7 +84,7 @@ namespace EliteJoystick
                             arduino));
                 }
 
-                if (true == tmWarthogCheckBox.IsChecked)
+                if (true == tmWarthogCheckBox.IsChecked)    
                 {
                     eliteControllers.Controllers.Add(
                         Thrustmaster.Warthog.TmThrottleController.Create(

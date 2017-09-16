@@ -10,6 +10,9 @@ namespace EliteJoystick
 {
     public class TmThrottleLightsCommand : StateHandler
     {
+        // Fuel Left : Lights
+        static UInt32 button16 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button16;
+
         private TmThrottleController tmThrottleController;
 
         public TmThrottleController TmThrottleController
@@ -27,15 +30,12 @@ namespace EliteJoystick
 
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            // Fuel Left : Lights
-            var button = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button16;
-
-            if (TmThrottleController.TestButtonChanged(e.PreviousButtons, e.Buttons, button))
+            if (TmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, button16))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LightsToggle, 200);
                 TmThrottleController.VisualState.UpdateMessage("Lights On");
             }
-            if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button))
+            if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button16))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LightsToggle, 200);
                 tmThrottleController.VisualState.UpdateMessage("Lights Off");

@@ -8,6 +8,8 @@ namespace EliteJoystick.Thrustmaster.Warthog
 {
     public class TmThrottleLandedStateHandler : StateHandler
     {
+        static UInt32 leftThrottleParked = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button30;
+
         public TmThrottleZJoystick ZAxis { get; set; }
 
         private TmThrottleController tmThrottleController;
@@ -27,15 +29,13 @@ namespace EliteJoystick.Thrustmaster.Warthog
 
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            UInt32 leftThrottleParked = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button30;
-
-            if ((e.Buttons & leftThrottleParked) == leftThrottleParked)
+            if (TmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, leftThrottleParked))
             {
                 ZAxis.LeftEnabled = false;
                 tmThrottleController.SetJoystickAxis(16*1024, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
                 tmThrottleController.VisualState.UpdateMessage("Left Throttle Parked");
             }
-            else if (ZAxis.LeftEnabled == false)
+            else if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, leftThrottleParked))
             {
                 ZAxis.LeftEnabled = true;
                 tmThrottleController.SetJoystickAxis(32*1024, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);

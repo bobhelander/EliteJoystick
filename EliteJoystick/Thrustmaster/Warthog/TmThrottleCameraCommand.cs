@@ -10,6 +10,10 @@ namespace EliteJoystick
 {
     public class TmThrottleCameraCommand : StateHandler
     {
+        // Flaps Up : Debug Camera
+        static UInt32 button22 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button22;
+        static UInt32 button15 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button15;
+
         public Faz.SideWinderSC.Logic.TmThrottleButton ButtonId { get; set; }
 
         private TmThrottleController tmThrottleController;
@@ -29,10 +33,6 @@ namespace EliteJoystick
 
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            // Flaps Up : Debug Camera
-            var button22 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button22;
-            var button15 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button15;
-
             // Camera On/Off
             if (tmThrottleController.TestButtonPressedOrReleased(e.PreviousButtons, e.Buttons, button22))
             {
@@ -53,7 +53,7 @@ namespace EliteJoystick
 
             // Momentary Camera On/Off
             // Camera turns on so we can switch views quickly
-            if (tmThrottleController.TestButtonChanged(e.PreviousButtons, e.Buttons, button15))
+            if (tmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, button15))
             {
                 // Start Camera
                 tmThrottleController.CallActivateButton(vJoyTypes.Virtual, 16, 150);

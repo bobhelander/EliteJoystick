@@ -10,6 +10,9 @@ namespace EliteJoystick
 {
     public class TmThrottleSilentCommand : StateHandler
     {
+        // Fuel Right : Silent
+        static UInt32 button17 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button17;
+
         private TmThrottleController tmThrottleController;
 
         public TmThrottleController TmThrottleController
@@ -27,15 +30,12 @@ namespace EliteJoystick
 
         private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            // Fuel Right : Silent
-            var button = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button16;
-
-            if (TmThrottleController.TestButtonChanged(e.PreviousButtons, e.Buttons, button))
+            if (TmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, button17))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.SilentRunningToggle, 200);
                 TmThrottleController.VisualState.UpdateMessage("Silent Running Activated");
             }
-            if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button))
+            if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button17))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.SilentRunningToggle, 200);
                 tmThrottleController.VisualState.UpdateMessage("Silent Running Deactivated");
