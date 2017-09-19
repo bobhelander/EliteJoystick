@@ -10,9 +10,9 @@
     <UserControl.Resources>
         <converters:Button32Converter x:Key="Button32Converter" />
     </UserControl.Resources>
-    <Border BorderThickness="2" Margin="3" Padding="5" CornerRadius="10">
+    <Border BorderThickness="2" Margin="3" Padding="5" CornerRadius="3">
         <Border.BorderBrush>
-            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+            <SolidColorBrush Color="#FFC5C1C1"/>
         </Border.BorderBrush>
         <Grid>
             <Grid.RowDefinitions>
@@ -29,8 +29,8 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}" VerticalAlignment="Center" TextAlignment="Left"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Path=Message}" VerticalAlignment="Center" TextAlignment="Left"/>
+                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}" VerticalAlignment="Center" TextAlignment="Left" Foreground="#FFC5C1C1"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Path=Message}" VerticalAlignment="Center" TextAlignment="Left" Foreground="#FFC5C1C1"/>
                 </Grid>
                 <controls:ButtonStates Grid.Row="1" DataContext="{Binding Path=ButtonStates, 
                     Converter={StaticResource Button32Converter}, Mode=OneWay}" />
@@ -41,9 +41,9 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <ProgressBar Grid.Row="0" Value="{Binding Path=Axis1}" Maximum="32000" />
-                <ProgressBar Grid.Row="1" Value="{Binding Path=Axis2}" Maximum="32000" />
-                <ProgressBar Grid.Row="2" Value="{Binding Path=Axis3}" Maximum="32000" />
+                <ProgressBar Grid.Row="0" Value="{Binding Path=Axis1}" Maximum="32000" Loaded="ProgressBar_Loaded" Foreground="#FFC5C1C1" Background="{x:Null}" />
+                <ProgressBar Grid.Row="1" Value="{Binding Path=Axis2}" Maximum="32000" Loaded="ProgressBar_Loaded" Foreground="#FFC5C1C1" Background="{x:Null}" />
+                <ProgressBar Grid.Row="2" Value="{Binding Path=Axis3}" Maximum="32000" Loaded="ProgressBar_Loaded" Foreground="#FFC5C1C1" Background="{x:Null}" />
             </Grid>
 
         </Grid>

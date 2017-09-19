@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:EliteJoystick.ViewControls"
              mc:Ignorable="d">
     <Grid>
-        <CheckBox Content="{Binding Path=Name}" Tag="{Binding Path=Command}" IsChecked="{Binding Path=Launch}"/>        
+        <CheckBox Content="{Binding Path=Name}" Tag="{Binding Path=Command}" IsChecked="{Binding Path=Launch}" Foreground="#FFC5C1C1" Background="{x:Null}"/>        
     </Grid>
 </UserControl>

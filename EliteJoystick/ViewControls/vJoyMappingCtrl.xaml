@@ -5,16 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EliteJoystick"
              mc:Ignorable="d">
-    <Border BorderThickness="2" Margin="3" Padding="5" CornerRadius="10">
+    <Border BorderThickness="2" Margin="3" Padding="5" CornerRadius="3">
         <Border.BorderBrush>
-            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+            <SolidColorBrush Color="#FFC5C1C1"/>
         </Border.BorderBrush>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="90"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="{Binding Key}" />
+            <Label Grid.Column="0" Content="{Binding Key}" Foreground="#FFC5C1C1"/>
             <ComboBox Grid.Column="1" SelectionChanged="ComboBox_SelectionChanged" ItemsSource="{Binding Values}"
                       SelectedValue="{Binding Path=Selected}" Width="70"/>
         </Grid>

@@ -230,6 +230,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="elite-logo.ico" />
+    <Resource Include="Resources\EliteDangerousCrest.png" />
     <Content Include="vJoyInstall.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

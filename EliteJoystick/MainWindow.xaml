@@ -7,8 +7,13 @@
         xmlns:controls="clr-namespace:EliteJoystick.ViewControls"
         mc:Ignorable="d"
         Icon="/Resources/elite-logo.png"
-        Title="Elite Combined Joystick" Closing="Window_Closing">
+        Title="Elite Combined Joystick" Closing="Window_Closing" 
+        Background="#FF080707" Foreground="#FFC1BDBD"
+        Height="800">
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Resources/EliteDangerousCrest.png" Stretch="UniformToFill" Opacity="0.25"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="175"/>
             <RowDefinition/>
@@ -20,22 +25,22 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0">
-                <Button DockPanel.Dock="Bottom" x:Name="startAllbutton" Content="Start All" Click="startAllbutton_Click" Height="22"/>
-                <Button DockPanel.Dock="Bottom" x:Name="button" Content="Start" Click="button_Click" Height="22"/>
+                <Button DockPanel.Dock="Bottom" x:Name="startAllbutton" Content="Start All" Click="startAllbutton_Click" Height="22" Opacity="0.8"/>
+                <Button DockPanel.Dock="Bottom" x:Name="button" Content="Start" Click="button_Click" Height="22" Opacity="0.8"/>
                 <StackPanel>
-                    <CheckBox x:Name="arduinoCheckBox" Content="Arduino" />
-                    <CheckBox x:Name="swff2CheckBox" Content="Sidewinder Force Feedback 2" />
-                    <CheckBox x:Name="tmWarthogCheckBox" Content="Thrustmaster Warthog Throttle"/>
-                    <CheckBox x:Name="chPedalsCheckBox" Content="CH Pedals"/>
-                    <CheckBox x:Name="scCheckBox" Content="Microsoft Strategic Commander"/>
-                    <CheckBox x:Name="gvCheckBox" Content="Microsoft Game Voice"/>
-                    <CheckBox x:Name="bbi32CheckBox" Content="BBI32"/>
-                    <CheckBox x:Name="kpCheckBox" Content="Keypad"/>
+                    <CheckBox x:Name="arduinoCheckBox" Content="Arduino" Foreground="#FFC5C1C1" />
+                    <CheckBox x:Name="swff2CheckBox" Content="Sidewinder Force Feedback 2" Foreground="#FFC5C1C1"/>
+                    <CheckBox x:Name="tmWarthogCheckBox" Content="Thrustmaster Warthog Throttle" Foreground="#FFC5C1C1"/>
+                    <CheckBox x:Name="chPedalsCheckBox" Content="CH Pedals" Foreground="#FFC5C1C1"/>
+                    <CheckBox x:Name="scCheckBox" Content="Microsoft Strategic Commander" Foreground="#FFC5C1C1"/>
+                    <CheckBox x:Name="gvCheckBox" Content="Microsoft Game Voice" Foreground="#FFC5C1C1"/>
+                    <CheckBox x:Name="bbi32CheckBox" Content="BBI32" Foreground="#FFC5C1C1"/>
+                    <CheckBox x:Name="kpCheckBox" Content="Keypad" Foreground="#FFC5C1C1"/>
                 </StackPanel>
             </DockPanel>
             <DockPanel Grid.Column="1">
-                <Button DockPanel.Dock="Bottom" Content="Launch" Click="Button_Click_1" Height="46"/>
-                <ListView x:Name="launchAppList" ItemsSource="{Binding}">
+                <Button DockPanel.Dock="Bottom" Content="Launch" Click="Button_Click_1" Height="46" Opacity="0.8"/>
+                <ListView x:Name="launchAppList" ItemsSource="{Binding}" Background="{x:Null}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <controls:LaunchAppControl DataContext="{Binding}"/>
@@ -50,14 +55,14 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListView Grid.Column="0" x:Name="controllersList" ItemsSource="{Binding Path=Controllers}">
+            <ListView Grid.Column="0" x:Name="controllersList" ItemsSource="{Binding Path=Controllers}" Background="{x:Null}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:ControllerItem DataContext="{Binding Path=VisualState}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView Grid.Column="1" x:Name="vJoyMappingList" ItemsSource="{Binding Path=Values, Mode=OneWay}">
+            <ListView Grid.Column="1" x:Name="vJoyMappingList" ItemsSource="{Binding Path=Values, Mode=OneWay}" Background="{x:Null}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:vJoyMappingCtrl DataContext="{Binding}"/>
@@ -67,7 +72,8 @@
         </Grid>
 
         <Grid Grid.Row="2">            
-            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="125" TextWrapping="Wrap" Text="TextBox"/>            
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="125" TextWrapping="Wrap" Text="TextBox" Background="{x:Null}"
+                     Foreground="#FFC5C1C1"/>            
         </Grid>
     </Grid>
 </Window>
