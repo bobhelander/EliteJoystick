@@ -10,9 +10,6 @@ namespace EliteJoystick.Sidewinder.GameVoice
 {
     public class SwGameLandingGearHandler : StateHandler
     {
-        public long Delay { get; set; }
-        public uint vButton { get; set; }
-
         private SwGvController swGvController;
         public SwGvController SwGvController
         {
@@ -35,13 +32,13 @@ namespace EliteJoystick.Sidewinder.GameVoice
                 (e.ButtonsState & button1) == button1)
             {
                 // On
-                swGvController.CallActivateButton(vJoyTypes.Virtual, vButton, Delay);
+                swGvController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
             }
             else if (button1 == (e.PreviousButtonsState & button1) &&
                      0 == (e.ButtonsState & button1))
             {
                 // Off
-                swGvController.CallActivateButton(vJoyTypes.Virtual, vButton, Delay);
+                swGvController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
             }
 
         }

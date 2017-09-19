@@ -96,7 +96,7 @@ namespace EliteJoystick.Sidewinder.GameVoice
                     StateHandlers = new List<StateHandler>
                     {
                         new SwGameStateHandler { SwGvController = this },
-                        new SwGameLandingGearHandler { Delay = 400, vButton = MappedButtons.LandingGearToggle, SwGvController = this },
+                        new SwGameLandingGearHandler { SwGvController = this },
                         //new SwGameResetHandler { Delay=500, SwGvController = this },
                     };
                 }
