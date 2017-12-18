@@ -11,6 +11,8 @@ namespace Faz.SideWinderSC.Logic
     /// </summary>
     public class Controller : IDisposable
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The encapsulated stream.
         /// </summary>
@@ -157,7 +159,10 @@ namespace Faz.SideWinderSC.Logic
         {
             // build the path search string
             string search = string.Format("vid_{0:x4}&pid_{1:x4}", vendorId, productId);
-            return Device.GetInterfaceDevices(HidStream.HidGuid).Where(d => d.DevicePath != null && d.DevicePath.Contains(search)).Select(d => d.DevicePath).ToList();
+            return Device.GetInterfaceDevices(HidStream.HidGuid)
+                .Where(d => d.DevicePath != null && d.DevicePath.Contains(search))
+                .Select(d => d.DevicePath)
+                .ToList();
         }
 
         /// <summary>
@@ -181,14 +186,24 @@ namespace Faz.SideWinderSC.Logic
                 // - returns the number of valid byte in the buffer
                 int size = this.stream.EndRead(asyncResult);
 
+                if (size != this.ReadLength)
+                {
+                    // Throw this read out.  
+                    log.Error($"Read Invalid Size {this.ReadLength}, Actual size {size}");
+                    return;
+                }
+
                 try
                 {
                     if (this.Read != null)
                     {
+                        // Copy the buffer first
+                        var buffer = CopyBuffer(this.readBuffer);
+
                         if (ProcessAllReports)
                         {
                             // Process the change
-                            this.Read(this, new ReadEventArgs(this.readBuffer, size, (ulong)asyncResult.AsyncState));
+                            this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState));
                         }
                         else
                         {
@@ -204,18 +219,22 @@ namespace Faz.SideWinderSC.Logic
                             // After the state remains stable
                             if (Stopwatch.ElapsedMilliseconds > 100)
                             {
-                                if (false == this.readBuffer.SequenceEqual(this.currentBuffer))
+                                if (false == this.readBuffer.SequenceEqual(buffer))
                                 {
                                     // Process the change
-                                    this.Read(this, new ReadEventArgs(this.readBuffer, size, (ulong)asyncResult.AsyncState));
-                                    this.currentBuffer = this.readBuffer.ToArray();
+                                    this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState));
+                                    this.currentBuffer = buffer;
                                 }
                             }
 
                             // Update the last buffer
-                            this.lastReadBuffer = this.readBuffer.ToArray();
+                            this.lastReadBuffer = buffer;
                         }
                     }
+                }
+                catch(Exception ex)
+                {
+                    log.Error(ex);
                 }
                 finally
                 {
@@ -227,6 +246,13 @@ namespace Faz.SideWinderSC.Logic
             {
                 // if we got an IO exception, the device was removed
             }
+        }
+
+        private byte[] CopyBuffer(byte[] buffer)
+        {
+            byte[] result = new byte[buffer.Length];
+            Array.Copy(buffer, result, buffer.Length);
+            return result;
         }
 
         /// <summary>

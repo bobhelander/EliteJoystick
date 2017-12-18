@@ -36,7 +36,7 @@ namespace EliteJoystick
             {
                 tmThrottleController.SharedState.HardpointsDeployed = true;
                 tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
-                tmThrottleController.VisualState.UpdateMessage("Hardpoints Deployed");
+                tmThrottleController.VisualState.UpdateMessage($"Hardpoints Deployed {e.Buttons} {e.PreviousButtons}");
             }
 
             if (tmThrottleController.SharedState.HardpointsDeployed == true &&
@@ -44,7 +44,7 @@ namespace EliteJoystick
             {
                 tmThrottleController.SharedState.HardpointsDeployed = false;
                 tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
-                tmThrottleController.VisualState.UpdateMessage("Hardpoints Retracted");
+                tmThrottleController.VisualState.UpdateMessage($"Hardpoints Retracted  {e.Buttons} {e.PreviousButtons}");
             }
         }
     }
