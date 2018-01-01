@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Faz.SideWinderSC.Logic
 {
@@ -203,7 +205,8 @@ namespace Faz.SideWinderSC.Logic
                         if (ProcessAllReports)
                         {
                             // Process the change
-                            this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState));
+                            var t = Task.Run(() => this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState)));
+                            //this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState));
                         }
                         else
                         {

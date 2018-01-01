@@ -33,7 +33,7 @@ namespace EliteJoystick
         private vJoyMapper vJoyMapper = new vJoyMapper();
         private Settings settings = Settings.Load();
 
-        private IpcServer ipcServer = null;
+        //private IpcServer ipcServer = null;
 
         ArduinoCommunication.Arduino arduino = null;
 

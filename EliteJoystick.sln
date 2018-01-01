@@ -9,11 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faz.SideWinderSC.Logic", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Communication", "Communication\Communication.csproj", "{EAA556AF-5DA8-4C20-8511-5D78D04786D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "Communication\CommonCommunication.csproj", "{EAA556AF-5DA8-4C20-8511-5D78D04786D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CED90B10-CE11-4EFD-87CD-16DF8E2AC282}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDDIConnector", "EDDIConnector\EDDIConnector.csproj", "{9354B778-1B41-4EAB-9680-8C67224A1EFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickService", "EliteJoystickService\EliteJoystickService.csproj", "{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEnvironment", "GameEnvironment\GameEnvironment.csproj", "{F1C0C723-805C-4518-95FE-E26093A3C8A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickConsole", "EliteJoystickConsole\EliteJoystickConsole.csproj", "{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickClient", "EliteJoystickClient\EliteJoystickClient.csproj", "{0B771627-5640-403F-9985-9E93539ADA6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,9 +42,29 @@ Global
 		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9354B778-1B41-4EAB-9680-8C67224A1EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9354B778-1B41-4EAB-9680-8C67224A1EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B771627-5640-403F-9985-9E93539ADA6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B771627-5640-403F-9985-9E93539ADA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B771627-5640-403F-9985-9E93539ADA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B771627-5640-403F-9985-9E93539ADA6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
