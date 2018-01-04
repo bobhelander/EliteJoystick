@@ -32,18 +32,16 @@ namespace Controllers.Thrustmaster.Warthog
         {
             if (tmThrottleController.SharedState.HardpointsDeployed == false &&
                 tmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, button19))
-            {
-                tmThrottleController.SharedState.HardpointsDeployed = true;
+            {                
                 tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
-                //tmThrottleController.VisualState.UpdateMessage($"Hardpoints Deployed {e.Buttons} {e.PreviousButtons}");
+                tmThrottleController.SharedState.HardpointsDeployed = true;
             }
 
             if (tmThrottleController.SharedState.HardpointsDeployed == true &&
                 tmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button19))
             {
-                tmThrottleController.SharedState.HardpointsDeployed = false;
                 tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
-                //tmThrottleController.VisualState.UpdateMessage($"Hardpoints Retracted  {e.Buttons} {e.PreviousButtons}");
+                tmThrottleController.SharedState.HardpointsDeployed = false;
             }
         }
     }

@@ -19,8 +19,7 @@ namespace EliteJoystickClient
             MessageHandler = new MessageHandler();
 
             // Create the client server pipe
-            Server = new CommonCommunication.Server();
-            Server.ContinueListening = true;
+            Server = new CommonCommunication.Server { ContinueListening = true };
             Task.Run(() => Server.StartListeningAsync(Name, MessageHandler.HandleMessage));
 
             // Contact the Service Pipe
@@ -30,6 +29,19 @@ namespace EliteJoystickClient
             // Begin two way communication
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "client_ready", Data = Name });
             MessageHandler.Client.SendMessageAsync(message);
+        }
+
+        public void HandleCommand(string command)
+        {
+            switch (command)
+            {
+                case "connect_joysticks":
+                    ConnectJoysticks();
+                    break;
+                case "connect_arduino":
+                    ConnectArduino();
+                    break;
+            }
         }
 
         public void ConnectJoysticks()
@@ -43,6 +55,5 @@ namespace EliteJoystickClient
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_arduino" });
             MessageHandler.Client.SendMessageAsync(message);
         }
-
     }
 }

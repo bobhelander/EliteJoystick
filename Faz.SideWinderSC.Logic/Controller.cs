@@ -195,6 +195,8 @@ namespace Faz.SideWinderSC.Logic
                     return;
                 }
 
+                var stateCounter = (ulong)asyncResult.AsyncState;
+
                 try
                 {
                     if (this.Read != null)
@@ -205,14 +207,12 @@ namespace Faz.SideWinderSC.Logic
                         if (ProcessAllReports)
                         {
                             // Process the change
-                            var t = Task.Run(() => this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState)));
-                            //this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState));
+                            Task.Run(() => Read(this, new ReadEventArgs(buffer, size, stateCounter)));
                         }
                         else
                         {
                             // Remove jitter around the buttons
-
-                            if (false == this.readBuffer.SequenceEqual(this.lastReadBuffer))
+                            if (false == buffer.SequenceEqual(this.lastReadBuffer))
                             {
                                 // The read buffer changed since the last read
                                 // Restart the stopwatch
@@ -222,11 +222,10 @@ namespace Faz.SideWinderSC.Logic
                             // After the state remains stable
                             if (Stopwatch.ElapsedMilliseconds > 100)
                             {
-                                if (false == this.readBuffer.SequenceEqual(buffer))
+                                if (buffer.SequenceEqual(this.lastReadBuffer))
                                 {
                                     // Process the change
-                                    this.Read(this, new ReadEventArgs(buffer, size, (ulong)asyncResult.AsyncState));
-                                    this.currentBuffer = buffer;
+                                    Task.Run(() => Read(this, new ReadEventArgs(buffer, size, stateCounter)));
                                 }
                             }
 
@@ -242,7 +241,7 @@ namespace Faz.SideWinderSC.Logic
                 finally
                 {
                     // Start a new read
-                    this.BeginAsyncRead((ulong)asyncResult.AsyncState + 1);
+                    this.BeginAsyncRead((ulong)stateCounter + 1);
                 }
             }
             catch (IOException)
@@ -259,7 +258,7 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Starts an asynchronous read.
+        /// Starts an asynchronous write.
         /// </summary>
         private void BeginAsyncWrite(byte[] buffer, int length)
         {
@@ -267,7 +266,7 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Called when a read in completed.
+        /// Called when a write is completed.
         /// </summary>
         /// <param name="asyncResult">The result of the asynchronous operation.</param>
         private void OnWriteCompleted(IAsyncResult asyncResult)

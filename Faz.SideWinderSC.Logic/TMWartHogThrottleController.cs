@@ -187,10 +187,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="y">The y part of the position.</param>
         private void OnMove(int x, int y)
         {
-            if (this.Move != null)
-            {
-                this.Move(this, new MoveEventArgs(x, y));
-            }
+            Move?.Invoke(this, new MoveEventArgs(x, y));
         }
 
         /// <summary>
@@ -199,10 +196,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="z">The current rotation level.</param>
         private void OnThrottleRight(ushort z)
         {
-            if (this.ThrottleRight != null)
-            {
-                this.ThrottleRight(this, new ThrottleAxisEventArgs(z));
-            }
+            ThrottleRight?.Invoke(this, new ThrottleAxisEventArgs(z));
         }
 
         /// <summary>
@@ -211,10 +205,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="z">The current rotation level.</param>
         private void OnThrottleLeft(ushort z)
         {
-            if (this.ThrottleLeft != null)
-            {
-                this.ThrottleLeft(this, new ThrottleAxisEventArgs(z));
-            }
+            ThrottleLeft?.Invoke(this, new ThrottleAxisEventArgs(z));
         }
 
         /// <summary>
@@ -223,10 +214,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="slider">The current slider level.</param>
         private void OnSlider(int slider)
         {
-            if (this.Slider != null)
-            {
-                this.Slider(this, new SliderEventArgs(slider));
-            }
+            Slider?.Invoke(this, new SliderEventArgs(slider));
         }
 
         /// <summary>
@@ -236,10 +224,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="hatSwitch">The hat position.</param>
         private void OnHat(int hat, int hatSwitch)
         {
-            if (this.Hat != null)
-            {
-                this.Hat(this, new HatEventArgs(hat, hatSwitch));
-            }
+            Hat?.Invoke(this, new HatEventArgs(hat, hatSwitch));
         }
 
         /// <summary>
@@ -248,10 +233,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="allSwitches">The current rotation level.</param>
         private void OnSwitchState(UInt32 buttons, UInt32 previousButtons)
         {
-            if (this.SwitchState != null)
-            {
-                this.SwitchState(this, new TmThrottleSwitchEventArgs(buttons, previousButtons));
-            }
+            SwitchState?.Invoke(this, new TmThrottleSwitchEventArgs(buttons, previousButtons));
         }
     }
 }

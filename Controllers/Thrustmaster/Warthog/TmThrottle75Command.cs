@@ -31,7 +31,6 @@ namespace Controllers.Thrustmaster.Warthog
             if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, rdrAlt))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);
-                //tmThrottleController.VisualState.UpdateMessage("75%");
             }
         }
     }

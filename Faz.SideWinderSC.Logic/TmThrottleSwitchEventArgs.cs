@@ -21,9 +21,7 @@ namespace Faz.SideWinderSC.Logic
         /// <summary>
         /// Initializes a new instance of the <see cref="TmThrottleSwitchEventArgs"/> class.
         /// </summary>
-        internal TmThrottleSwitchEventArgs(
-            UInt32 buttons,
-            UInt32 previousButtons)
+        internal TmThrottleSwitchEventArgs(UInt32 buttons, UInt32 previousButtons)
         {
             Buttons = buttons;
             PreviousButtons = previousButtons;
