@@ -18,6 +18,11 @@ namespace EliteJoystickConsole
             client.Initialize();
 
             Console.ReadKey();
+            client.ConnectArduino();
+            Console.WriteLine("connected");
+            Console.ReadKey();
+            client.PasteClipboard();
+            Console.ReadKey();
         }
     }
 }

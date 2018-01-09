@@ -147,6 +147,12 @@ namespace EliteJoystickService
             ClientActions.ClientInformationAction(this, "Arduino Ready");
         }
 
+        private void KeyboardOutput(string data)
+        {
+            arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort);
+            ClientActions.ClientInformationAction(this, "Arduino Ready");
+        }
+
         private void ClientActions_ClientAction(object sender, ClientActions.ClientEventArgs e)
         {
             Task.Run(() => client.SendMessageAsync(e.Message));
@@ -163,7 +169,7 @@ namespace EliteJoystickService
         {
             log.Debug($"Message: {message}");
             if (false == String.IsNullOrEmpty(message))
-                Task.Run(() => messageHandler.HandleMessage(message));
+                Task.Run(() => messageHandler.HandleMessage(message, sharedState, arduino));
         }
 
         private void StartService(string[] args)
@@ -172,13 +178,10 @@ namespace EliteJoystickService
             settings = Settings.Load();
             vJoyMapper = new vJoyMapper();
             ClientActions.ClientAction += ClientActions_ClientAction;
-            //arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort);
             eliteVirtualJoysticks = StartVirtualJoysticks();
-            //eliteControllers = StartControllers(vJoyMapper, arduino, eliteVirtualJoysticks, sharedState);
             client = new CommonCommunication.Client();
             messageHandler = new MessageHandler
             {
-                Arduino = arduino,
                 Client = client,
                 ConnectJoysticks = () => StartControllers(vJoyMapper, eliteVirtualJoysticks, sharedState),
                 ConnectArduino = () => ConnectArduino(),

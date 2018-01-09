@@ -9,6 +9,8 @@ namespace EliteJoystickClient
 {
     public class Client
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public string Name { get; set; }
         public CommonCommunication.Server Server { get; set; }
         public MessageHandler MessageHandler { get; set; }
@@ -27,19 +29,25 @@ namespace EliteJoystickClient
             MessageHandler.Client.CreateConnection("elite_joystick");
 
             // Begin two way communication
-            var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "client_ready", Data = Name });
+            var message = JsonConvert.SerializeObject(
+                new CommonCommunication.Message { Type = "client_ready", Data = Name });
+
             MessageHandler.Client.SendMessageAsync(message);
         }
 
         public void HandleCommand(string command)
         {
+            log.Debug($"Receieved command: {command}");
             switch (command)
             {
-                case "connect_joysticks":
+                case "connect_joysticks":                    
                     ConnectJoysticks();
                     break;
                 case "connect_arduino":
                     ConnectArduino();
+                    break;
+                case "paste_clipboard":
+                    PasteClipboard();
                     break;
             }
         }
@@ -54,6 +62,21 @@ namespace EliteJoystickClient
         {
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_arduino" });
             MessageHandler.Client.SendMessageAsync(message);
+        }
+
+        public void PasteClipboard()
+        {
+            if (System.Windows.Clipboard.ContainsText())
+            {
+                var data = Utils.CallClipboard();
+
+                var outputMessage = JsonConvert.SerializeObject(
+                    new CommonCommunication.Message { Type = "keyboard_output", Data = data });
+
+                log.Debug($"Sending Clipboard Contents: {data}");
+
+                MessageHandler.Client.SendMessageAsync(outputMessage);
+            }
         }
     }
 }

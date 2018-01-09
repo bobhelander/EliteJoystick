@@ -19,7 +19,7 @@ namespace ArduinoCommunication
         private int index = 0;
         private bool pressed = false;
 
-         public void Start()
+        public void Start()
         {
             Timer = new Timer(Action, null, 0, Delay);
         }
