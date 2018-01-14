@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickClient", "Elit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiJoystickResponder", "EddiJoystickResponder\EddiJoystickResponder.csproj", "{3E288CDA-C263-4669-9669-DD176E932985}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeController", "ChromeController\ChromeController.csproj", "{8DEB715D-8ADB-44DC-B985-033565DC4C3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiJoystickResponderTest", "EliteJoystickTest\EddiJoystickResponderTest.csproj", "{1857F423-72C5-448B-9E6C-E1E588BCB883}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,14 @@ Global
 		{3E288CDA-C263-4669-9669-DD176E932985}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E288CDA-C263-4669-9669-DD176E932985}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E288CDA-C263-4669-9669-DD176E932985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DEB715D-8ADB-44DC-B985-033565DC4C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DEB715D-8ADB-44DC-B985-033565DC4C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DEB715D-8ADB-44DC-B985-033565DC4C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DEB715D-8ADB-44DC-B985-033565DC4C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

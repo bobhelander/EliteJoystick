@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChromeController;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace EliteJoystickClient
 {
     public static class Utils
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
 
@@ -44,6 +47,22 @@ namespace EliteJoystickClient
                 return p.ProcessName;
             }
             return String.Empty;
+        }
+
+        public static void NavigateUrl(string url)
+        {
+            try
+            {
+                var chrome = new Chrome("http://localhost:9222");
+                var sessions = chrome.GetAvailableSessions();
+                var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
+                chrome.SetActiveSession(sessionWSEndpoint);
+                chrome.NavigateTo(url);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
     }
 }

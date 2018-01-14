@@ -64,6 +64,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChromeController\ChromeController.csproj">
+      <Project>{8deb715d-8adb-44dc-b985-033565dc4c3c}</Project>
+      <Name>ChromeController</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteJoystickClient\EliteJoystickClient.csproj">
       <Project>{0b771627-5640-403f-9985-9e93539ada6c}</Project>
       <Name>EliteJoystickClient</Name>

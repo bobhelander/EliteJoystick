@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ChromeController;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +14,35 @@ namespace EliteJoystickConsole
 
         static void Main(string[] args)
         {
-            var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
+            var chrome = new Chrome("http://localhost:9222");
 
-            client.Initialize();
+            foreach(var session in chrome.GetAvailableSessions())
+            {
+                Console.WriteLine(session.title);
+            }
 
-            Console.ReadKey();
-            client.ConnectArduino();
-            Console.WriteLine("connected");
-            Console.ReadKey();
-            client.PasteClipboard();
+            var sessions = chrome.GetAvailableSessions();
+
+            var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
+            chrome.SetActiveSession(sessionWSEndpoint);
+            var uri = @"http://localhost:8080/explore.html";
+
+            //chrome.NavigateTo("http://eddb.io");
+
+            chrome.NavigateTo(uri);
+
+            if (false)
+            {
+                var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
+
+                client.Initialize();
+
+                Console.ReadKey();
+                client.ConnectArduino();
+                Console.WriteLine("connected");
+                Console.ReadKey();
+                client.PasteClipboard();
+            }
             Console.ReadKey();
         }
     }

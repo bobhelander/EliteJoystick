@@ -1,0 +1,19 @@
+﻿{
+	"timestamp": "2016-10-27T04:09:06Z",
+	"event": "FSDJump",
+	"StarSystem": "Gyvatices",
+	"StarPos": [101.781,
+	-126.406,
+	-12.781],
+	"Allegiance": "Empire",
+	"Economy": "$economy_Agri;",
+	"Economy_Localised": "Agriculture",
+	"Government": "$government_Corporate;",
+	"Government_Localised": "Corporate",
+	"Security": "$SYSTEM_SECURITY_medium;",
+	"Security_Localised": "Medium Security",
+	"JumpDist": 12.039,
+	"FuelUsed": 0.931100,
+	"FuelLevel": 31.068901,
+	"Faction": "Gyvatices Crimson Advanced Hldgs"
+}

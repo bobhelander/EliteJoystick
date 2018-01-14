@@ -28,20 +28,19 @@ namespace EddiJoystickResponder
         {
             log.Debug($"Received event {JsonConvert.SerializeObject(theEvent)}");
 
-            if (theEvent.type == "CONNECT_JOYSTICKS")
-            {
-                Client.ConnectArduino();
-                Client.ConnectJoysticks();
-            }
-
             if (theEvent is JoystickCommandEvent)
             {
-                Client.HandleCommand(((JoystickCommandEvent)theEvent).command);
+                Client.HandleCommand(((JoystickCommandEvent)theEvent).command, JoystickCommandEvent.VARIABLES);
             }
 
             if (theEvent is DockedEvent)
             {
                 EventHandlers.DockedEvent(Client, (DockedEvent)theEvent);
+            }
+
+            if (theEvent is JumpedEvent)
+            {
+                EventHandlers.JumpedEvent(Client, (JumpedEvent)theEvent);
             }
         }
 

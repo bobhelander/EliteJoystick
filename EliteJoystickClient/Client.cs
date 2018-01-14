@@ -14,6 +14,7 @@ namespace EliteJoystickClient
         public string Name { get; set; }
         public CommonCommunication.Server Server { get; set; }
         public MessageHandler MessageHandler { get; set; }
+        public ChromeController.Chrome Chrome { get; set; }
 
         public void Initialize()
         {
@@ -33,9 +34,11 @@ namespace EliteJoystickClient
                 new CommonCommunication.Message { Type = "client_ready", Data = Name });
 
             MessageHandler.Client.SendMessageAsync(message);
+
+            Chrome = new ChromeController.Chrome("http://localhost:9222");
         }
 
-        public void HandleCommand(string command)
+        public void HandleCommand(string command, Dictionary<string, string> environmentVars)
         {
             log.Debug($"Receieved command: {command}");
             switch (command)
@@ -76,6 +79,18 @@ namespace EliteJoystickClient
                 log.Debug($"Sending Clipboard Contents: {data}");
 
                 MessageHandler.Client.SendMessageAsync(outputMessage);
+            }
+        }
+
+        public void Navigate(string url)
+        {
+            var sessions = Chrome.GetAvailableSessions();
+            if (sessions?.Count > 0)
+            {
+                var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
+                Chrome.SetActiveSession(sessionWSEndpoint);
+
+                Chrome.NavigateTo(url);
             }
         }
     }
