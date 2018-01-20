@@ -39,6 +39,10 @@ namespace EliteJoystickClient
                     Utils.FocusWindow("EliteDangerous64");
                     break;
 
+                case "kill":
+                    await Utils.KillProcess("EliteDangerous64");
+                    break;
+
                 case "navigate_url":
                     Utils.NavigateUrl(message.Data);
                     break;

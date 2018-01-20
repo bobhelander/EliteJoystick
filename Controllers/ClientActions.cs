@@ -32,6 +32,16 @@ namespace Controllers
             Action(sender, GetMessage("client_information", informationMessage));
         }
 
+        public static void KillProcess(object sender)
+        {
+            Action(sender, GetMessage("kill", String.Empty));
+        }
+
+        public static void FocusProcess(object sender)
+        {
+            Action(sender, GetMessage("focus", String.Empty));
+        }
+
         public static string GetMessage(string messageType, string message)
         {
             return JsonConvert.SerializeObject(new Message { Type = messageType, Data = message });

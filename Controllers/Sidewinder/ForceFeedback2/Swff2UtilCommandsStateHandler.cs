@@ -44,16 +44,17 @@ namespace Controllers.Sidewinder.ForceFeedback2
 
             if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button5))
             {
-                // HUD off  CRTL+ALT+G
-                Swff2Controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
+                // Focus Elite Window
+                ClientActions.FocusProcess(this);
             }
-
+                        
             if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button2) &&
                 Swff2Controller.SharedState.ThrottleShiftStateValue == EliteSharedState.ThrottleShiftState.Shift1)
             {
-                // Focus window
-                System.Console.WriteLine(Utils.FocusWindow("EliteDangerous64"));
+                // Focus Elite Window
+                ClientActions.FocusProcess(this);
             }
+            
         }
     }
 }

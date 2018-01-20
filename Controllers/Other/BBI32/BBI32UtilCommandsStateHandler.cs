@@ -35,6 +35,7 @@ namespace Controllers.Other.BBI32
 
                 ButtonBoxController.SharedState.OrbitLines = false;
             }
+
             // Orbit Lines Toggle On
             if (ButtonBoxController.TestButtonPressed(
                 e.PreviousButtonsState, e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button9))
@@ -111,6 +112,12 @@ namespace Controllers.Other.BBI32
                 ButtonBoxController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraAdvanceModeToggle, 150);
             }
 
+            // Kill process
+            if (ButtonBoxController.TestButtonPressed(
+                e.PreviousButtonsState, e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button2))
+            {
+                ClientActions.KillProcess(this);
+            }
         }
     }
 }

@@ -12,9 +12,12 @@ namespace EddiJoystickResponder.Exploration
     {
         public static string OutputValuableSystems(Client Client, StarSystem starSystem)
         {
+            var page = new Explore(starSystem);
+            String pageContent = page.TransformText();
+            /*
             var bodyReport = new StringBuilder();
 
-            bodyReport.Append($"{starSystem.name}<br/>");
+            bodyReport.AppendFormat(Page.Title, starSystem.name, starSystem.distancefromhome);
 
             foreach (var body in starSystem.bodies)
             {
@@ -30,12 +33,12 @@ namespace EddiJoystickResponder.Exploration
                         Page.Entry, body.name, body.planettype, body.distance, body.terraformstate));
                 }
             }
-
+            */
             var fileName = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\EliteJoystick\\Pages\\explore.html";
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName))
             {
-                file.Write(String.Format(Page.Text, bodyReport.ToString()));
+                file.Write(pageContent.ToString());
             }
 
             return fileName;

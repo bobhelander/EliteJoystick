@@ -15,15 +15,21 @@ namespace Controllers.Sidewinder.ForceFeedback2
         public static Swff2Controller Create(EliteSharedState sharedState, vJoy vjoy,
             vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)
         {
-            return new Swff2Controller()
-            {                
-                Controller = Faz.SideWinderSC.Logic.Swff2Controller.RetrieveAll()?.First(),
-                SharedState = sharedState,
-                vJoy = vjoy,
-                vJoyMapper = vJoyMapper,
-                Arduino = arduino,
-                //VisualState = new VisualState { Name = Name }
-            };
+            try
+            {
+                return new Swff2Controller()
+                {
+                    Controller = Faz.SideWinderSC.Logic.Swff2Controller.RetrieveAll().First(),
+                    SharedState = sharedState,
+                    vJoy = vjoy,
+                    vJoyMapper = vJoyMapper,
+                    Arduino = arduino,
+                };
+            }
+            catch (InvalidOperationException)
+            {               
+            }
+            return null;
         }
 
         public override void Initialize()

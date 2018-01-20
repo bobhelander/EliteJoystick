@@ -49,6 +49,17 @@ namespace EliteJoystickClient
             return String.Empty;
         }
 
+        public static async Task KillProcess(string name)
+        {
+            await Task.Run(() => 
+            {
+                foreach (var p in Process.GetProcesses().Where(x => x.ProcessName == name))
+                {
+                    p.Kill();
+                }
+            });
+        }
+
         public static void NavigateUrl(string url)
         {
             try

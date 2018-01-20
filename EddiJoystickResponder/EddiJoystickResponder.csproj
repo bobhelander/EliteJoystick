@@ -70,7 +70,12 @@
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Exploration\Page.cs" />
+    <Compile Include="Exploration\Explore.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Explore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Exploration\ExploreCode.cs" />
     <Compile Include="JoystickResponder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exploration\StarScan.cs" />
@@ -89,6 +94,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Exploration\Explore.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Explore.cs</LastGenOutput>
+    </None>
     <None Include="log4net.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -98,6 +107,9 @@
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

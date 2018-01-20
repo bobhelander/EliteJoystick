@@ -76,15 +76,9 @@ namespace Faz.SideWinderSC.Logic
         /// Retrieves all the active Force Feedback 2 controllers.
         /// </summary>
         /// <returns>The active Force Feedback 2 controllers.</returns>
-        public static ICollection<Swff2Controller> RetrieveAll()
+        public static IEnumerable<Swff2Controller> RetrieveAll()
         {
-            ICollection<Swff2Controller> result = new LinkedList<Swff2Controller>();
-            foreach (string devicePath in Controller.RetrieveAllDevicePath(VendorId, ProductId))
-            {
-                result.Add(new Swff2Controller(devicePath));
-            }
-
-            return result;
+            return Controller.RetrieveAllDevicePath(VendorId, ProductId).Select(x => new Swff2Controller(x));
         }
 
         /// <summary>
@@ -151,8 +145,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="previousButtons">The last button states.</param>
         private void OnButtonsChange(uint buttons, uint previousButtons)
         {
-            if (null != this.ButtonsChanged)
-                this.ButtonsChanged(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });
+            this.ButtonsChanged?.Invoke(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });
         }
 
         /// <summary>
@@ -162,10 +155,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="y">The y part of the position.</param>
         private void OnMove(int x, int y)
         {
-            if (this.Move != null)
-            {
-                this.Move(this, new MoveEventArgs(x, y));
-            }
+            this.Move?.Invoke(this, new MoveEventArgs(x, y));
         }
 
         /// <summary>
@@ -174,10 +164,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="r">The current rotation level.</param>
         private void OnRotate(int r)
         {
-            if (this.Rotate != null)
-            {
-                this.Rotate(this, new RotateEventArgs(r));
-            }
+            this.Rotate?.Invoke(this, new RotateEventArgs(r));
         }
 
         /// <summary>
@@ -186,10 +173,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="slider">The current rotation level.</param>
         private void OnSlider(int slider)
         {
-            if (this.Slider != null)
-            {
-                this.Slider(this, new SliderEventArgs(slider));
-            }
+            this.Slider?.Invoke(this, new SliderEventArgs(slider));
         }
 
         /// <summary>
@@ -198,10 +182,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="hat">The current rotation level.</param>
         private void OnHat(int hat)
         {
-            if (this.Hat != null)
-            {
-                this.Hat(this, new HatEventArgs(hat));
-            }
+            this.Hat?.Invoke(this, new HatEventArgs(hat));
         }
     }
 }

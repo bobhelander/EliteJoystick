@@ -41,7 +41,7 @@ namespace CommonCommunication
             }
             catch (Exception exception)
             {
-                //OnSendMessageException(pipeName, new MessengerExceptionEventArgs(exception));
+                log.Error(exception);
             }
         }
 

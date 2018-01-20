@@ -77,6 +77,14 @@
       <Project>{3e288cda-c263-4669-9669-dd176e932985}</Project>
       <Name>EddiJoystickResponder</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteJoystickClient\EliteJoystickClient.csproj">
+      <Project>{0B771627-5640-403F-9985-9E93539ADA6C}</Project>
+      <Name>EliteJoystickClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Faz.SideWinderSC.Logic\Faz.SideWinderSC.Logic.csproj">
+      <Project>{ea9bdd2d-e8fd-4d03-8cdb-ccc34ca3c85e}</Project>
+      <Name>Faz.SideWinderSC.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="jump.txt">
