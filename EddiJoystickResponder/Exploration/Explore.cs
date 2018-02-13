@@ -28,91 +28,122 @@ namespace EddiJoystickResponder.Exploration
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("<!DOCTYPE html>\r\n<html lang = \"en\" xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head><" +
-                    "meta charset = \"utf-8\" />\r\n\t<title>Elite Joystick</title>\r\n\t<link rel=\"styleshee" +
-                    "t\" href=\"styles.css\">\r\n</head>\r\n<body>\r\n");
+            this.Write(@"<!doctype html>
+<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+<head>
+	<meta charset=""utf-8"" /> 
+	<title>Elite Joystick</title>
+	<link rel=""stylesheet"" href=""styles.css"">
+	<link rel=""stylesheet"" href=""css/bootstrap.min.css""/>
+    <script src=""js/bootstrap.min.js""></script>
+    <link rel=""stylesheet"" href=""css/bootstrap-theme.min.css""/>
+</head>
+<body style=""background-color:black;"">
+	<div class=""container-fluid text-white"" >
+		");
             
-            #line 13 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            #line 18 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(starSystem.name));
             
             #line default
             #line hidden
-            this.Write("\r\n<br/>\r\nDistance From Home: \r\n");
+            this.Write("\r\n\t\t<br/>\r\n\t\tDistance From Home: \r\n\t\t");
             
-            #line 16 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            #line 21 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(starSystem.distancefromhome?? 0));
             
             #line default
             #line hidden
-            this.Write("\r\n<br/>\r\n\r\n");
+            this.Write("\r\n\t\t<br/>\r\n\r\n\t\t");
             
-            #line 19 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            #line 24 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
  foreach (var body in starSystem.bodies) 
-{ 
+		{ 
+			var starScan = new BodyScan();
+			if (null != body.planettype && Exploration.StarTypes.Bodies.ContainsKey(body.planettype))
+				starScan = Exploration.StarTypes.Bodies[body.planettype];
+			if (null != body.stellarclass && Exploration.StarTypes.Stars.ContainsKey(body.stellarclass))
+				starScan = Exploration.StarTypes.Stars[body.stellarclass];
+		  
             
             #line default
             #line hidden
-            this.Write("\t<div class=\"row ");
+            this.Write("\t\t\t<div class=\"row");
             
-            #line 21 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
-
-	if ((null != body.planettype &&
-         Exploration.StarTypes.Bodies.ContainsKey(body.planettype) &&
-         Exploration.StarTypes.Bodies[body.planettype].scan) ||
-		(body.type == "Star" && 
-		 new List<string> { "H", "N", "D" }.Any(item => item == body.stellarclass)))
-	{ 
-            
-            #line default
-            #line hidden
-            
-            #line 27 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture("scan"));
+            #line 32 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+	if (starScan.scan)	{ 
             
             #line default
             #line hidden
             
-            #line 27 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            #line 32 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(" bg-success text-white"));
+            
+            #line default
+            #line hidden
+            
+            #line 32 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\">\r\n\t\t<div class=\"column distance\">\r\n\t\t\t<p>");
+            this.Write("\">\r\n\t\t\t\t<div class=\"col-md-1\">\r\n\t\t\t\t\t<p>");
             
-            #line 29 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            #line 34 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(body.distance ?? -1));
             
             #line default
             #line hidden
-            this.Write("</p>\r\n\t\t</div>\r\n\t\t<div class=\"column planettype\">\r\n\t\t\t<p>");
+            this.Write("</p>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-md-3\">\r\n\t\t\t\t\t<p class=\"");
             
-            #line 32 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(body.planettype ?? body.stellarclass ?? String.Empty));
-            
-            #line default
-            #line hidden
-            this.Write("</p>\r\n\t\t</div>\t\t\r\n\t\t<div class=\"column planetname\">\r\n\t\t\t<p>");
-            
-            #line 35 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(body.name ?? String.Empty));
+            #line 37 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+ if (starScan.value > 50000) { 
             
             #line default
             #line hidden
-            this.Write("</p>\r\n\t\t</div>\r\n\t\t<div class=\"column terraform\">\r\n\t\t\t<p>");
+            this.Write(" badge badge-danger");
             
-            #line 38 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(body.terraformstate ?? String.Empty));
-            
-            #line default
-            #line hidden
-            this.Write("</p>\r\n\t\t</div>\r\n\t</div>\r\n ");
-            
-            #line 41 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            #line 37 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\r\n</body>\r\n</html>");
+            this.Write("\">\r\n\t\t\t\t\t\t");
+            
+            #line 38 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(body.planettype ?? body.stellarclass ?? String.Empty));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\t\t\r\n\t\t\t\t<div class=\"col-md-5\">\r\n\t\t\t\t\t<p>");
+            
+            #line 42 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(body.name ?? String.Empty));
+            
+            #line default
+            #line hidden
+            this.Write("</p>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-md-2\">\r\n\t\t\t\t\t<p>");
+            
+            #line 45 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(body.terraformstate ?? String.Empty));
+            
+            #line default
+            #line hidden
+            this.Write("</p>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-md-1\">\r\n\t\t\t\t\t<p>");
+            
+            #line 48 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(starScan.value));
+            
+            #line default
+            #line hidden
+            this.Write("</p>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t ");
+            
+            #line 51 "C:\elite\EliteJoystick\EddiJoystickResponder\Exploration\Explore.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t</div>\r\n</body>\r\n</html>");
             return this.GenerationEnvironment.ToString();
         }
     }

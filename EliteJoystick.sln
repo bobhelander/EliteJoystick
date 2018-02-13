@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "Communication\CommonCommunication.csproj", "{EAA556AF-5DA8-4C20-8511-5D78D04786D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CED90B10-CE11-4EFD-87CD-16DF8E2AC282}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickService", "EliteJoystickService\EliteJoystickService.csproj", "{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}"
 EndProject

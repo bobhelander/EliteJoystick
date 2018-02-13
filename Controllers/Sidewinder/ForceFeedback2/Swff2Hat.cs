@@ -18,14 +18,15 @@ namespace Controllers.Sidewinder.ForceFeedback2
                 swff2Controller = value;
                 if (null != swff2Controller)
                 {
-                    swff2Controller.Controller.Hat += Controller_Hat;
+                    swff2Controller.Controller.Hat += async (s, e) => 
+                        await Task.Run(() => ControllerHat(s, e));
                 }
             }
         }
 
         public List<uint> vButtons { get; set; }
 
-        private void Controller_Hat(object sender, Faz.SideWinderSC.Logic.HatEventArgs e)
+        private void ControllerHat(object sender, Faz.SideWinderSC.Logic.HatEventArgs e)
         {
             int pov = e.Hat / 2;
             pov = pov == 4 ? -1 : pov;

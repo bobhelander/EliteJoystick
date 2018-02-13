@@ -20,12 +20,13 @@ namespace Controllers.Other.BBI32
                 buttonBoxController = value;
                 if (null != buttonBoxController)
                 {
-                    buttonBoxController.Controller.ButtonsChanged += Controller_ButtonsChanged;
+                    buttonBoxController.Controller.ButtonsChanged += async (s, e) =>
+                        await Task.Run(() => ControllerButtonsChanged(s, e));
                 }
             }
         }
 
-        private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonStateEventArgs e)
+        private void ControllerButtonsChanged(object sender, ButtonStateEventArgs e)
         {
             // Buttons 21 - 32 On the combined controller
             uint buttonIndex = 21;
@@ -35,7 +36,6 @@ namespace Controllers.Other.BBI32
                 ButtonBoxController.SetJoystickButton(pressed, buttonIndex, vJoyTypes.StickAndPedals);
                 buttonIndex++;
             }
-            //ButtonBoxController.VisualState.UpdateButtons(e.ButtonsState);
         }
     }
 }

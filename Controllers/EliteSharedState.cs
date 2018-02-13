@@ -131,32 +131,27 @@ namespace Controllers
 
         private void OnModeChanged(Mode mode)
         {
-            if (null != ModeChanged)
-                ModeChanged(this, new ModeChangedEventArgs { Mode = mode });
+            ModeChanged?.Invoke(this, new ModeChangedEventArgs { Mode = mode });
         }
 
         private void OnShiftChanged(ShiftState shift)
         {
-            if (null != ShiftChanged)
-                ShiftChanged(this, new ShiftChangedEventArgs { ShiftState = shift });
+            ShiftChanged?.Invoke(this, new ShiftChangedEventArgs { ShiftState = shift });
         }
 
         private void OnThrottleShiftChanged(ThrottleShiftState shift)
         {
-            if (null != ThrottleShiftChanged)
-                ThrottleShiftChanged(this, new ThrottleShiftChangedEventArgs { ThrottleShiftState = shift });
+            ThrottleShiftChanged?.Invoke(this, new ThrottleShiftChangedEventArgs { ThrottleShiftState = shift });
         }
 
         private void OnMuteChanged(bool mute)
         {
-            if (null != MuteChanged)
-                MuteChanged(this, new MuteChangedEventArgs { MuteState = mute });
+            MuteChanged?.Invoke(this, new MuteChangedEventArgs { MuteState = mute });
         }
 
         private void OnGearChanged(bool deployed)
         {
-            if (null != GearChanged)
-                GearChanged(this, new GearDeployedEventArgs { Deployed = deployed });
+            GearChanged?.Invoke(this, new GearDeployedEventArgs { Deployed = deployed });
         }
     }
 }

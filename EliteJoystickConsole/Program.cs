@@ -35,13 +35,13 @@ namespace EliteJoystickConsole
             {
                 var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
 
-                client.Initialize();
+                client.Initialize().Wait();
 
                 Console.ReadKey();
-                client.ConnectArduino();
+                client.ConnectArduino().Wait();
                 Console.WriteLine("connected");
                 Console.ReadKey();
-                client.PasteClipboard();
+                client.PasteClipboard().Wait();
             }
             Console.ReadKey();
         }

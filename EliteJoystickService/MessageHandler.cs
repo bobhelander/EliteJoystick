@@ -15,7 +15,7 @@ namespace EliteJoystickService
         public Action ConnectJoysticks { get; set; }
         public Action ConnectArduino { get; set; }
 
-        public async void HandleMessage(
+        public async Task HandleMessage(
             string rawMessage, 
             Controllers.EliteSharedState sharedState, 
             ArduinoCommunication.Arduino arduino)

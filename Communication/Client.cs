@@ -31,7 +31,7 @@ namespace CommonCommunication
             }
         }
 
-        public async void SendMessageAsync(string message)
+        public async Task SendMessageAsync(string message)
         {
             try
             {

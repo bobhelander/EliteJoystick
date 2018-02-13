@@ -3,42 +3,52 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<!DOCTYPE html>
-<html lang = "en" xmlns="http://www.w3.org/1999/xhtml">
-<head><meta charset = "utf-8" />
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" /> 
 	<title>Elite Joystick</title>
 	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
 </head>
-<body>
-<#= starSystem.name #>
-<br/>
-Distance From Home: 
-<#= starSystem.distancefromhome?? 0 #>
-<br/>
+<body style="background-color:black;">
+	<div class="container-fluid text-white" >
+		<#= starSystem.name #>
+		<br/>
+		Distance From Home: 
+		<#= starSystem.distancefromhome?? 0 #>
+		<br/>
 
-<# foreach (var body in starSystem.bodies) 
-{ #>
-	<div class="row <#
-	if ((null != body.planettype &&
-         Exploration.StarTypes.Bodies.ContainsKey(body.planettype) &&
-         Exploration.StarTypes.Bodies[body.planettype].scan) ||
-		(body.type == "Star" && 
-		 new List<string> { "H", "N", "D" }.Any(item => item == body.stellarclass)))
-	{ #><#= "scan" #><# } #>">
-		<div class="column distance">
-			<p><#= body.distance ?? -1 #></p>
-		</div>
-		<div class="column planettype">
-			<p><#= body.planettype ?? body.stellarclass ?? String.Empty #></p>
-		</div>		
-		<div class="column planetname">
-			<p><#= body.name ?? String.Empty #></p>
-		</div>
-		<div class="column terraform">
-			<p><#= body.terraformstate ?? String.Empty #></p>
-		</div>
+		<# foreach (var body in starSystem.bodies) 
+		{ 
+			var starScan = new BodyScan();
+			if (null != body.planettype && Exploration.StarTypes.Bodies.ContainsKey(body.planettype))
+				starScan = Exploration.StarTypes.Bodies[body.planettype];
+			if (null != body.stellarclass && Exploration.StarTypes.Stars.ContainsKey(body.stellarclass))
+				starScan = Exploration.StarTypes.Stars[body.stellarclass];
+		  #>
+			<div class="row<#	if (starScan.scan)	{ #><#= " bg-success text-white" #><# } #>">
+				<div class="col-md-1">
+					<p><#= body.distance ?? -1 #></p>
+				</div>
+				<div class="col-md-3">
+					<p class="<# if (starScan.value > 50000) { #> badge badge-danger<# } #>">
+						<#= body.planettype ?? body.stellarclass ?? String.Empty #>
+					</p>
+				</div>		
+				<div class="col-md-5">
+					<p><#= body.name ?? String.Empty #></p>
+				</div>
+				<div class="col-md-2">
+					<p><#= body.terraformstate ?? String.Empty #></p>
+				</div>
+				<div class="col-md-1">
+					<p><#= starScan.value #></p>
+				</div>
+			</div>
+		 <# } #>
 	</div>
- <# } #>
-
 </body>
 </html>

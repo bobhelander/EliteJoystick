@@ -24,12 +24,13 @@ namespace Controllers.Sidewinder.ForceFeedback2
                 swff2Controller = value;
                 if (null != swff2Controller)
                 {
-                    swff2Controller.Controller.ButtonsChanged += Controller_ButtonsChanged;
+                    swff2Controller.Controller.ButtonsChanged += async (s, e) =>
+                        await Task.Run(() => ControllerButtonsChanged(s, e));
                 }
             }
         }
 
-        private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonsEventArgs e)
+        private void ControllerButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonsEventArgs e)
         {
             if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button8))
             {
@@ -54,7 +55,6 @@ namespace Controllers.Sidewinder.ForceFeedback2
                 // Focus Elite Window
                 ClientActions.FocusProcess(this);
             }
-            
         }
     }
 }

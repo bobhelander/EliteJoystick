@@ -18,14 +18,14 @@ namespace Controllers.Sidewinder.Commander
                 scController = value;
                 if (null != scController)
                 {
-                    scController.Controller.ButtonsChanged += Controller_ButtonsChanged;
+                    scController.Controller.ButtonsChanged += async (s, e) =>
+                        await Task.Run(() => ControllerButtonsChanged(s, e));
                 }
             }
         }
 
-        private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonsEventArgs e)
+        private void ControllerButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonsEventArgs e)
         {
-            //this.scController.VisualState.UpdateButtons(e.Buttons);
         }
     }
 }

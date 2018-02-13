@@ -9,6 +9,8 @@ namespace Controllers.Thrustmaster.Warthog
 {
     public class TmThrottleCycleCommand : StateHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private Timer timer;
         private bool pressed;
 
@@ -27,33 +29,36 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController = value;
                 if (null != tmThrottleController)
                 {
-                    tmThrottleController.Controller.SwitchState += Controller_SwitchState;
+                    tmThrottleController.Controller.SwitchState += async (s, e) =>
+                        await Task.Run(() => ControllerSwitchState(s, e));
                 }
             }
         }
 
-        private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
+        static private UInt32 button07 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button07;
+
+        private void ControllerSwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            if ((e.Buttons & (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button07) != 0 &&
+            if ((e.Buttons & button07) == button07 &&
                 tmThrottleController.SharedState.CurrentMode == EliteSharedState.Mode.Fighting)
             {
                 if (null == timer)
                     Activate();
-                //tmThrottleController.VisualState.UpdateMessage("Cycle Subsystem: Running");
             }
             else
             {
                 if (null != timer)
                 {
                     Disable();
-                    //tmThrottleController.VisualState.UpdateMessage("Cycle Subsystem: Done");
                 }
             }
         }
 
         public void Activate()
         {
+            //tmThrottleController.VisualState.UpdateMessage("Cycle Subsystem: Running");
             timer = new Timer(new TimerCallback(Action), null, 0, Timeout.Infinite);
+            log.Debug($"Cycle Subsystem: Running");
         }
 
         public void Disable()
@@ -66,6 +71,7 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController.SetJoystickButton(false, vButton, vJoyTypes.Virtual);
                 pressed = false;
             }
+            log.Debug($"Cycle Subsystem: Stopped");
         }
 
         public virtual void Action(object o)

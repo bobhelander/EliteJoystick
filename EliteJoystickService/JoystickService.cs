@@ -9,6 +9,7 @@ using System.IO.Pipes;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EliteJoystickService
@@ -160,16 +161,15 @@ namespace EliteJoystickService
 
         private void StartIpcServer()
         {            
-            server = new CommonCommunication.Server();
-            server.ContinueListening = true;
-            Task.Run(() => server.StartListeningAsync("elite_joystick", this.ReceiveMessage));
+            server = new CommonCommunication.Server { ContinueListening = true };
+            new Thread(() => { server.StartListening("elite_joystick", this.ReceiveMessage); });
         }
 
         private async void ReceiveMessage(string message)
         {
             log.Debug($"Message: {message}");
             if (false == String.IsNullOrEmpty(message))
-                Task.Run(() => messageHandler.HandleMessage(message, sharedState, arduino));
+                await Task.Run(() => messageHandler.HandleMessage(message, sharedState, arduino));
         }
 
         private void StartService(string[] args)

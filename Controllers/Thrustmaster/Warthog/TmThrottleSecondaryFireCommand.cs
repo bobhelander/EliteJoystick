@@ -20,12 +20,13 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController = value;
                 if (null != tmThrottleController)
                 {
-                    tmThrottleController.Controller.SwitchState += Controller_SwitchState;
+                    tmThrottleController.Controller.SwitchState += async (s, e) =>
+                        await Task.Run(() => ControllerSwitchState(s, e));
                 }
             }
         }
 
-        private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
+        private void ControllerSwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
             // Use the speedbrake to lock the secondary fire button down.  
             // This will hold the mining laser or discovery scanner on until the switch is moved off.
@@ -36,7 +37,6 @@ namespace Controllers.Thrustmaster.Warthog
             {
                 TmThrottleController.SharedState.SecondaryFireActive = true;
                 TmThrottleController.SetJoystickButton(true, MappedButtons.SecondaryFire, vJoyTypes.Virtual);
-                //TmThrottleController.VisualState.UpdateMessage("Secondary Fire Activated");
             }
             else if (TmThrottleController.SharedState.SecondaryFireActive)
             {

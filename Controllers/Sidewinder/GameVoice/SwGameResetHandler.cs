@@ -27,12 +27,13 @@ namespace Controllers.Sidewinder.GameVoice
                 swGvController = value;
                 if (null != swGvController)
                 {
-                    swGvController.Controller.ButtonsChanged += Controller_ButtonsChanged;
+                    swGvController.Controller.ButtonsChanged += async (s, e) =>
+                        await Task.Run(() => ControllerButtonsChanged(s, e));
                 }
             }
         }
 
-        private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.SwgvButtonStateEventArgs e)
+        private void ControllerButtonsChanged(object sender, Faz.SideWinderSC.Logic.SwgvButtonStateEventArgs e)
         {
             var muteButton = (uint)Faz.SideWinderSC.Logic.SwgvButton.Button1;
             if ((e.ButtonsState & muteButton) == muteButton &&

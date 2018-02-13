@@ -18,12 +18,13 @@ namespace Controllers.Other.BBI32
                 buttonBoxController = value;
                 if (null != buttonBoxController)
                 {
-                    buttonBoxController.Controller.ButtonsChanged += Controller_ButtonsChanged;
+                    buttonBoxController.Controller.ButtonsChanged += async (s, e) =>
+                        await Task.Run(() => ControllerButtonsChanged(s, e));
                 }
             }
         }
 
-        private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonStateEventArgs e)
+        private void ControllerButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonStateEventArgs e)
         {
             // Orbit Lines Toggle Off
             if (ButtonBoxController.TestButtonPressed(

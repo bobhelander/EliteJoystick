@@ -18,12 +18,13 @@ namespace Controllers.Sidewinder.ForceFeedback2
                 swff2Controller = value;
                 if (null != swff2Controller)
                 {
-                    swff2Controller.Controller.ButtonsChanged += Controller_ButtonsChanged;
+                    swff2Controller.Controller.ButtonsChanged += async (s, e) => 
+                        await Task.Run(() => ControllerButtonsChanged(s, e));
                 }
             }
         }
 
-        private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonsEventArgs e)
+        private void ControllerButtonsChanged(object sender, Faz.SideWinderSC.Logic.ButtonsEventArgs e)
         {
             uint buttonIndex = 1;
             foreach (Faz.SideWinderSC.Logic.Swff2Button value in Enum.GetValues(typeof(Faz.SideWinderSC.Logic.Swff2Button)))
@@ -32,8 +33,6 @@ namespace Controllers.Sidewinder.ForceFeedback2
                 swff2Controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.StickAndPedals);
                 buttonIndex++;
             }
-
-            //this.swff2Controller.VisualState.UpdateButtons(e.Buttons);
         }
     }
 }

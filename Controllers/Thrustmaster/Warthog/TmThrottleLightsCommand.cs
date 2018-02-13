@@ -22,22 +22,17 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController = value;
                 if (null != tmThrottleController)
                 {
-                    tmThrottleController.Controller.SwitchState += Controller_SwitchState;
+                    tmThrottleController.Controller.SwitchState += async (s, e) =>
+                        await Task.Run(() => ControllerSwitchState(s, e));
                 }
             }
         }
 
-        private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
+        private void ControllerSwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
-            if (TmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, button16))
+            if (TmThrottleController.TestButtonPressedOrReleased(e.PreviousButtons, e.Buttons, button16))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LightsToggle, 200);
-                //TmThrottleController.VisualState.UpdateMessage("Lights On");
-            }
-            if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button16))
-            {
-                TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LightsToggle, 200);
-                //tmThrottleController.VisualState.UpdateMessage("Lights Off");
             }
         }
     }

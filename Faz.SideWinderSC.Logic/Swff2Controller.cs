@@ -38,16 +38,6 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Occurs when a button is pressed.
-        /// </summary>
-        public event EventHandler<Swff2ButtonEventArg> ButtonDown;
-
-        /// <summary>
-        /// Occurs when a button is released.
-        /// </summary>
-        public event EventHandler<Swff2ButtonEventArg> ButtonUp;
-
-        /// <summary>
         /// Occurs when the controller is moved.
         /// </summary>
         public event EventHandler<MoveEventArgs> Move;

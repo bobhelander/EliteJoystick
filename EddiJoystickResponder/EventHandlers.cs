@@ -14,7 +14,8 @@ namespace EddiJoystickResponder
     public static class EventHandlers
     {
         public static void DockedEvent(Client client, DockedEvent actionEvent)
-        {         
+        {
+            
         }
 
         public static void JumpedEvent(Client client, JumpedEvent actionEvent)

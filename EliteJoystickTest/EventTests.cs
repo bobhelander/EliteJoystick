@@ -34,7 +34,10 @@ namespace EliteJoystickTest
         [TestMethod]
         public void TestOutputSystem()
         {
-            StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem("Maia", true);
+            //StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem("Maia", true);
+            //StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem("Sagittarius A", true);
+            StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem("HR 1185", true);
+            //StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem("Gorgonea Secunda", true);
             EddiJoystickResponder.Exploration.Actions.OutputValuableSystems(null, starSystem); 
         }
 

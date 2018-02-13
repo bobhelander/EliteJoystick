@@ -21,12 +21,13 @@ namespace Controllers.Sidewinder.GameVoice
                 swGvController = value;
                 if (null != swGvController)
                 {
-                    swGvController.Controller.ButtonsChanged += Controller_ButtonsChanged;
+                    swGvController.Controller.ButtonsChanged += async (s, e) =>
+                        await Task.Run(() => ControllerButtonsChanged(s, e));
                 }
             }
         }
 
-        private void Controller_ButtonsChanged(object sender, Faz.SideWinderSC.Logic.SwgvButtonStateEventArgs e)
+        private void ControllerButtonsChanged(object sender, Faz.SideWinderSC.Logic.SwgvButtonStateEventArgs e)
         {
             uint buttonIndex = 1;
             foreach (SwgvButton value in Enum.GetValues(typeof(SwgvButton)))

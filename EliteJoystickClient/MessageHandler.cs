@@ -13,47 +13,54 @@ namespace EliteJoystickClient
 
         public CommonCommunication.Client Client { get; set; }
 
-        public async void HandleMessage(string rawMessage)
+        public void HandleMessage(string rawMessage)
         {
-            var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);
-
-            log.Debug($"Message Type: {message.Type}");
-
-            switch (message?.Type)
+            try
             {
-                case "clipboard":
-                    if (System.Windows.Clipboard.ContainsText())
-                    {
-                        var data = Utils.CallClipboard();
+                var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);
 
-                        var outputMessage = JsonConvert.SerializeObject(
-                            new CommonCommunication.Message { Type = "keyboard_output", Data = data });
+                log.Debug($"Message Type: {message.Type}");
 
-                        log.Debug($"Sending Clipboard Contents: {data}");
+                switch (message?.Type)
+                {
+                    case "clipboard":
+                        if (System.Windows.Clipboard.ContainsText())
+                        {
+                            var data = Utils.CallClipboard();
 
-                        Client.SendMessageAsync(outputMessage);
-                    }                    
-                    break;
+                            var outputMessage = JsonConvert.SerializeObject(
+                                new CommonCommunication.Message { Type = "keyboard_output", Data = data });
 
-                case "focus":
-                    Utils.FocusWindow("EliteDangerous64");
-                    break;
+                            log.Debug($"Sending Clipboard Contents: {data}");
 
-                case "kill":
-                    await Utils.KillProcess("EliteDangerous64");
-                    break;
+                            Client.SendMessageAsync(outputMessage).Wait();
+                        }
+                        break;
 
-                case "navigate_url":
-                    Utils.NavigateUrl(message.Data);
-                    break;
+                    case "focus":
+                        Utils.FocusWindow("EliteDangerous64");
+                        break;
 
-                case "client_information":
-                    log.Info(message.Data);
-                    break;
+                    case "kill":
+                        Utils.KillProcess("EliteDangerous64").Wait();
+                        break;
 
-                default:
-                    //Unknown message
-                    break;
+                    case "navigate_url":
+                        Utils.NavigateUrl(message.Data);
+                        break;
+
+                    case "client_information":
+                        log.Info(message.Data);
+                        break;
+
+                    default:
+                        //Unknown message
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+                log.Debug($"Error: {ex}");
             }
         }
     }

@@ -25,18 +25,20 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController = value;
                 if (null != tmThrottleController)
                 {
-                    tmThrottleController.Controller.SwitchState += Controller_SwitchState;
+                    tmThrottleController.Controller.SwitchState += async (s, e) =>
+                        await Task.Run(() => ControllerSwitchState(s, e));
                 }
             }
         }
 
-        private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
+        private void ControllerSwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
             if (tmThrottleController.SharedState.HardpointsDeployed == false &&
                 tmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, button19))
             {
                 log.Debug($"Hardpoints out {tmThrottleController.SharedState.HardpointsDeployed} {e.PreviousButtons} {e.Buttons}");
-                tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
+                //tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
+                tmThrottleController.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48);
                 tmThrottleController.SharedState.HardpointsDeployed = true;
             }
 
@@ -44,7 +46,8 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, button19))
             {
                 log.Debug($"Hardpoints in {tmThrottleController.SharedState.HardpointsDeployed} {e.PreviousButtons} {e.Buttons}");
-                tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
+                //tmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HardpointsToggle, 200);
+                tmThrottleController.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48);
                 tmThrottleController.SharedState.HardpointsDeployed = false;
             }
         }

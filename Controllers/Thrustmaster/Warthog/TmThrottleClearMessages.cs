@@ -27,12 +27,13 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController = value;
                 if (null != tmThrottleController)
                 {
-                    tmThrottleController.Controller.SwitchState += Controller_SwitchState;
+                    tmThrottleController.Controller.SwitchState += async (s, e) =>
+                        await Task.Run(() => ControllerSwitchState(s, e));
                 }
             }
         }
 
-        private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
+        private void ControllerSwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
             var button14 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button14;
             if (((e.Buttons & button14) != 0) &&

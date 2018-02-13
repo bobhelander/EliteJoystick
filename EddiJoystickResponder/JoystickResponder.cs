@@ -30,7 +30,7 @@ namespace EddiJoystickResponder
 
             if (theEvent is JoystickCommandEvent)
             {
-                Client.HandleCommand(((JoystickCommandEvent)theEvent).command, JoystickCommandEvent.VARIABLES);
+                Client.HandleCommand(((JoystickCommandEvent)theEvent).command, JoystickCommandEvent.VARIABLES).Wait();
             }
 
             if (theEvent is DockedEvent)
@@ -67,7 +67,7 @@ namespace EddiJoystickResponder
         public bool Start()
         {
             Client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
-            Client.Initialize();
+            Client.Initialize().Wait();
             return true;
         }
 

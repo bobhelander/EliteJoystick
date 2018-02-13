@@ -21,23 +21,22 @@ namespace Controllers.Thrustmaster.Warthog
                 tmThrottleController = value;
                 if (null != tmThrottleController)
                 {
-                    tmThrottleController.Controller.SwitchState += Controller_SwitchState;
+                    tmThrottleController.Controller.SwitchState += async (s, e) =>
+                        await Task.Run(() => ControllerSwitchState(s, e));
                 }
             }
         }
 
-        private void Controller_SwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
+        private void ControllerSwitchState(object sender, Faz.SideWinderSC.Logic.TmThrottleSwitchEventArgs e)
         {
             if (TmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, rightThrottleIdle))
             {
                 tmThrottleController.SharedState.GearDeployed = true;
-                //tmThrottleController.VisualState.UpdateMessage("Landing Gear Deployed");
             }
 
             if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, rightThrottleIdle))
             {
                 tmThrottleController.SharedState.GearDeployed = false;
-                //tmThrottleController.VisualState.UpdateMessage("Landing Gear Stowed");
             }
         }
     }
