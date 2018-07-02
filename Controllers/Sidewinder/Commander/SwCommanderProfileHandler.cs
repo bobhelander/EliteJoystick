@@ -8,6 +8,8 @@ namespace Controllers.Sidewinder.Commander
 {
     public class SwCommanderProfileHandler: StateHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private ScController scController;
 
         public ScController ScController
@@ -19,13 +21,25 @@ namespace Controllers.Sidewinder.Commander
                 if (null != scController)
                 {
                     scController.Controller.ProfileChanged += Controller_ProfileChanged;
+                    log.Debug("connected");
                 }
             }
         }
 
         private void Controller_ProfileChanged(object sender, Faz.SideWinderSC.Logic.ProfileChangedEventArgs e)
         {
-            var test = e.Profile;     
+            scController.Profile = e.Profile;
+            log.Debug($"Profile changed to {scController.Profile}");
+
+            if (1 == scController.Profile)
+            {
+                log.Debug("Entering Program Mode");
+                scController.ProgramLights();
+            }
+            else
+            {
+                scController.vJoyMapper.Save();
+            }
         }
 
 

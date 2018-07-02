@@ -73,6 +73,7 @@
     <Compile Include="Other\BBI32\BBI32UtilCommandsStateHandler.cs" />
     <Compile Include="Other\BBI32\ButtonBoxController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sidewinder\Commander\ProgramIds.cs" />
     <Compile Include="Sidewinder\Commander\ScController.cs" />
     <Compile Include="Sidewinder\Commander\SwCommanderButton.cs" />
     <Compile Include="Sidewinder\Commander\SwCommanderButtonsStateHandler.cs" />

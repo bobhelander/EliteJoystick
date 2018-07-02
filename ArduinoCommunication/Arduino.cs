@@ -16,6 +16,11 @@ namespace ArduinoCommunication
             serialPort.Open();
         }
 
+        public bool IsOpen()
+        {
+            return serialPort.IsOpen;
+        }
+
         public void ReleaseKey(byte key)
         {
             serialPort.Write(new byte[] { 0x00, key, 0x00, 0xFF}, 0, 4);

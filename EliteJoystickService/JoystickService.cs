@@ -42,6 +42,11 @@ namespace EliteJoystickService
             this.OnStop();
         }
 
+        public void Start()
+        {
+            this.OnStart(null);
+        }
+
         protected override void OnStart(string[] args)
         {
             log.Debug("Starting Service");
@@ -83,6 +88,8 @@ namespace EliteJoystickService
             EliteVirtualJoysticks eliteVirtualJoysticks,
             EliteSharedState sharedState)
         {
+            log.Debug("Connecting to Controllers");
+
             eliteControllers = new EliteControllers();
 
             try
@@ -134,6 +141,7 @@ namespace EliteJoystickService
 
                 eliteControllers.Initialize();
                 ClientActions.ClientInformationAction(this, "Controllers Ready");
+                log.Debug("Controllers Ready");
             }
             catch (Exception ex)
             {
@@ -160,9 +168,11 @@ namespace EliteJoystickService
         }
 
         private void StartIpcServer()
-        {            
+        {
+            log.Debug("Starting IPC services");
             server = new CommonCommunication.Server { ContinueListening = true };
-            new Thread(() => { server.StartListening("elite_joystick", this.ReceiveMessage); });
+            Task.Run(() => { server.StartListening("elite_joystick", this.ReceiveMessage); });
+            //new Thread(() => { server.StartListening("elite_joystick", this.ReceiveMessage); });
         }
 
         private async void ReceiveMessage(string message)
@@ -173,21 +183,28 @@ namespace EliteJoystickService
         }
 
         private void StartService(string[] args)
-        {            
-            sharedState = new EliteSharedState { OrbitLines = true, HeadsUpDisplay = true };
-            settings = Settings.Load();
-            vJoyMapper = new vJoyMapper();
-            ClientActions.ClientAction += ClientActions_ClientAction;
-            eliteVirtualJoysticks = StartVirtualJoysticks();
-            client = new CommonCommunication.Client();
-            messageHandler = new MessageHandler
+        {
+            try
             {
-                Client = client,
-                ConnectJoysticks = () => StartControllers(vJoyMapper, eliteVirtualJoysticks, sharedState),
-                ConnectArduino = () => ConnectArduino(),
-            };
+                sharedState = new EliteSharedState { OrbitLines = true, HeadsUpDisplay = true };
+                settings = Settings.Load();
+                vJoyMapper = new vJoyMapper();
+                ClientActions.ClientAction += ClientActions_ClientAction;
+                eliteVirtualJoysticks = StartVirtualJoysticks();
+                client = new CommonCommunication.Client();
+                messageHandler = new MessageHandler
+                {
+                    Client = client,
+                    ConnectJoysticks = () => StartControllers(vJoyMapper, eliteVirtualJoysticks, sharedState),
+                    ConnectArduino = () => ConnectArduino(),
+                };
 
-            StartIpcServer();
+                StartIpcServer();
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Error starting service: {ex.Message}");
+            }
         }
 
         private void StopService()

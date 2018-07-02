@@ -53,7 +53,8 @@ namespace Controllers
             Landed,
             SRV,
             Fighter,
-            Map
+            Map,
+            Multicrew
         }
 
         private Mode currentMode;

@@ -21,7 +21,8 @@ namespace CommonCommunication
             try
             {
                 client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out, PipeOptions.Asynchronous);
-                await client.ConnectAsync(30000);
+                //await client.ConnectAsync(30000);
+                client.Connect(30000);
                 stream = new StreamWriter(client);
                 log.Debug($"Connection established to: {pipeName}");
             }

@@ -27,6 +27,12 @@ namespace Controllers.Sidewinder.Commander
         private void Controller_ButtonDown(object sender, Faz.SideWinderSC.Logic.ButtonEventArgs e)
         {
             SetShiftMode(e.Button);
+
+            if (1 == scController.Profile)
+            {
+                scController.ProgramLights();
+            }
+
         }
 
         private void SetShiftMode(Faz.SideWinderSC.Logic.SwscButton button)
@@ -71,6 +77,12 @@ namespace Controllers.Sidewinder.Commander
                     scController.SharedState.ShiftStateValue = EliteSharedState.ShiftState.None;
                 }
             }
+
+            if (1 == scController.Profile)
+            {
+                scController.ProgramLights();
+            }
+
         }
     }
 }

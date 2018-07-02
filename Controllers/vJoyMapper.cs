@@ -111,8 +111,7 @@ namespace Controllers
                 vJoyMap = (Dictionary<string, uint>)serializer.Deserialize(file, typeof(Dictionary<string, uint>));
             }
 
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(null));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
         }
     }
 }

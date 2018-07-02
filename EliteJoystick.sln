@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeController", "ChromeC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiJoystickResponderTest", "EliteJoystickTest\EddiJoystickResponderTest.csproj", "{1857F423-72C5-448B-9E6C-E1E588BCB883}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickServiceTest", "EliteJoystickServiceTest\EliteJoystickServiceTest.csproj", "{D954D70D-4308-4426-BCB8-039B185A1292}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D954D70D-4308-4426-BCB8-039B185A1292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D954D70D-4308-4426-BCB8-039B185A1292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D954D70D-4308-4426-BCB8-039B185A1292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D954D70D-4308-4426-BCB8-039B185A1292}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

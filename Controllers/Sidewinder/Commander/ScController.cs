@@ -25,7 +25,6 @@ namespace Controllers.Sidewinder.Commander
                 SharedState = sharedState,
                 vJoy = vjoy,
                 vJoyMapper = vJoyMapper,
-                //VisualState = new VisualState { Name = Name }
             };
         }
 
@@ -34,6 +33,9 @@ namespace Controllers.Sidewinder.Commander
             controller?.Initialize();
             CycleLights();
         }
+
+        public int Profile { get; set; }
+        public ProgramIds ProgramIds { get; set; } = new ProgramIds();
 
         public List<Button> Buttons { get; set; }
         public List<Axis> Axis { get; set; }
@@ -75,6 +77,9 @@ namespace Controllers.Sidewinder.Commander
                         new SwCommanderShiftHandler { ScController = this },
                         new SwCommanderProfileHandler { ScController = this },
                     };
+
+                    ProgramIds.ScController = this;
+                    ProgramIds.Controller = controller;
                 }
             }
         }
@@ -109,14 +114,12 @@ namespace Controllers.Sidewinder.Commander
 
         public void OnBeforeModifierChange()
         {
-            if (null != BeforeModifierChanged)
-                BeforeModifierChanged(this, new ModifierChangedArgs());
+            BeforeModifierChanged?.Invoke(this, new ModifierChangedArgs());
         }
 
         public void OnAfterModifierChange()
         {
-            if (null != AfterModifierChanged)
-                AfterModifierChanged(this, new ModifierChangedArgs());
+            AfterModifierChanged?.Invoke(this, new ModifierChangedArgs());
         }
 
         public void UpdateLights()
@@ -134,6 +137,17 @@ namespace Controllers.Sidewinder.Commander
             if (Buttons[8].State)
                 return button + 24;
             return button;
+        }
+
+        public void ProgramButtonPressed(uint button)
+        {
+            var modifiedButton = button | (Buttons[6].State ? (uint)SwscButton.Shift1 : 0);
+            ProgramIds.ButtonPressed(modifiedButton);
+        }
+
+        public void ProgramLights()
+        {
+            ProgramIds.UpdateLockedLights(Buttons[6].State);
         }
 
         private void CycleLights()

@@ -41,7 +41,10 @@ namespace Controllers.Sidewinder.Commander
             if (e.Button == ButtonId)
             {
                 State = true;
-                ScController.SetJoystickButton(State, ScController.ModifiedButton(vButtonId), vJoyTypes.Commander);
+                if (ScController.Profile != 1)
+                    ScController.SetJoystickButton(State, ScController.ModifiedButton(vButtonId), vJoyTypes.Commander);
+                else
+                    ScController.ProgramButtonPressed(vButtonId);
             }
         }
     }

@@ -172,10 +172,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="profile">The new profile.</param>
         private void OnProfileChanged(int profile)
         {
-            if (this.ProfileChanged != null)
-            {
-                this.ProfileChanged(this, new ProfileChangedEventArgs(profile));
-            }
+            this.ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(profile));
         }
 
         /// <summary>

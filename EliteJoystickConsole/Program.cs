@@ -14,24 +14,26 @@ namespace EliteJoystickConsole
 
         static void Main(string[] args)
         {
-            var chrome = new Chrome("http://localhost:9222");
-
-            foreach(var session in chrome.GetAvailableSessions())
-            {
-                Console.WriteLine(session.title);
-            }
-
-            var sessions = chrome.GetAvailableSessions();
-
-            var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
-            chrome.SetActiveSession(sessionWSEndpoint);
-            var uri = @"http://localhost:8080/explore.html";
-
-            //chrome.NavigateTo("http://eddb.io");
-
-            chrome.NavigateTo(uri);
-
             if (false)
+            {
+                var chrome = new Chrome("http://localhost:9222");
+
+                foreach (var session in chrome.GetAvailableSessions())
+                {
+                    Console.WriteLine(session.title);
+                }
+
+                var sessions = chrome.GetAvailableSessions();
+
+                var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
+                chrome.SetActiveSession(sessionWSEndpoint);
+                var uri = @"http://localhost:8080/explore.html";
+
+                //chrome.NavigateTo("http://eddb.io");
+
+                chrome.NavigateTo(uri);
+            }
+            if (true)
             {
                 var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
 
