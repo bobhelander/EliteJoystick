@@ -25,7 +25,7 @@ namespace EliteJoystickClient
             // Create the client server pipe
             Server = new CommonCommunication.Server { ContinueListening = true };
             //Task.Run(() => { Server.StartListening(Name, MessageHandler.HandleMessage); }).Start();
-            Task.Run(() => { Server.StartListening(Name, MessageHandler.HandleMessage); });
+            Task.Run(async () => { await Server.StartListening(Name, MessageHandler.HandleMessage); });
 
             // Contact the Service Pipe
             MessageHandler.Client = new CommonCommunication.Client();

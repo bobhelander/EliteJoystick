@@ -14,7 +14,7 @@ namespace CommonCommunication
 
         public bool ContinueListening { get; set; }
 
-        public void StartListening(string pipeName, Action<string> messageRecieved)
+        public async Task StartListening(string pipeName, Action<string> messageRecieved)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace CommonCommunication
                             while (ContinueListening)
                             {
                                 // read the message from the stream - async
-                                var message = streamReader.ReadLineAsync().Result;
+                                var message = await streamReader.ReadLineAsync();
 
                                 // invoke the message received action
                                 Task.Factory.StartNew(() => messageRecieved?.Invoke(message));
