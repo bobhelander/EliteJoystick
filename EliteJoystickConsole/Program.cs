@@ -40,10 +40,12 @@ namespace EliteJoystickConsole
                 client.Initialize().Wait();
 
                 Console.ReadKey();
-                client.ConnectArduino().Wait();
-                Console.WriteLine("connected");
-                Console.ReadKey();
-                client.PasteClipboard().Wait();
+                //client.ConnectArduino().Wait();
+               // Console.WriteLine("connected");
+                //Console.ReadKey();
+                //client.PasteClipboard().Wait();
+
+                client.ConnectJoysticks();
             }
             Console.ReadKey();
         }

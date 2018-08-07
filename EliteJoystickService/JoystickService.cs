@@ -179,7 +179,7 @@ namespace EliteJoystickService
         {
             log.Debug($"Message: {message}");
             if (false == String.IsNullOrEmpty(message))
-                await Task.Run(() => messageHandler.HandleMessage(message, sharedState, arduino));
+                await Task.Run(async () => await messageHandler.HandleMessage(message, sharedState, arduino));
         }
 
         private void StartService(string[] args)

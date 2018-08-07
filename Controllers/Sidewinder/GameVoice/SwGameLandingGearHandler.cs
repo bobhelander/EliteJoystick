@@ -35,13 +35,13 @@ namespace Controllers.Sidewinder.GameVoice
             {
                 // On
                 swGvController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
-                log.Debug($"Landing Gear: Deployed");
+                log.Debug($"Virtual: Landing Gear: Deployed");
             }
             else if (button1 == (e.PreviousButtonsState & button1) && 0 == (e.ButtonsState & button1))
             {
                 // Off
                 swGvController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
-                log.Debug($"Landing Gear: Retracted");
+                log.Debug($"Virtual: Landing Gear: Retracted");
             }
         }
     }

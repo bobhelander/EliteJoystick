@@ -21,19 +21,14 @@ namespace Faz.SideWinderSC.Logic
         private readonly HidStream stream;
 
         /// <summary>
-        /// The buffer used when reading the stream.
+        /// The number of buffers available.
         /// </summary>
-        private byte[] readBuffer;
+        private ulong readBufferCount = 3;
 
         /// <summary>
-        /// Last buffer read
+        /// The buffers used when reading the stream.
         /// </summary>
-        private byte[] lastReadBuffer;
-
-        /// <summary>
-        /// Last processed state
-        /// </summary>
-        private byte[] currentBuffer;
+        private List<byte[]> readBuffers = new List<byte[]>();
 
         /// <summary>
         /// Process every report or check against previous
@@ -41,9 +36,19 @@ namespace Faz.SideWinderSC.Logic
         public bool ProcessAllReports { get; set; }
 
         /// <summary>
+        /// Flag to keep reading the serial stream.
+        /// </summary>
+        public bool ContinueProcessing { get; set; }
+
+        /// <summary>
         /// Remove jitter from continuous button events
         /// </summary>
         public Stopwatch Stopwatch { get; set; }
+
+        /// <summary>
+        /// Serial reading task
+        /// </summary>
+        private Task SerialProcessingTask { get; set; }
 
         /// <summary>
         /// The buffer used when getting the feature report.
@@ -92,7 +97,11 @@ namespace Faz.SideWinderSC.Logic
         public void Write(byte[] buffer, int length)
         {
             if (this.stream.CanWrite)
-                BeginAsyncWrite(buffer, length);
+            {
+                Task.Factory.StartNew(() => this.WriteToDevice(buffer, length),
+                    CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default)
+                    .ContinueWith(t => { log.Error($"Controller Write  Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+            }
         }
 
         /// <summary>
@@ -142,10 +151,13 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         public virtual void Initialize()
         {
-            this.readBuffer = new byte[this.ReadLength];
-            this.lastReadBuffer = new byte[this.ReadLength];
-            this.currentBuffer = new byte[this.ReadLength];
-            this.BeginAsyncRead((ulong) 0);
+            for (ulong count = 0; count < readBufferCount; count++)
+                this.readBuffers.Add(new byte[this.ReadLength]);
+
+            ContinueProcessing = true;
+            SerialProcessingTask = Task.Factory.StartNew(() => ReadSerial(),
+                CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+                .ContinueWith(t => { log.Error($"Controller Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         /// <summary>
@@ -168,110 +180,108 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Starts an asynchronous read.
+        /// Reads a message from the device
         /// </summary>
-        private void BeginAsyncRead(ulong counter)
+        /// <returns></returns>
+        private async Task ReadSerial()
         {
-            this.stream?.BeginRead(this.readBuffer, 0, this.ReadLength, this.OnReadCompleted, counter);
+            ulong counter = 0;
+            while (ContinueProcessing)
+            {
+                // Round robin the available buffers
+                var bufferIndex = (int)(counter % readBufferCount);
+
+                var size = await this.stream.ReadAsync(this.readBuffers[bufferIndex], 0, this.ReadLength);
+                await ProcessSerialMessage(size, this.readBuffers[bufferIndex], this.ReadLength, counter);
+
+                counter++;
+            }
         }
 
         /// <summary>
-        /// Called when a read in completed.
+        /// Processes the buffer received from the device
         /// </summary>
-        /// <param name="asyncResult">The result of the asynchronous operation.</param>
-        private void OnReadCompleted(IAsyncResult asyncResult)
+        /// <param name="size"></param>
+        /// <param name="buffer"></param>
+        /// <param name="requestedLength"></param>
+        /// <param name="stateCounter"></param>
+        /// <returns></returns>
+        private async Task<bool> ProcessSerialMessage(int size, byte[] buffer, int requestedLength, ulong stateCounter)
         {
+            if (size != requestedLength)
+            {
+                // Throw this read out.  
+                log.Error($"Read Invalid Size {requestedLength}, Actual size {size}");
+                return false;
+            }
             try
             {
-                // call EndRead:
-                // - throws any exceptions that happened during the read
-                // - returns the number of valid byte in the buffer
-                int size = this.stream.EndRead(asyncResult);
-
-                if (size != this.ReadLength)
+                if (this.Read != null)
                 {
-                    // Throw this read out.  
-                    log.Error($"Read Invalid Size {this.ReadLength}, Actual size {size}");
-                    return;
-                }
+                    // Copy the buffer first
+                    //var buffer = await CopyBuffer(this.readBuffer);
 
-                var stateCounter = (ulong)asyncResult.AsyncState;
-
-                try
-                {
-                    if (this.Read != null)
+                    if (ProcessAllReports)
                     {
-                        // Copy the buffer first
-                        var buffer = CopyBuffer(this.readBuffer);
+                        // Process the change
+                        CallReadEventAsync(buffer, size, stateCounter);
+                    }
+                    else if (stateCounter > 0)
+                    {
+                        var lastBufferIndex = (int)((stateCounter - 1) % readBufferCount);
+                        var lastReadBuffer = this.readBuffers[lastBufferIndex];
 
-                        if (ProcessAllReports)
+                        // Remove jitter around the buttons
+                        if (false == buffer.SequenceEqual(lastReadBuffer))
                         {
-                            // Process the change
-                            Task.Run(() => Read(this, new ReadEventArgs(buffer, size, stateCounter)));
+                            // The read buffer changed since the last read
+                            // Restart the stopwatch
+                            Stopwatch.Restart();
                         }
-                        else
+
+                        // After the state remains stable
+                        if (Stopwatch.ElapsedMilliseconds > 100)
                         {
-                            // Remove jitter around the buttons
-                            if (false == buffer.SequenceEqual(this.lastReadBuffer))
+                            if (buffer.SequenceEqual(lastReadBuffer))
                             {
-                                // The read buffer changed since the last read
-                                // Restart the stopwatch
-                                Stopwatch.Restart();
+                                // Process the change
+                                CallReadEventAsync(buffer, size, stateCounter);
                             }
-
-                            // After the state remains stable
-                            if (Stopwatch.ElapsedMilliseconds > 100)
-                            {
-                                if (buffer.SequenceEqual(this.lastReadBuffer))
-                                {
-                                    // Process the change
-                                    Task.Run(() => Read(this, new ReadEventArgs(buffer, size, stateCounter)));
-                                }
-                            }
-
-                            // Update the last buffer
-                            this.lastReadBuffer = buffer;
                         }
                     }
-                }
-                catch(Exception ex)
-                {
-                    log.Error(ex);
-                }
-                finally
-                {
-                    // Start a new read
-                    this.BeginAsyncRead((ulong)stateCounter + 1);
+                    return await Task.FromResult(true);
                 }
             }
-            catch (IOException)
+            catch (Exception ex)
             {
-                // if we got an IO exception, the device was removed
+                log.Error(ex);
             }
-        }
 
-        private byte[] CopyBuffer(byte[] buffer)
-        {
-            byte[] result = new byte[buffer.Length];
-            Array.Copy(buffer, result, buffer.Length);
-            return result;
+            return await Task.FromResult(false);
         }
 
         /// <summary>
-        /// Starts an asynchronous write.
+        /// Calls the event handler
         /// </summary>
-        private void BeginAsyncWrite(byte[] buffer, int length)
+        /// <param name="buffer"></param>
+        /// <param name="size"></param>
+        /// <param name="stateCounter"></param>
+        private void CallReadEventAsync(byte[] buffer, int size, ulong stateCounter)
         {
-            this.stream?.BeginWrite(buffer, 0, length, this.OnWriteCompleted, null);
+            // Allow this to process in the thread pool
+            Task.Run(() => Read(this, new ReadEventArgs(buffer, size, stateCounter)))
+                .ContinueWith(t => { log.Error($"Read EventHandler Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         /// <summary>
-        /// Called when a write is completed.
+        /// Write buffer to the stream
         /// </summary>
-        /// <param name="asyncResult">The result of the asynchronous operation.</param>
-        private void OnWriteCompleted(IAsyncResult asyncResult)
+        /// <param name="buffer"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        private async Task WriteToDevice(byte[] buffer, int length)
         {
-            this.stream?.EndWrite(asyncResult);
+            await this.stream?.WriteAsync(buffer, 0, length);
         }
 
         /// <summary>

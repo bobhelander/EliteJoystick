@@ -86,6 +86,7 @@ namespace Controllers.Sidewinder.Commander
                 {
                     item.Locked = !item.Locked;
                     UpdateLockedLights((button & (uint)SwscButton.Shift1) != 0);
+                    log.Debug($"{item.ControllerType} Locked: {item.Locked}");
                 }
             }
         }
