@@ -9,6 +9,9 @@ namespace Controllers.Thrustmaster.Warthog
 {
     public class TmThrottle75Command : StateHandler
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static UInt32 rdrAlt = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button25;
 
         private TmThrottleController tmThrottleController;
@@ -32,6 +35,7 @@ namespace Controllers.Thrustmaster.Warthog
             if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, rdrAlt))
             {
                 TmThrottleController.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);
+                log.Debug("75% throttle");
             }
         }
     }

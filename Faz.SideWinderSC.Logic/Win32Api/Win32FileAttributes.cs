@@ -2,6 +2,9 @@
 
 namespace Faz.SideWinderSC.Logic.Win32Api
 {
+
+#pragma warning disable 1591
+
     [Flags]
     public enum Win32FileAttributes : uint
     {
@@ -31,4 +34,7 @@ namespace Faz.SideWinderSC.Logic.Win32Api
         OpenNoRecall = 0x00100000,
         FirstPipeInstance = 0x00080000
     }
+
+#pragma warning restore 1591
+
 }

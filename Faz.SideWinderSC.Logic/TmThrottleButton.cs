@@ -254,11 +254,34 @@ namespace Faz.SideWinderSC.Logic
     [Serializable]
     public enum TmThrottleLights
     {
+        /// <summary>
+        /// 
+        /// </summary>
         LED4 = 0x01,
+        
+        /// <summary>
+        /// 
+        /// </summary>
         LED2 = 0x02,
+
+        /// <summary>
+        /// 
+        /// </summary>
         LED1 = 0x04,
+
+        /// <summary>
+        /// 
+        /// </summary>
         LEDBacklight = 0x08,
+
+        /// <summary>
+        /// 
+        /// </summary>
         LED3 = 0x10,
+
+        /// <summary>
+        /// 
+        /// </summary>
         LED5 = 0x40,
     }
 }

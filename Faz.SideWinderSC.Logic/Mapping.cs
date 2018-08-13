@@ -13,7 +13,9 @@ namespace Faz.SideWinderSC.Logic
     {
         private readonly ICollection<ConsoleKey> keys;
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public Mapping()
         {
             this.keys = new LinkedList<ConsoleKey>();

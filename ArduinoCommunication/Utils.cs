@@ -9,31 +9,38 @@ namespace ArduinoCommunication
 {
     public static class Utils
     {
-        public static void TypeFullString(Arduino arduino, String text, EventWaitHandle finishedEvent)
+        public static async Task TypeFromClipboard(Arduino arduino)
         {
-            new TextBuffer
-            {
-                Delay = 40,
-                Text = String.IsNullOrEmpty(text) ? Utils.CallClipboard() : text,
-                Arduino = arduino,
-                FinishedEvent = finishedEvent,
-                Newline = true,
-            }.Start();
+            var text = await Utils.CallClipboard();
+            await TypeFullString(arduino, text);
         }
 
-        public static void KeyCombo(Arduino arduino, byte[] modifier, byte key)
+        public static Task TypeFullString(Arduino arduino, String text)
         {
-            new KeyCombo
+            return new SendText
+            {
+                Delay = 40,
+                Text = text,
+                Arduino = arduino,
+                Newline = true,
+            }.Play();
+        }
+
+        public static Task KeyCombo(Arduino arduino, byte[] modifier, byte key)
+        {
+            return new KeyCombination
             {
                 Delay = 150,
                 Modifier = modifier,
                 Key = key,
                 Arduino = arduino
-            }.Start();
+            }.Play();
         }
 
-        static public string CallClipboard()
+        static public async Task<string> CallClipboard()
         {
+            return await StartSTATask<string>(() => System.Windows.Clipboard.GetText());
+            /*
             object returnValue = null;  
             var t = new Thread((ThreadStart)(() =>
             {
@@ -44,6 +51,26 @@ namespace ArduinoCommunication
             t.Start();
             t.Join();
             return returnValue as String;
+            */
+        }
+
+        public static Task<T> StartSTATask<T>(Func<T> func)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    tcs.SetResult(func());
+                }
+                catch (Exception e)
+                {
+                    tcs.SetException(e);
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            return tcs.Task;
         }
     }
 }

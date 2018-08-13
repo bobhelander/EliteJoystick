@@ -35,7 +35,8 @@ namespace CommonCommunication
                                 var message = await streamReader.ReadLineAsync();
 
                                 // invoke the message received action
-                                Task.Factory.StartNew(() => messageRecieved?.Invoke(message));
+                                var task = Task.Run(() => messageRecieved?.Invoke(message))
+                                    .ContinueWith(t => { log.Error($"Message Received Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
 
                                 if (streamReader.EndOfStream)
                                 {

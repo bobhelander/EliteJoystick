@@ -181,10 +181,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="button">The released button.</param>
         private void OnButtonUp(SwscButton button)
         {
-            if (this.ButtonUp != null)
-            {
-                this.ButtonUp(this, new ButtonEventArgs(button, false));
-            }
+            this.ButtonUp?.Invoke(this, new ButtonEventArgs(button, false));
         }
 
         /// <summary>
@@ -193,21 +190,17 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="button">The pressed button.</param>
         private void OnButtonDown(SwscButton button)
         {
-            if (this.ButtonDown != null)
-            {
-                this.ButtonDown(this, new ButtonEventArgs(button, true));
-            }
+            this.ButtonDown?.Invoke(this, new ButtonEventArgs(button, true));
         }
 
         /// <summary>
-        /// Raised the <see cref="Swff2Controller.ButtonDown"/> event.
+        /// 
         /// </summary>
-        /// <param name="buttons">The button state.</param>
-        /// <param name="previousButtons">The previous button state.</param>
+        /// <param name="buttons"></param>
+        /// <param name="previousButtons"></param>
         private void OnButtonsChange(uint buttons, uint previousButtons)
         {
-            if (null != this.ButtonsChanged)
-                this.ButtonsChanged(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });
+            this.ButtonsChanged?.Invoke(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });
         }
 
         /// <summary>
@@ -217,10 +210,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="y">The y part of the position.</param>
         private void OnMove(int x, int y)
         {
-            if (this.Move != null)
-            {
-                this.Move(this, new MoveEventArgs(x, y));
-            }
+            this.Move?.Invoke(this, new MoveEventArgs(x, y));
         }
 
         /// <summary>
@@ -229,10 +219,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="r">The current rotation level.</param>
         private void OnRotate(int r)
         {
-            if (this.Rotate != null)
-            {
-                this.Rotate(this, new RotateEventArgs(r));
-            }
+            this.Rotate?.Invoke(this, new RotateEventArgs(r));
         }
     }
 }

@@ -129,10 +129,10 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Raised the <see cref="Swff2Controller.ButtonDown"/> event.
+        /// 
         /// </summary>
-        /// <param name="buttons">The button states.</param>
-        /// <param name="previousButtons">The last button states.</param>
+        /// <param name="buttons"></param>
+        /// <param name="previousButtons"></param>
         private void OnButtonsChange(uint buttons, uint previousButtons)
         {
             this.ButtonsChanged?.Invoke(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });

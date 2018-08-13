@@ -10,7 +10,7 @@ namespace Controllers.Sidewinder.Commander
 {
     public class ScController : Controller
     {
-        static String Name = "Game Commander";
+        static readonly string Name = "Game Commander";
 
         public class ModifierChangedArgs {};
 

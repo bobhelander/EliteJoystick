@@ -11,7 +11,10 @@ namespace Faz.SideWinderSC.Logic
     /// </summary>
     public static class TmThrottleSwitches
     {
-        static AllSwitches[] DefaultState = new AllSwitches[]
+
+#pragma warning disable 1591
+
+        static readonly AllSwitches[] DefaultState = new AllSwitches[]
         {
             AllSwitches.MOUSENONE,
             AllSwitches.MSNONE,
@@ -36,6 +39,9 @@ namespace Faz.SideWinderSC.Logic
             AllSwitches.IDLEROFF
         };
 
+        /// <summary>
+        /// 
+        /// </summary>
         public enum AllSwitches
         {
             // MOUSE BUTTON
@@ -118,4 +124,7 @@ namespace Faz.SideWinderSC.Logic
             IDLERON
         };
     };
+
+#pragma warning restore 1591
+
 }

@@ -65,7 +65,7 @@ namespace EliteJoystickService
                     return settings;
                 }
             }
-            catch(Exception _ex)
+            catch(Exception)
             {
                 return new Settings
                 {

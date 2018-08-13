@@ -3,8 +3,7 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Provides data for the <see cref="ButtonsEventArg"/> and
-    /// <see cref="ButtonsEventArg"/> events.
+    /// 
     /// </summary>
     public sealed class ButtonsEventArgs : EventArgs
     {

@@ -10,7 +10,7 @@ namespace Controllers.GearHead.Keypad
 {
     public class GhKpController : Controller
     {
-        static String Name = "Key Pad";
+        static readonly string Name = "Key Pad";
 
         public class ModifierChangedArgs {};
 

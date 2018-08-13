@@ -9,7 +9,7 @@ namespace Controllers.Thrustmaster.Warthog
 {
     public class TmThrottleController : Controller
     {
-        static String Name = "Warthog";
+        static readonly string Name = "Warthog";
 
         public static TmThrottleController Create(EliteSharedState sharedState, vJoy vjoy, vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)
         {

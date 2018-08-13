@@ -27,6 +27,7 @@ namespace EliteJoystickService
         private CommonCommunication.Client client = null;
         private Settings settings;
         private MessageHandler messageHandler = null;
+        private Task IpcProcessingTask;
 
         public JoystickService()
         {
@@ -164,22 +165,28 @@ namespace EliteJoystickService
 
         private void ClientActions_ClientAction(object sender, ClientActions.ClientEventArgs e)
         {
-            Task.Run(() => client.SendMessageAsync(e.Message));
+            Task.Run(() => client.SendMessageAsync(e.Message))
+                .ContinueWith(t => { log.Error($"Send Message Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private void StartIpcServer()
         {
             log.Debug("Starting IPC services");
             server = new CommonCommunication.Server { ContinueListening = true };
-            Task.Run(() => { server.StartListening("elite_joystick", this.ReceiveMessage); });
-            //new Thread(() => { server.StartListening("elite_joystick", this.ReceiveMessage); });
+            
+            IpcProcessingTask = Task.Factory.StartNew(() => server.StartListening("elite_joystick", this.ReceiveMessage),
+                CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+                .ContinueWith(t => { log.Error($"IPC Service Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
-        private async void ReceiveMessage(string message)
+        private void ReceiveMessage(string message)
         {
             log.Debug($"Message: {message}");
             if (false == String.IsNullOrEmpty(message))
-                await Task.Run(async () => await messageHandler.HandleMessage(message, sharedState, arduino));
+            {
+                var task = Task.Run(async () => await messageHandler.HandleMessage(message, sharedState, arduino))
+                    .ContinueWith(t => { log.Error($"Message Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+            }
         }
 
         private void StartService(string[] args)
@@ -188,14 +195,14 @@ namespace EliteJoystickService
             {
                 sharedState = new EliteSharedState { OrbitLines = true, HeadsUpDisplay = true };
                 settings = Settings.Load();
-                vJoyMapper = new vJoyMapper();
+                //vJoyMapper = new vJoyMapper();
                 ClientActions.ClientAction += ClientActions_ClientAction;
                 eliteVirtualJoysticks = StartVirtualJoysticks();
                 client = new CommonCommunication.Client();
                 messageHandler = new MessageHandler
                 {
                     Client = client,
-                    ConnectJoysticks = () => StartControllers(vJoyMapper, eliteVirtualJoysticks, sharedState),
+                    ConnectJoysticks = () => StartControllers(settings.vJoyMapper, eliteVirtualJoysticks, sharedState),
                     ConnectArduino = () => ConnectArduino(),
                 };
 
@@ -210,7 +217,7 @@ namespace EliteJoystickService
         private void StopService()
         {
             server.ContinueListening = false;
-            vJoyMapper.Save();
+            //vJoyMapper.Save();
             settings.Save();
             eliteVirtualJoysticks?.Release();
         }        

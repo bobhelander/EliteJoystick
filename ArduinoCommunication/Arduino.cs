@@ -8,39 +8,39 @@ namespace ArduinoCommunication
 {
     public class Arduino
     {
-        private System.IO.Ports.SerialPort serialPort { get; set; }
+        private System.IO.Ports.SerialPort SerialPort { get; set; }
 
         public Arduino(String commPort)
         {
-            serialPort = new System.IO.Ports.SerialPort(commPort, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
-            serialPort.Open();
+            SerialPort = new System.IO.Ports.SerialPort(commPort, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
+            SerialPort.Open();
         }
 
         public bool IsOpen()
         {
-            return serialPort.IsOpen;
+            return SerialPort.IsOpen;
         }
 
-        public void ReleaseKey(byte key)
+        public async Task ReleaseKey(byte key)
         {
-            serialPort.Write(new byte[] { 0x00, key, 0x00, 0xFF}, 0, 4);
+            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, key, 0x00, 0xFF}, 0, 4);
         }
 
-        public void DepressKey(byte key)
+        public async Task DepressKey(byte key)
         {
-            serialPort.Write(new byte[] { 0x00, 0x00, key, 0xFF}, 0, 4);
+            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, key, 0xFF}, 0, 4);
         }
 
-        public void ReleaseAll()
+        public async Task ReleaseAll()
         {
-            serialPort.Write(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4);
+            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4);
         }
 
-        public void PressKey(byte key, int duration = 30)
+        public async Task PressKey(byte key, int duration = 30)
         {
-            DepressKey(key);
-            System.Threading.Thread.Sleep(duration);
-            ReleaseKey(key);
+            await DepressKey(key);
+            await Task.Delay(duration);
+            await ReleaseKey(key);
         }
     }
 }

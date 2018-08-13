@@ -8,11 +8,11 @@ namespace Controllers.Sidewinder.ForceFeedback2
 {
     public class Swff2UtilCommandsStateHandler : StateHandler
     {
-        static UInt32 Button8 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button8;
-        static UInt32 Button7 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button7;
-        static UInt32 Button6 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button6;
-        static UInt32 Button5 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button5;
-        static UInt32 Button2 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button2;
+        static readonly UInt32 Button8 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button8;
+        static readonly UInt32 Button7 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button7;
+        static readonly UInt32 Button6 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button6;
+        static readonly UInt32 Button5 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button5;
+        static readonly UInt32 Button2 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button2;
 
         private Swff2Controller swff2Controller;
 

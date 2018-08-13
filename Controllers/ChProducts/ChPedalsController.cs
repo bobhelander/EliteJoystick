@@ -9,7 +9,7 @@ namespace Controllers.ChProducts
 {
     public class ChPedalsController : Controller
     {
-        static String Name = "CH Pedals";
+        static readonly string Name = "CH Pedals";
 
         public static ChPedalsController Create(EliteSharedState sharedState, vJoyInterfaceWrap.vJoy vjoy, vJoyMapper vJoyMapper)
         {
@@ -19,7 +19,6 @@ namespace Controllers.ChProducts
                 SharedState = sharedState,
                 vJoy = vjoy,
                 vJoyMapper = vJoyMapper,
-                //VisualState = new VisualState { Name = Name }
             };
         }
 

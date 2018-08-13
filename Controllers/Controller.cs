@@ -15,6 +15,9 @@ namespace Controllers
     /// </summary>
     public class Controller 
     {
+        private static readonly log4net.ILog log = 
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public virtual void Initialize() { }
 
         public vJoy vJoy { get; set; }
@@ -32,6 +35,7 @@ namespace Controllers
         public void SetJoystickButton(bool down, uint vButton, string vJoyType)
         {
             vJoy.SetBtn(down, vJoyMapper.GetJoystickId(vJoyType), vButton);
+            //log.Debug($"{vJoyType}: {vButton}: {down}");
         }
 
         public void SetJoystickAxis(int value, HID_USAGES usage, string vJoyType)
@@ -63,70 +67,38 @@ namespace Controllers
             Arduino?.ReleaseAll();
         }
 
-        public void TypeFullString(String text, System.Threading.EventWaitHandle finishedEvent)
+        public void TypeFullString(String text)
         {
-            ArduinoCommunication.Utils.TypeFullString(Arduino, text, finishedEvent);
+            Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(Arduino, text))
+             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        public void TypeFromClipboard()
+        {
+            Task.Run(async () => await ArduinoCommunication.Utils.TypeFromClipboard(Arduino))
+             .ContinueWith(t => { log.Error($"TypeFromClipboard Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         public void SendKeyCombo(byte[] modifier, byte key)
         {
-            ArduinoCommunication.Utils.KeyCombo(Arduino, modifier, key);
+            Task.Run(async () => await ArduinoCommunication.Utils.KeyCombo(Arduino, modifier, key))
+             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         #endregion
 
         #region Asynchronous Actions
 
-        public class ActivateButtonClass
-        {
-            public Timer Timer { get; set; }
-            public bool Pressed { get; set; }
-            public vJoy vJoy { get; set; }
-            public uint vJoyId { get; set; }            
-            public uint vButton { get; set; }
-            public long Delay { get; set; }
-        }
-
-        public void CallActivateButton(string vJoyType, uint vButton, long delay)
+        public void CallActivateButton(string vJoyType, uint vButton, int delay)
         {
             uint joyId = vJoyMapper.GetJoystickId(vJoyType);
 
-            var activateButton = new ActivateButtonClass
-            {
-                vJoy = vJoy,
-                vJoyId = joyId,
-                vButton = vButton,
-                Delay = delay
-            };
-
-            activateButton.Timer = new Timer(new TimerCallback(Action), activateButton, 0, Timeout.Infinite);
-        }
-
-        public void Disable(ActivateButtonClass activateButton)
-        {
-            if (null != activateButton.Timer)
-            {
-                var temp = activateButton.Timer;
-                activateButton.Timer = null;
-                temp.Dispose();
-                activateButton.vJoy.SetBtn(false, activateButton.vJoyId, activateButton.vButton);
-                activateButton.Pressed = false;
-            }
-        }
-
-        public virtual void Action(object o)
-        {
-            var activateButton = o as ActivateButtonClass;
-            activateButton.Pressed = !activateButton.Pressed;
-            activateButton.vJoy.SetBtn(activateButton.Pressed, activateButton.vJoyId, activateButton.vButton);
-
-            if (activateButton.Pressed)
-            {
-                activateButton.Timer.Change(activateButton.Delay, Timeout.Infinite);
-                return;
-            }
-
-            Disable(activateButton);
+            Task.Run(async () => {
+                vJoy.SetBtn(true, joyId, vButton);
+                await Task.Delay(delay);
+                vJoy.SetBtn(false, joyId, vButton);
+                log.Debug($"Button {vJoyType} Button {vButton}");
+            }).ContinueWith(t => { log.Error($"CallActivateButton Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         #endregion

@@ -25,12 +25,16 @@ namespace Faz.SideWinderSC.Logic
         /// <summary>
         /// The handle of the associated device.
         /// </summary>
-        private SafeFileHandle handle;
+        private SafeFileHandle readhandle;
+
+        private SafeFileHandle writehandle;
 
         /// <summary>
         /// The stream of the associated device;
         /// </summary>
-        private Stream stream;
+        private Stream readstream;
+
+        private Stream writestream;
 
         /// <summary>
         /// The capabilities of the associated device.
@@ -52,9 +56,14 @@ namespace Faz.SideWinderSC.Logic
 
             // Create the file handler from the device path
             // Win10 requires shared access
-            this.handle = Kernel32Methods.CreateFile(
+            this.readhandle = Kernel32Methods.CreateFile(
                 devicePath, 
-                Win32Api.Win32FileAccess.GenericRead | Win32FileAccess.GenericWrite,
+                Win32Api.Win32FileAccess.GenericRead,
+                FileShare.ReadWrite, IntPtr.Zero, FileMode.Open, Win32FileAttributes.Overlapped, IntPtr.Zero);
+
+            this.writehandle = Kernel32Methods.CreateFile(
+                devicePath,
+                Win32FileAccess.GenericWrite,
                 FileShare.ReadWrite, IntPtr.Zero, FileMode.Open, Win32FileAttributes.Overlapped, IntPtr.Zero);
 
             //this.handle = Kernel32Methods.CreateFile(
@@ -62,7 +71,7 @@ namespace Faz.SideWinderSC.Logic
             //    Win32Api.Win32FileAccess.GenericRead | Win32FileAccess.GenericWrite,
             //    FileShare.ReadWrite, IntPtr.Zero, FileMode.Open, Win32FileAttributes.Overlapped, IntPtr.Zero);
 
-            if (this.handle.IsInvalid)
+            if (this.readhandle.IsInvalid)
             {
                 // TODO: raise a better exception
                 throw new Exception("Failed to create device file", new Win32Exception(Marshal.GetLastWin32Error()));
@@ -94,7 +103,7 @@ namespace Faz.SideWinderSC.Logic
             {
                 if (!this.capabilitiesInitialized)
                 {
-                    using (SafePreparsedDataHandle preparsedData = HidMethods.GetPreparsedData(this.handle))
+                    using (SafePreparsedDataHandle preparsedData = HidMethods.GetPreparsedData(this.readhandle))
                     {
                         HidMethods.GetCaps(preparsedData, out this.capabilities);
                         this.capabilitiesInitialized = true;
@@ -110,7 +119,7 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         public override bool CanRead
         {
-            get { return this.Stream.CanRead; }
+            get { return this.ReadStream.CanRead; }
         }
 
         /// <summary>
@@ -118,7 +127,7 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         public override bool CanSeek
         {
-            get { return this.Stream.CanSeek; }
+            get { return this.ReadStream.CanSeek; }
         }
 
         /// <summary>
@@ -126,7 +135,7 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         public override bool CanWrite
         {
-            get { return this.Stream.CanWrite; }
+            get { return this.WriteStream.CanWrite; }
         }
 
         /// <summary>
@@ -134,7 +143,7 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         public override long Length
         {
-            get { return this.Stream.Length; }
+            get { return this.ReadStream.Length; }
         }
 
         /// <summary>
@@ -142,25 +151,40 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         public override long Position
         {
-            get { return this.Stream.Position; }
-            set { this.Stream.Position = value; }
+            get { return this.ReadStream.Position; }
+            set { this.ReadStream.Position = value; }
         }
 
         /// <summary>
         /// Gets the encapsulated stream.
         /// </summary>
-        private Stream Stream
+        private Stream ReadStream
         {
             get
             {
-                if (this.stream == null)
+                if (this.readstream == null)
                 {
-                    this.stream = new FileStream(this.handle, 
-                        System.IO.FileAccess.Read | System.IO.FileAccess.Write, 
+                    this.readstream = new FileStream(this.readhandle, 
+                        System.IO.FileAccess.Read, 
                         this.Capabilities.InputReportByteLength, true);
                 }
 
-                return this.stream;
+                return this.readstream;
+            }
+        }
+
+        private Stream WriteStream
+        {
+            get
+            {
+                if (this.writestream == null)
+                {
+                    this.writestream = new FileStream(this.writehandle,
+                        System.IO.FileAccess.Write,
+                        this.Capabilities.OutputReportByteLength, true);
+                }
+
+                return this.writestream;
             }
         }
 
@@ -169,7 +193,7 @@ namespace Faz.SideWinderSC.Logic
         /// </summary>
         public override void Flush()
         {
-            this.Stream.Flush();
+            this.ReadStream.Flush();
         }
 
         /// <summary>
@@ -189,7 +213,7 @@ namespace Faz.SideWinderSC.Logic
         /// </returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return this.Stream.Read(buffer, offset, count);
+            return this.ReadStream.Read(buffer, offset, count);
         }
 
         /// <summary>
@@ -206,7 +230,7 @@ namespace Faz.SideWinderSC.Logic
         /// </returns>
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return this.Stream.Seek(offset, origin);
+            return this.ReadStream.Seek(offset, origin);
         }
 
         /// <summary>
@@ -215,7 +239,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="value">The desired length of the current stream in bytes.</param>
         public override void SetLength(long value)
         {
-            this.Stream.SetLength(value);
+            this.ReadStream.SetLength(value);
         }
 
         /// <summary>
@@ -232,7 +256,7 @@ namespace Faz.SideWinderSC.Logic
         /// </param>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            this.Stream.Write(buffer, offset, count);
+            this.WriteStream.Write(buffer, offset, count);
         }
 
         public int ReadFeature(byte[] buffer, int offset, int count, byte initialByte=1)
@@ -252,7 +276,7 @@ namespace Faz.SideWinderSC.Logic
                 Array.ConstrainedCopy(buffer, offset, reportBuffer, 0, count);
             }
 
-            if (!Win32Api.HidMethods.GetFeature(this.handle, reportBuffer, count))
+            if (!Win32Api.HidMethods.GetFeature(this.readhandle, reportBuffer, count))
             {
                 throw new Exception("Can't retrieve feature report", new Win32Exception(Marshal.GetLastWin32Error()));
             }
@@ -283,7 +307,7 @@ namespace Faz.SideWinderSC.Logic
                 Array.ConstrainedCopy(buffer, offset, reportBuffer, 0, count);
             }
 
-            if (!Win32Api.HidMethods.SetFeature(this.handle, reportBuffer, count))
+            if (!Win32Api.HidMethods.SetFeature(this.readhandle, reportBuffer, count))
             {
                 throw new Exception("Can't write feature report", new Win32Exception(Marshal.GetLastWin32Error()));
             }
@@ -306,17 +330,17 @@ namespace Faz.SideWinderSC.Logic
             if (disposing)
             {
                 // Dispose managed resources
-                if (this.stream != null)
+                if (this.readstream != null)
                 {
-                    this.stream.Dispose();
+                    this.readstream.Dispose();
                 }
             }
 
             // Dispose unmanaged resources
-            if (this.handle != null)
+            if (this.readhandle != null)
             {
-                this.handle.Dispose();
-                this.handle = null;
+                this.readhandle.Dispose();
+                this.readhandle = null;
             }
 
             base.Dispose(disposing);

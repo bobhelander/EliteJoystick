@@ -3,8 +3,7 @@
 namespace Faz.SideWinderSC.Logic
 {
     /// <summary>
-    /// Provides data for the <see cref="Swff2Controller.ButtonUp"/> and
-    /// <see cref="Swff2Controller.ButtonDown"/> events.
+    /// 
     /// </summary>
     public sealed class Swff2ButtonEventArg : EventArgs
     {

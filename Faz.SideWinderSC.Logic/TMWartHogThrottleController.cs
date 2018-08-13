@@ -228,9 +228,10 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Raised the <see cref="Swff2Controller.Hat"/> event.
+        /// 
         /// </summary>
-        /// <param name="allSwitches">The current rotation level.</param>
+        /// <param name="buttons"></param>
+        /// <param name="previousButtons"></param>
         private void OnSwitchState(UInt32 buttons, UInt32 previousButtons)
         {
             SwitchState?.Invoke(this, new TmThrottleSwitchEventArgs(buttons, previousButtons));

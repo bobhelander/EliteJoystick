@@ -37,7 +37,7 @@ namespace EliteJoystickService
                     break;
                 case "keyboard_output":
                     log.Debug($"Arduino: testing");
-                    await Task.Run(() => ArduinoCommunication.Utils.TypeFullString(arduino, message.Data, null));
+                    await Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(arduino, message.Data));
                     break;
                 default:
                     //Unknown message

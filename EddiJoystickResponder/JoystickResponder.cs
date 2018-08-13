@@ -44,6 +44,11 @@ namespace EddiJoystickResponder
             }
         }
 
+        public string LocalizedResponderName()
+        {
+            return "Elite Joystick Responder";
+        }
+
         public void Reload()
         {
             //throw new NotImplementedException();

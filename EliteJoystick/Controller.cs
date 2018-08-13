@@ -15,6 +15,9 @@ namespace EliteJoystick
     /// </summary>
     public class Controller 
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public virtual void Initialize() { }
 
         public vJoy vJoy { get; set; }
@@ -63,14 +66,22 @@ namespace EliteJoystick
             Arduino?.ReleaseAll();
         }
 
-        public void TypeFullString(String text, System.Threading.EventWaitHandle finishedEvent)
+        public void TypeFullString(String text)
         {
-            ArduinoCommunication.Utils.TypeFullString(Arduino, text, finishedEvent);
+            Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(Arduino, text))
+             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        public void TypeFromClipboard()
+        {
+            Task.Run(async () => await ArduinoCommunication.Utils.TypeFromClipboard(Arduino))
+             .ContinueWith(t => { log.Error($"TypeFromClipboard Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         public void SendKeyCombo(byte[] modifier, byte key)
         {
-            ArduinoCommunication.Utils.KeyCombo(Arduino, modifier, key);
+            Task.Run(async () => await ArduinoCommunication.Utils.KeyCombo(Arduino, modifier, key))
+             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         #endregion

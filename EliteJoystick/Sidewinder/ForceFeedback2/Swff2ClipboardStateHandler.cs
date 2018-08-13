@@ -9,11 +9,9 @@ namespace EliteJoystick.Sidewinder.ForceFeedback2
 {
     public class Swff2ClipboardStateHandler : StateHandler
     {
-        static UInt32 button6 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button6;
+        static readonly UInt32 button6 = (UInt32)Faz.SideWinderSC.Logic.Swff2Button.Button6;
 
         private Swff2Controller swff2Controller;
-
-        AutoResetEvent finishedEvent = new AutoResetEvent(true);
 
         public Swff2Controller Swff2Controller
         {
@@ -32,9 +30,9 @@ namespace EliteJoystick.Sidewinder.ForceFeedback2
         {
             if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, button6))
             {
-                if (System.Windows.Clipboard.ContainsText() && finishedEvent.WaitOne(0))
+                if (System.Windows.Clipboard.ContainsText())
                 {
-                    swff2Controller.TypeFullString(String.Empty, finishedEvent);
+                    swff2Controller.TypeFromClipboard();
                 }
             }
         }

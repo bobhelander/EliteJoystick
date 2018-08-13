@@ -77,7 +77,7 @@ namespace EliteJoystickServiceTest
                 while (true)
                     Thread.Sleep(1000);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 ;
             }

@@ -27,7 +27,7 @@ namespace GameEnvironment
                 if (Launch)
                     Process = Utils.Launch(Command);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //System.Windows.MessageBox.Show(ex.Message);
             }            

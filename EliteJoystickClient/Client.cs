@@ -16,6 +16,7 @@ namespace EliteJoystickClient
         public CommonCommunication.Server Server { get; set; }
         public MessageHandler MessageHandler { get; set; }
         public ChromeController.Chrome Chrome { get; set; }
+        private Task ServerListeningTask { get; set; }
 
         public async Task Initialize()
         {
@@ -24,12 +25,15 @@ namespace EliteJoystickClient
 
             // Create the client server pipe
             Server = new CommonCommunication.Server { ContinueListening = true };
-            //Task.Run(() => { Server.StartListening(Name, MessageHandler.HandleMessage); }).Start();
-            Task.Run(async () => { await Server.StartListening(Name, MessageHandler.HandleMessage); });
+
+            ServerListeningTask = Task.Factory.StartNew(() => Server.StartListening(Name, MessageHandler.HandleMessage),
+                CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+                .ContinueWith(t => { log.Error($"Server Listening Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
 
             // Contact the Service Pipe
             MessageHandler.Client = new CommonCommunication.Client();
-            MessageHandler.Client.CreateConnection("elite_joystick");
+
+            await MessageHandler.Client.CreateConnection("elite_joystick");
 
             // Begin two way communication
             var message = JsonConvert.SerializeObject(

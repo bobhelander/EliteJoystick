@@ -10,7 +10,7 @@ namespace Controllers.Sidewinder.ForceFeedback2
 {
     public class Swff2Controller : Controller
     {
-        static String Name = "Force Feedback 2";
+        static readonly string Name = "Force Feedback 2";
 
         public static Swff2Controller Create(EliteSharedState sharedState, vJoy vjoy,
             vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)

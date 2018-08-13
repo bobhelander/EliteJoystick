@@ -125,10 +125,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="y">The y part of the position.</param>
         private void OnMove(int x, int y)
         {
-            if (this.Move != null)
-            {
-                this.Move(this, new MoveEventArgs(x, y));
-            }
+            this.Move?.Invoke(this, new MoveEventArgs(x, y));
         }
 
         /// <summary>
@@ -137,10 +134,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="r">The current rotation level.</param>
         private void OnRotate(int r)
         {
-            if (this.Rotate != null)
-            {
-                this.Rotate(this, new RotateEventArgs(r));
-            }
+            this.Rotate?.Invoke(this, new RotateEventArgs(r));
         }
     }
 }

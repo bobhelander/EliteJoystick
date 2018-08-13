@@ -10,7 +10,7 @@ namespace Controllers.Sidewinder.GameVoice
 {
     public class SwGvController : Controller
     {
-        static String Name = "Game Voice";
+        static readonly string Name = "Game Voice";
 
         public class ModifierChangedArgs {};
 

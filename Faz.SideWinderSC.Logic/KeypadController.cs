@@ -60,7 +60,7 @@ namespace Faz.SideWinderSC.Logic
                         break;
                     }
                 }
-                catch(Exception _ex)
+                catch(Exception)
                 {
                     ;
                 }
@@ -97,13 +97,13 @@ namespace Faz.SideWinderSC.Logic
         }
 
         /// <summary>
-        /// Raised the <see cref="KeypadController.ButtonDown"/> event.
+        /// 
         /// </summary>
-        /// <param name="buttons">The pressed button.</param>
+        /// <param name="buttons"></param>
+        /// <param name="previousButtons"></param>
         private void OnButtonsChange(uint buttons, uint previousButtons)
         {
-            if (null != this.ButtonsChanged)
-                this.ButtonsChanged(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });
+            this.ButtonsChanged?.Invoke(this, new ButtonsEventArgs { Buttons = buttons, PreviousButtons = previousButtons });
         }
     }
 }

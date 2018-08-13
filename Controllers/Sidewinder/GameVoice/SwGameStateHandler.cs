@@ -10,7 +10,6 @@ namespace Controllers.Sidewinder.GameVoice
 {
     public class SwGameStateHandler : StateHandler
     {
-        private byte oldState;
         private SwGvController swGvController;
 
         public SwGvController SwGvController

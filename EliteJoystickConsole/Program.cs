@@ -40,12 +40,14 @@ namespace EliteJoystickConsole
                 client.Initialize().Wait();
 
                 Console.ReadKey();
-                //client.ConnectArduino().Wait();
-               // Console.WriteLine("connected");
+                client.ConnectArduino().Wait();
+                Console.WriteLine("connected");
                 //Console.ReadKey();
                 //client.PasteClipboard().Wait();
 
-                client.ConnectJoysticks();
+                var task = Task.Run(async () => await client.ConnectJoysticks())
+                    .ContinueWith(t => { log.Error($"ConnectJoysticks Exception: {t.Exception}"); }, 
+                    TaskContinuationOptions.OnlyOnFaulted);
             }
             Console.ReadKey();
         }
