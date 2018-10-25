@@ -11,13 +11,15 @@ namespace Controllers.ChProducts
     {
         static readonly string Name = "CH Pedals";
 
-        public static ChPedalsController Create(EliteSharedState sharedState, vJoyInterfaceWrap.vJoy vjoy, vJoyMapper vJoyMapper)
+        public static ChPedalsController Create(
+            EliteSharedState sharedState, vJoyInterfaceWrap.vJoy vjoy, EliteVirtualJoysticks virtualJoysticks, vJoyMapper vJoyMapper)
         {
             return new ChPedalsController()
             {
                 Controller = Faz.SideWinderSC.Logic.CHPedalsController.RetrieveAll()?.First(),
                 SharedState = sharedState,
-                vJoy = vjoy,
+                //vJoy = vjoy,
+                VirtualJoysticks = virtualJoysticks,
                 vJoyMapper = vJoyMapper,
             };
         }

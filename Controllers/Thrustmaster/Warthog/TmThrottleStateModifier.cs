@@ -14,6 +14,7 @@ namespace Controllers.Thrustmaster.Warthog
         static UInt32 Button27 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button27;
         static UInt32 Button28 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button28;
         static UInt32 Button01 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button01;
+        static UInt32 Button15 = (UInt32)Faz.SideWinderSC.Logic.TmThrottleButton.Button15;
 
         private TmThrottleController tmThrottleController;
 
@@ -46,10 +47,16 @@ namespace Controllers.Thrustmaster.Warthog
                     TmThrottleController.SharedState.CurrentMode = EliteSharedState.Mode.Mining;
 
                 if (TmThrottleController.TestButtonPressed(e.PreviousButtons, e.Buttons, Button01))
-                    TmThrottleController.SharedState.ThrottleShiftStateValue = EliteSharedState.ThrottleShiftState.Shift1;
+                    TmThrottleController.SharedState.ThrottleShift1 = true;
 
                 if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, Button01))
-                    TmThrottleController.SharedState.ThrottleShiftStateValue = EliteSharedState.ThrottleShiftState.None;
+                    TmThrottleController.SharedState.ThrottleShift1 = false;
+
+                if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, Button15))
+                    TmThrottleController.SharedState.ThrottleShift2 = true;
+
+                if (TmThrottleController.TestButtonReleased(e.PreviousButtons, e.Buttons, Button15))
+                    TmThrottleController.SharedState.ThrottleShift2 = false;
             }
         }
     }

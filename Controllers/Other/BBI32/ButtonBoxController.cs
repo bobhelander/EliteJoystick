@@ -14,13 +14,15 @@ namespace Controllers.Other.BBI32
 
         public class ModifierChangedArgs {};
 
-        public static ButtonBoxController Create(EliteSharedState sharedState, vJoy vjoy, vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)
+        public static ButtonBoxController Create(
+            EliteSharedState sharedState, vJoy vjoy, EliteVirtualJoysticks virtualJoysticks, vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)
         {
             return new ButtonBoxController()
             {
                 Controller = BBI32Controller.RetrieveAll()?.First(),
                 SharedState = sharedState,
-                vJoy = vjoy,
+                //vJoy = vjoy,
+                VirtualJoysticks = virtualJoysticks,
                 vJoyMapper = vJoyMapper,
                 Arduino = arduino,
                 //VisualState = new VisualState { Name = Name }

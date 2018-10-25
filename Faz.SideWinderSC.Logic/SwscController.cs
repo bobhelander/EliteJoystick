@@ -121,12 +121,6 @@ namespace Faz.SideWinderSC.Logic
             CurrentStatus = SwscStatus.Create(e.Values);
             SwscStatus current = CurrentStatus;
 
-            // Trace the received data in both binary and rich formats
-            if (Logger.Default.IsVerbose())
-            {
-                Logger.Default.Verbose("{0:x8} {1}", e.Values.Reverse().Aggregate(0L, (l, b) => l << 8 | b), current);
-            }
-
             // Check whether the profile change
             if (previous.Profile != current.Profile)
             {
@@ -146,14 +140,12 @@ namespace Faz.SideWinderSC.Logic
             }
 
             // Check whether the buttons change
-            var upButtons = previous.DownButtons.Except(current.DownButtons);
-            foreach (SwscButton button in upButtons)
+            foreach (SwscButton button in previous.DownButtons.Except(current.DownButtons))
             {
                 this.OnButtonUp(button);
             }
 
-            var downButtons = current.DownButtons.Except(previous.DownButtons);
-            foreach (SwscButton button in downButtons)
+            foreach (SwscButton button in current.DownButtons.Except(previous.DownButtons))
             {
                 this.OnButtonDown(button);
             }

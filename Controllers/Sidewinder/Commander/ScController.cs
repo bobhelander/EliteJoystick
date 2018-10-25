@@ -17,13 +17,15 @@ namespace Controllers.Sidewinder.Commander
         public event EventHandler<ModifierChangedArgs> BeforeModifierChanged;
         public event EventHandler<ModifierChangedArgs> AfterModifierChanged;
 
-        public static ScController Create(EliteSharedState sharedState, vJoy vjoy, vJoyMapper vJoyMapper)
+        public static ScController Create(
+            EliteSharedState sharedState, vJoy vjoy, EliteVirtualJoysticks virtualJoysticks, vJoyMapper vJoyMapper)
         {
             return new ScController()
             {
                 Controller = SwscController.RetrieveAll()?.First(),
                 SharedState = sharedState,
-                vJoy = vjoy,
+                //vJoy = vjoy,
+                VirtualJoysticks = virtualJoysticks,
                 vJoyMapper = vJoyMapper,
             };
         }

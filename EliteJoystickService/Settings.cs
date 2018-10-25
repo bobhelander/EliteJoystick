@@ -18,11 +18,9 @@ namespace EliteJoystickService
         public Settings()
         {
             vJoyMapper = new vJoyMapper();
-            StartUpApplications = new List<StartUpApplication>();
         }
 
         public vJoyMapper vJoyMapper { get; set; }
-        public List<StartUpApplication> StartUpApplications { get; set; }
         public String ArduinoCommPort { get; set; }
 
         public void Save()
@@ -69,20 +67,9 @@ namespace EliteJoystickService
             {
                 return new Settings
                 {
-                    StartUpApplications = Initialize(),
                     vJoyMapper = new vJoyMapper { vJoyMap = vJoyMapper.Initialize() }
                 };
             }
-        }
-
-        static List<StartUpApplication> Initialize()
-        {
-            return new List<StartUpApplication> {
-                new StartUpApplication { Name = "VoiceMeeter", Command = @"C:\Program Files (x86)\VB\Voicemeeter\voicemeeterpro.exe" },
-                new StartUpApplication { Name = "Elite Launcher", Command = @"H:\Steam\steamapps\common\Elite Dangerous\EDLaunch.exe" },
-                new StartUpApplication { Name = "EDDI", Command = @"C:\Program Files (x86)\VoiceAttack\Apps\EDDI\EDDI.exe" },
-                new StartUpApplication { Name = "ED Profiler", Command = @"C:\Users\Bob\Desktop\EDProfiler.appref-ms" },
-            };
         }
     }
 }

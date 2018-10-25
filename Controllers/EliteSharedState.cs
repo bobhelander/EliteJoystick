@@ -85,19 +85,9 @@ namespace Controllers
             }
         }
 
-        private ThrottleShiftState throttleShiftStateValue;
-        public ThrottleShiftState ThrottleShiftStateValue
-        {
-            get { return throttleShiftStateValue; }
-            set
-            {
-                if (value != throttleShiftStateValue)
-                {
-                    throttleShiftStateValue = value;
-                    OnThrottleShiftChanged(value);
-                }
-            }
-        }
+        public bool ThrottleShift1 { get; set; }
+
+        public bool ThrottleShift2 { get; set; }
 
         private bool mute;
         public bool Mute
@@ -127,8 +117,8 @@ namespace Controllers
             }
         }
 
-        public bool OrbitLines { get; set; }
-        public bool HeadsUpDisplay { get; set; }
+        public bool OrbitLines { get; set; } = true;
+        public bool HeadsUpDisplay { get; set; } = true;
 
         private void OnModeChanged(Mode mode)
         {

@@ -90,12 +90,6 @@ namespace Faz.SideWinderSC.Logic
             Swff2Status previous = this.previousRead;
             Swff2Status current = Swff2Status.Create(e.Values);
 
-            // Trace the received data in both binary and rich formats
-            if (Logger.Default.IsVerbose())
-            {
-               // Logger.Default.Verbose("{0:x8} {1}", e.Values.Reverse().Aggregate(0L, (l, b) => l << 8 | b), current);
-            }
-
             // Check whether the position change
             if (previous.X != current.X || previous.Y != current.Y)
             {

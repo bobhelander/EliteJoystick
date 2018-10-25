@@ -17,13 +17,15 @@ namespace Controllers.Sidewinder.GameVoice
         public event EventHandler<ModifierChangedArgs> BeforeModifierChanged;
         public event EventHandler<ModifierChangedArgs> AfterModifierChanged;
 
-        public static SwGvController Create(EliteSharedState sharedState, vJoy vjoy, vJoyMapper vJoyMapper)
+        public static SwGvController Create(
+            EliteSharedState sharedState, vJoy vjoy, EliteVirtualJoysticks virtualJoysticks, vJoyMapper vJoyMapper)
         {
             return new SwGvController()
             {
                 Controller = SwgvController.RetrieveAll()?.First(),
                 SharedState = sharedState,
-                vJoy = vjoy,
+                //vJoy = vjoy,
+                VirtualJoysticks = virtualJoysticks,
                 vJoyMapper = vJoyMapper,
                 //VisualState = new VisualState { Name = Name }
             };

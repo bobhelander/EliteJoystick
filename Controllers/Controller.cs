@@ -20,11 +20,10 @@ namespace Controllers
 
         public virtual void Initialize() { }
 
-        public vJoy vJoy { get; set; }
+        //public vJoy vJoy { get; set; }
+        public EliteVirtualJoysticks VirtualJoysticks { get; set; }
 
         public vJoyMapper vJoyMapper { get; set; }
-
-        //public VisualState VisualState { get; set; }
 
         public bool Use { get; set; }
 
@@ -34,18 +33,20 @@ namespace Controllers
 
         public void SetJoystickButton(bool down, uint vButton, string vJoyType)
         {
-            vJoy.SetBtn(down, vJoyMapper.GetJoystickId(vJoyType), vButton);
-            //log.Debug($"{vJoyType}: {vButton}: {down}");
+            VirtualJoysticks.SetJoystickButton(down, vButton, vJoyMapper.GetJoystickId(vJoyType));
+            log.Debug($"{vJoyType}: {vButton}: {down}");
         }
 
         public void SetJoystickAxis(int value, HID_USAGES usage, string vJoyType)
         {
-            vJoy.SetAxis(value, vJoyMapper.GetJoystickId(vJoyType), usage);
+            VirtualJoysticks.SetJoystickAxis(value, usage, vJoyMapper.GetJoystickId(vJoyType));
+            //vJoy.SetAxis(value, vJoyMapper.GetJoystickId(vJoyType), usage);
         }
 
         public void SetJoystickHat(int value, string vJoyType, uint hatNumber)
         {
-            vJoy.SetDiscPov(value, vJoyMapper.GetJoystickId(vJoyType), hatNumber);
+            VirtualJoysticks.SetJoystickHat(value, hatNumber, vJoyMapper.GetJoystickId(vJoyType));
+            //vJoy.SetDiscPov(value, vJoyMapper.GetJoystickId(vJoyType), hatNumber);
         }
 
         #endregion
@@ -94,9 +95,9 @@ namespace Controllers
             uint joyId = vJoyMapper.GetJoystickId(vJoyType);
 
             Task.Run(async () => {
-                vJoy.SetBtn(true, joyId, vButton);
+                VirtualJoysticks.SetJoystickButton(true, vButton, joyId);
                 await Task.Delay(delay);
-                vJoy.SetBtn(false, joyId, vButton);
+                VirtualJoysticks.SetJoystickButton(false, vButton, joyId);
                 log.Debug($"Button {vJoyType} Button {vButton}");
             }).ContinueWith(t => { log.Error($"CallActivateButton Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }

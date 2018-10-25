@@ -20,7 +20,6 @@ namespace EliteJoystickService
 
         private EliteControllers eliteControllers = null;
         private EliteVirtualJoysticks eliteVirtualJoysticks = null;
-        private vJoyMapper vJoyMapper;
         private EliteSharedState sharedState;
         private ArduinoCommunication.Arduino arduino = null;
         private CommonCommunication.Server server = null;
@@ -65,22 +64,14 @@ namespace EliteJoystickService
             var eliteVirtualJoysticks = new EliteVirtualJoysticks();
 
             try
-            { 
-                for (uint joyId = 1; joyId <= 6; joyId++)
-                {
-                    eliteVirtualJoysticks.Controllers.Add(new EliteVirtualJoystick
-                    {
-                        Joystick = eliteVirtualJoysticks.Joystick,
-                        JoystickId = joyId,
-                    });
-                }
-
+            {
                 eliteVirtualJoysticks.Initialize();
             }
             catch(Exception ex)
             {
                 log.Error(ex);
             }
+
             return eliteVirtualJoysticks;
         }
 
@@ -90,7 +81,7 @@ namespace EliteJoystickService
             EliteSharedState sharedState)
         {
             log.Debug("Connecting to Controllers");
-
+            
             eliteControllers = new EliteControllers();
 
             try
@@ -99,6 +90,7 @@ namespace EliteJoystickService
                     Controllers.Sidewinder.ForceFeedback2.Swff2Controller.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper,
                         arduino));
 
@@ -106,6 +98,7 @@ namespace EliteJoystickService
                     Controllers.Thrustmaster.Warthog.TmThrottleController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper,
                         arduino));
 
@@ -113,24 +106,28 @@ namespace EliteJoystickService
                     Controllers.ChProducts.ChPedalsController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper));
 
                 eliteControllers.Controllers.Add(
                     Controllers.Sidewinder.Commander.ScController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper));
 
                 eliteControllers.Controllers.Add(
                     Controllers.Sidewinder.GameVoice.SwGvController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper));
 
                 eliteControllers.Controllers.Add(
                     Controllers.Other.BBI32.ButtonBoxController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper,
                         arduino));
 
@@ -152,12 +149,6 @@ namespace EliteJoystickService
         }
 
         private void ConnectArduino()
-        {
-            arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort);
-            ClientActions.ClientInformationAction(this, "Arduino Ready");
-        }
-
-        private void KeyboardOutput(string data)
         {
             arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort);
             ClientActions.ClientInformationAction(this, "Arduino Ready");
@@ -193,16 +184,17 @@ namespace EliteJoystickService
         {
             try
             {
-                sharedState = new EliteSharedState { OrbitLines = true, HeadsUpDisplay = true };
+                sharedState = new EliteSharedState();
                 settings = Settings.Load();
-                //vJoyMapper = new vJoyMapper();
-                ClientActions.ClientAction += ClientActions_ClientAction;
-                eliteVirtualJoysticks = StartVirtualJoysticks();
+                ClientActions.ClientAction += ClientActions_ClientAction;                
                 client = new CommonCommunication.Client();
                 messageHandler = new MessageHandler
-                {
+                {                    
                     Client = client,
-                    ConnectJoysticks = () => StartControllers(settings.vJoyMapper, eliteVirtualJoysticks, sharedState),
+                    ConnectJoysticks = () => {
+                        eliteVirtualJoysticks = StartVirtualJoysticks();
+                        StartControllers(settings.vJoyMapper, eliteVirtualJoysticks, sharedState);
+                    },
                     ConnectArduino = () => ConnectArduino(),
                 };
 
@@ -217,7 +209,7 @@ namespace EliteJoystickService
         private void StopService()
         {
             server.ContinueListening = false;
-            //vJoyMapper.Save();
+            settings.vJoyMapper.Save();
             settings.Save();
             eliteVirtualJoysticks?.Release();
         }        

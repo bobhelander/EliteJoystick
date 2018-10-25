@@ -12,7 +12,7 @@ namespace Controllers.Sidewinder.ForceFeedback2
     {
         static readonly string Name = "Force Feedback 2";
 
-        public static Swff2Controller Create(EliteSharedState sharedState, vJoy vjoy,
+        public static Swff2Controller Create(EliteSharedState sharedState, vJoy vjoy, EliteVirtualJoysticks virtualJoysticks,
             vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)
         {
             try
@@ -21,7 +21,8 @@ namespace Controllers.Sidewinder.ForceFeedback2
                 {
                     Controller = Faz.SideWinderSC.Logic.Swff2Controller.RetrieveAll().First(),
                     SharedState = sharedState,
-                    vJoy = vjoy,
+                    //vJoy = vjoy,
+                    VirtualJoysticks = virtualJoysticks,
                     vJoyMapper = vJoyMapper,
                     Arduino = arduino,
                 };

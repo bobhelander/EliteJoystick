@@ -23,7 +23,7 @@ namespace Controllers.GearHead.Keypad
             {
                 Controller = Faz.SideWinderSC.Logic.KeypadController.RetrieveAll()?.First(),
                 SharedState = sharedState,
-                vJoy = vjoy,
+                //vJoy = vjoy,
                 vJoyMapper = vJoyMapper,
                 //VisualState = new VisualState { Name = Name }
             };

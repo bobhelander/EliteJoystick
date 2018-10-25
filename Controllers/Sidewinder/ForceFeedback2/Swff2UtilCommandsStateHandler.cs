@@ -50,7 +50,7 @@ namespace Controllers.Sidewinder.ForceFeedback2
             }
                         
             if (Swff2Controller.TestButtonPressed(e.PreviousButtons, e.Buttons, Button2) &&
-                Swff2Controller.SharedState.ThrottleShiftStateValue == EliteSharedState.ThrottleShiftState.Shift1)
+                Swff2Controller.SharedState.ThrottleShift1)
             {
                 // Focus Elite Window
                 ClientActions.FocusProcess(this);

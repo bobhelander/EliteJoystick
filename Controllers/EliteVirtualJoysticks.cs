@@ -12,20 +12,24 @@ namespace Controllers
     /// </summary>
     public class EliteVirtualJoysticks
     {
-        public EliteVirtualJoysticks()
-        {
-            Joystick = new vJoy();
-            Controllers = new List<EliteVirtualJoystick>();
-        }
+        public vJoy Joystick { get; set; } = new vJoy();
+        public EliteVirtualJoystick[] Controllers { get; set; } = new EliteVirtualJoystick[6] {
+                        new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick(),
+                        new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick()};
 
-        public vJoy Joystick { get; set; }
-        public List<EliteVirtualJoystick> Controllers { get; set; }
+        public vJoy.JoystickState[] States { get; set; } = new vJoy.JoystickState[6] {
+                        new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState(),
+                        new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState()};
 
         public void Initialize()
         {
+            uint vJoyId = 1;
             foreach (var controller in Controllers)
             {
+                controller.Joystick = Joystick;
+                controller.JoystickId = vJoyId;
                 controller.Aquire();
+                vJoyId++;
             }
         }
 
@@ -33,6 +37,22 @@ namespace Controllers
         {
             foreach (var controller in Controllers)
                 controller.Release();
+        }
+
+        public void SetJoystickButton(bool down, uint vButton, uint vJoyId)
+        {
+            //States[vJoyId-1].
+            Joystick.SetBtn(down, vJoyId, vButton);
+        }
+
+        public void SetJoystickAxis(int value, HID_USAGES usage, uint vJoyId)
+        {
+            Joystick.SetAxis(value, vJoyId, usage);
+        }
+
+        public void SetJoystickHat(int value, uint hatNumber, uint vJoyId)
+        {
+            Joystick.SetDiscPov(value, vJoyId, hatNumber);
         }
     }
 }

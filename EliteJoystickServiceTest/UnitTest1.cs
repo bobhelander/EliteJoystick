@@ -22,14 +22,14 @@ namespace EliteJoystickServiceTest
 
                 Settings settings = Settings.Load();
 
-                for (uint joyId = 1; joyId <= 6; joyId++)
-                {
-                    eliteVirtualJoysticks.Controllers.Add(new EliteVirtualJoystick
-                    {
-                        Joystick = eliteVirtualJoysticks.Joystick,
-                        JoystickId = joyId,
-                    });
-                }
+                //for (uint joyId = 1; joyId <= 6; joyId++)
+                //{
+                //    eliteVirtualJoysticks.Controllers.Add(new EliteVirtualJoystick
+                //    {
+                //        Joystick = eliteVirtualJoysticks.Joystick,
+                //        JoystickId = joyId,
+                //    });
+                //}
 
                 eliteVirtualJoysticks.Initialize();
 
@@ -37,6 +37,7 @@ namespace EliteJoystickServiceTest
                         Controllers.Sidewinder.ForceFeedback2.Swff2Controller.Create(
                             sharedState,
                             eliteVirtualJoysticks.Joystick,
+                            eliteVirtualJoysticks,
                             vJoyMapper,
                             arduino));
 
@@ -44,6 +45,7 @@ namespace EliteJoystickServiceTest
                     Controllers.Thrustmaster.Warthog.TmThrottleController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper,
                         arduino));
 
@@ -51,24 +53,28 @@ namespace EliteJoystickServiceTest
                     Controllers.ChProducts.ChPedalsController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper));
 
                 eliteControllers.Controllers.Add(
                     Controllers.Sidewinder.Commander.ScController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper));
 
                 eliteControllers.Controllers.Add(
                     Controllers.Sidewinder.GameVoice.SwGvController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper));
 
                 eliteControllers.Controllers.Add(
                     Controllers.Other.BBI32.ButtonBoxController.Create(
                         sharedState,
                         eliteVirtualJoysticks.Joystick,
+                        eliteVirtualJoysticks,
                         vJoyMapper,
                         arduino));
 

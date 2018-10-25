@@ -30,7 +30,7 @@ namespace Controllers.Sidewinder.ForceFeedback2
         {
             int pov = e.Hat / 2;
             pov = pov == 4 ? -1 : pov;
-            swff2Controller.vJoy.SetDiscPov(pov, 1, 1);
+            swff2Controller.SetJoystickHat(pov, vJoyTypes.StickAndPedals, 1);
 
             foreach (var vButton in vButtons)
             {

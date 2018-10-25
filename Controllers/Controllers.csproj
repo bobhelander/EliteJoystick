@@ -100,6 +100,7 @@
     <Compile Include="Sidewinder\GameVoice\SwGameVoiceNumberButton.cs" />
     <Compile Include="Sidewinder\GameVoice\SwGvController.cs" />
     <Compile Include="StateHandler.cs" />
+    <Compile Include="SystemJoysticks.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottle75Command.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottleButtonStateHandler.cs" />
     <Compile Include="Thrustmaster\Warthog\TmThrottleCameraCommand.cs" />

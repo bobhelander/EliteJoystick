@@ -102,21 +102,13 @@ namespace Faz.SideWinderSC.Logic
             SwgvStatus previous = this.previousRead;
             SwgvStatus current = SwgvStatus.Create(e.Values);
 
-            // Trace the received data in both binary and rich formats
-            if (Logger.Default.IsVerbose())
-            {
-                //Logger.Default.Verbose("{0:x8} {1}", e.Values.Reverse().Aggregate(0L, (l, b) => l << 8 | b), current);
-            }
-
             // Check whether the buttons change
-            var upButtons = previous.DownButtons.Except(current.DownButtons);
-            foreach (SwgvButton button in upButtons)
+            foreach (SwgvButton button in previous.DownButtons.Except(current.DownButtons))
             {
                 this.OnButtonUp(button);
             }
 
-            var downButtons = current.DownButtons.Except(previous.DownButtons);
-            foreach (SwgvButton button in downButtons)
+            foreach (SwgvButton button in current.DownButtons.Except(previous.DownButtons))
             {
                 this.OnButtonDown(button);
             }
@@ -134,10 +126,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="button">The released button.</param>
         private void OnButtonUp(SwgvButton button)
         {
-            if (this.ButtonUp != null)
-            {
-                this.ButtonUp(this, new SwgvButtonEventArgs(button, false));
-            }
+            this.ButtonUp?.Invoke(this, new SwgvButtonEventArgs(button, false));
         }
 
         /// <summary>
@@ -146,10 +135,7 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="button">The pressed button.</param>
         private void OnButtonDown(SwgvButton button)
         {
-            if (this.ButtonDown != null)
-            {
-                this.ButtonDown(this, new SwgvButtonEventArgs(button, true));
-            }
+            this.ButtonDown?.Invoke(this, new SwgvButtonEventArgs(button, true));
         }
 
         /// <summary>
@@ -159,14 +145,12 @@ namespace Faz.SideWinderSC.Logic
         /// <param name="previousButtons"></param>
         private void OnButtonStateChanged(byte currentButtons, byte previousButtons)
         {
-            if (ButtonsChanged != null)
-            {
-                ButtonsChanged(this, new SwgvButtonStateEventArgs {
+            ButtonsChanged?.Invoke(this, 
+                new SwgvButtonStateEventArgs
+                {
                     ButtonsState = currentButtons,
                     PreviousButtonsState = previousButtons,
-                    }
-                );
-            }
+                });
         }
     }
 }

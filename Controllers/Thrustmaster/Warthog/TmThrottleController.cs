@@ -11,16 +11,16 @@ namespace Controllers.Thrustmaster.Warthog
     {
         static readonly string Name = "Warthog";
 
-        public static TmThrottleController Create(EliteSharedState sharedState, vJoy vjoy, vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)
+        public static TmThrottleController Create(EliteSharedState sharedState, vJoy vjoy, EliteVirtualJoysticks virtualJoysticks, 
+            vJoyMapper vJoyMapper, ArduinoCommunication.Arduino arduino)
         {
             return new TmThrottleController()
             {                
                 Controller = Faz.SideWinderSC.Logic.TMWartHogThrottleController.RetrieveAll()?.First(),
                 SharedState = sharedState,
-                vJoy = vjoy,
+                VirtualJoysticks = virtualJoysticks,
                 vJoyMapper = vJoyMapper,
-                Arduino = arduino,
-                //VisualState = new VisualState { Name = Name }
+                Arduino = arduino
             };
         }
 
