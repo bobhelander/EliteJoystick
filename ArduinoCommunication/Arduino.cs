@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArduinoCommunication
 {
-    public class Arduino
+    public class Arduino : IArduino
     {
         private System.IO.Ports.SerialPort SerialPort { get; set; }
 

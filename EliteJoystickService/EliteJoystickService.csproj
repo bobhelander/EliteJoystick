@@ -110,13 +110,17 @@
       <Project>{eaa556af-5da8-4c20-8511-5d78d04786d0}</Project>
       <Name>CommonCommunication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Controllers\Controllers.csproj">
-      <Project>{acdbc5c4-8eaa-4258-9081-21e8dabcccab}</Project>
-      <Name>Controllers</Name>
+    <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj">
+      <Project>{3dfb3fbb-5e24-4942-8e30-83e99fed2d33}</Project>
+      <Name>EliteJoystick.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\GameEnvironment\GameEnvironment.csproj">
       <Project>{f1c0c723-805c-4518-95fe-e26093a3c8a7}</Project>
       <Name>GameEnvironment</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vJoyMapping\vJoyMapping.csproj">
+      <Project>{57d363bb-fbf9-4781-9ca8-2f3b8993ac74}</Project>
+      <Name>vJoyMapping</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

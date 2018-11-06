@@ -51,6 +51,12 @@
     <Compile Include="TextBuffer.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj">
+      <Project>{3dfb3fbb-5e24-4942-8e30-83e99fed2d33}</Project>
+      <Name>EliteJoystick.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
