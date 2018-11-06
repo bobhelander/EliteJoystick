@@ -7,9 +7,9 @@ namespace EliteJoystick.Common.Interfaces
 {
     public interface IArduino
     {
-        void DepressKey(byte key);
-        void ReleaseKey(byte key);
-        void ReleaseAll();
+        Task DepressKey(byte key);
+        Task ReleaseKey(byte key);
+        Task ReleaseAll();
         Task TypeFullString(string text);
         Task TypeFromClipboard();
         Task KeyCombo(byte[] modifier, byte key);

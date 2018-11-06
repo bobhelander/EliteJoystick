@@ -1,5 +1,4 @@
-﻿using Controllers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using vJoyMapping.Common;
 using EliteJoystick.Common;
+using CommonCommunication;
 
 namespace EliteJoystickService
 {

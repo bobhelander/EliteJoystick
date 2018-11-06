@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EliteJoystick.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace EliteJoystickService
 
         public async Task HandleMessage(
             string rawMessage, 
-            Controllers.EliteSharedState sharedState, 
+            EliteSharedState sharedState, 
             ArduinoCommunication.Arduino arduino)
         {
             var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);

@@ -115,7 +115,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (Controller.TestButtonPressed(
                 previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button2))
             {
-                ClientActions.KillProcess(this);
+                Utils.KillProcess("EliteDangerous64").Wait();
             }
         }
     }

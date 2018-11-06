@@ -83,7 +83,7 @@ namespace vJoyMapping.Common
         public void SendKeyCombo(byte[] modifier, byte key)
         {
             Task.Run(async () => await Arduino.KeyCombo(modifier, key)
-             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted));
         }
 
         #endregion

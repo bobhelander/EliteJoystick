@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Dapplo.Windows.Clipboard" Version="0.7.16" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Usb.GameControllers" Version="1.0.2" />
   </ItemGroup>
 
@@ -17,6 +16,7 @@
   <ItemGroup>
     <Reference Include="vJoyInterfaceWrap">
       <HintPath>..\3rdParty\vJoyInterfaceWrap.dll</HintPath>
+      <Private>true</Private>
     </Reference>
   </ItemGroup>
 

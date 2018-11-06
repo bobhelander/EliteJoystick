@@ -9,6 +9,9 @@ namespace ArduinoCommunication
 {
     public class Arduino : IArduino
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private System.IO.Ports.SerialPort SerialPort { get; set; }
 
         public Arduino(String commPort)
@@ -42,6 +45,24 @@ namespace ArduinoCommunication
             await DepressKey(key);
             await Task.Delay(duration);
             await ReleaseKey(key);
+        }
+
+        public async Task TypeFullString(String text)
+        {
+            Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(this, text))
+             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        public async Task TypeFromClipboard()
+        {
+            Task.Run(async () => await ArduinoCommunication.Utils.TypeFromClipboard(this))
+             .ContinueWith(t => { log.Error($"TypeFromClipboard Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        public async Task KeyCombo(byte[] modifier, byte key)
+        {
+            Task.Run(async () => await ArduinoCommunication.Utils.KeyCombo(this, modifier, key))
+             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
     }
 }
