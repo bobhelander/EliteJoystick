@@ -26,7 +26,8 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 
             int pov = current.Hat / 2;
             pov = pov == 4 ? -1 : pov;
-            Controller.vJoy.SetDiscPov(pov, 1, 1);
+
+            Controller.VirtualJoysticks.SetJoystickHat(pov, 1, 1);
 
             foreach (var vButton in vButtons)
             {

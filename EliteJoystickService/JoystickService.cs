@@ -152,6 +152,8 @@ namespace EliteJoystickService
 
                 Controllers.Add(bbi32);
 
+                var subscription = SharedState.GearChanged.Subscribe(x => () { ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200); });
+
                 foreach (var controller in Controllers)
                     controller.Initialize();
 

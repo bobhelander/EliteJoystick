@@ -28,10 +28,10 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 
             if (Controller.TestButtonPressed(current.Buttons, previous.Buttons, button6))
             {
-                if (Dapplo.Windows.Clipboard.ContainsText())
-                {
+                //if (System.Windows.Clipboard.ContainsText())
+                //{
                     Controller.TypeFromClipboard();
-                }
+                //}
             }
         }
     }

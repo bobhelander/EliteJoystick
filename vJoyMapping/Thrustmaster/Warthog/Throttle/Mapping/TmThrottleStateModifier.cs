@@ -36,13 +36,13 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             {
                 // If either state of the Autopilot switch is released 
                 if (Controller.TestMultiSwitchStateOff(previous.buttons, current.buttons, apahButton))
-                    Controller.SharedState.CurrentMode = EliteSharedState.Mode.Travel;
+                    Controller.SharedState.ChangeMode(EliteSharedState.Mode.Travel);
 
                 if (Controller.TestButtonPressed(previous.buttons, current.buttons, Button27))
-                    Controller.SharedState.CurrentMode = EliteSharedState.Mode.Fighting;
+                    Controller.SharedState.ChangeMode(EliteSharedState.Mode.Fighting);
 
                 if (Controller.TestButtonPressed(previous.buttons, current.buttons, Button28))
-                    Controller.SharedState.CurrentMode = EliteSharedState.Mode.Mining;
+                    Controller.SharedState.ChangeMode(EliteSharedState.Mode.Mining);
 
                 if (Controller.TestButtonPressed(previous.buttons, current.buttons, Button01))
                     Controller.SharedState.ThrottleShift1 = true;
