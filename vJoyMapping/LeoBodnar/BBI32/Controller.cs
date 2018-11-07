@@ -1,11 +1,7 @@
-﻿using EliteJoystick.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Usb.GameControllers.Interfaces;
-using Usb.GameControllers.LeoBodnar.BBI32.Models;
-using vJoyMapping.Common;
 using vJoyMapping.LeoBodnar.BBI32.Mapping;
 
 namespace vJoyMapping.LeoBodnar.BBI32
