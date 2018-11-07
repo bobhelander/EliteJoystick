@@ -7,25 +7,20 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleSliderJoystick : IObserver<States>
+    public static class TmThrottleSliderJoystick
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
+            var previous = value.Previous as State;
+
+            if (current.Slider == previous.Slider)
+                return; // No Change
+
             // 0-127 0 = up  127 = down
 
-            int slider = current.Slider * 32;           
-            Controller.SetJoystickAxis(slider, HID_USAGES.HID_USAGE_SL0, vJoyTypes.Throttle);
+            int slider = current.Slider * 32;
+            controller.SetJoystickAxis(slider, HID_USAGES.HID_USAGE_SL0, vJoyTypes.Throttle);
         }
     }
 }

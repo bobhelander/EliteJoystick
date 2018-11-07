@@ -1,56 +1,48 @@
-﻿using EliteJoystick.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Usb.GameControllers.Interfaces;
-using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
-using vJoyMapping.Common;
 using vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick(devicePath);
-
             MapControls(joystick);
-
+            MapLights(joystick);
             joystick.Initialize();
         }
 
-        List<ObserverMapping<States>> observers = new List<ObserverMapping<States>>();
-
         public void MapControls(Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick ffb2)
         {
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottle75Command { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleButtonStateHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleCameraCommand { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleClearMessages { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleCycleCommand { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleHardpointsCommand { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleHat { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleLandedStateHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleLandingGearCommand { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleLightsCommand { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleSecondaryFireCommand { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleSilentCommand { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleSliderJoystick { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleStateModifier { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleVoiceCommandHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleXYJoystick { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new TmThrottleZJoystick { Controller = this } });
-
-            foreach (var observer in observers)
-                observer.Unsubscriber = ffb2.Subscribe(observer.Observer);
+            // Add in the mappings
+            ffb2.Subscribe(x => TmThrottle75Command.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleCameraCommand.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleClearMessages.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleCycleCommand.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleHardpointsCommand.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleHat.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleLandedStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleLandingGearCommand.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleLightsCommand.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleSecondaryFireCommand.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleSilentCommand.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleSliderJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleStateModifier.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleVoiceCommandHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleXYJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => TmThrottleZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
         }
 
-        public void Dispose()
+        public void MapLights(Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick ffb2)
         {
-            foreach (var observer in observers)
-                observer.Unsubscriber?.Dispose();
         }
     }
 }

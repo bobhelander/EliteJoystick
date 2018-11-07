@@ -7,27 +7,21 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleButtonStateHandler : IObserver<States>
+    public static class TmThrottleButtonStateHandler
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
+            var previous = value.Previous as State;
+            
+            if (current.buttons == previous.buttons)
+                return; // No Change
 
             uint buttonIndex = 1;
             foreach (uint button in Enum.GetValues(typeof(Button)))
             {
                 bool buttonPressed = (current.buttons & (uint)button) == (uint)button;
-                Controller.SetJoystickButton(buttonPressed, buttonIndex, vJoyTypes.Throttle);
+                controller.SetJoystickButton(buttonPressed, buttonIndex, vJoyTypes.Throttle);
                 buttonIndex++;
             }
 
@@ -35,7 +29,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             foreach (UInt32 nbutton in Enum.GetValues(typeof(SwitchNeutral)))
             {
                 bool buttonPressed = (current.buttons & (uint)nbutton) != 0;
-                Controller.SetJoystickButton(!buttonPressed, buttonIndex, vJoyTypes.Virtual);
+                controller.SetJoystickButton(!buttonPressed, buttonIndex, vJoyTypes.Virtual);
                 buttonIndex++;
             }
         }

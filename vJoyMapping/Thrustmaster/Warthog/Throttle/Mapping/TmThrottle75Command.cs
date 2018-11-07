@@ -7,31 +7,21 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottle75Command : IObserver<States>
+    public static class TmThrottle75Command 
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
         static UInt32 rdrAlt = (UInt32)Button.Button25;
 
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             var previous = value.Previous as State;
 
-            if (Controller.TestButtonReleased(previous.buttons, current.buttons, rdrAlt))
+            if (controller.TestButtonReleased(previous.buttons, current.buttons, rdrAlt))
             {
-                Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);
                 log.Debug("75% throttle");
             }
         }

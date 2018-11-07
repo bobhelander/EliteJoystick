@@ -7,39 +7,33 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleHat : IObserver<States>
+    public static class TmThrottleHat
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public List<uint> vButtons { get; set; } = new List<uint> {
+        public static List<uint> vButtons { get; set; } = new List<uint> {
             MappedButtons.ThrottleHatUp,
             MappedButtons.ThrottleHatRight,
             MappedButtons.ThrottleHatDown,
             MappedButtons.ThrottleHatLeft };
 
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
+            var previous = value.Previous as State;
+
+            if (current.Hat == previous.Hat)
+                return; // No Change
 
             int index = 0;
             foreach (int hatValue in Enum.GetValues(typeof(Hat)))
             {
                 bool pressed = (current.Hat & (int)hatValue) != 0;
-                Controller.SetJoystickButton(pressed, vButtons[index], vJoyTypes.Virtual);
+                controller.SetJoystickButton(pressed, vButtons[index], vJoyTypes.Virtual);
                 index++;
             }
 
             int pov = current.Hat / 2;
             pov = pov == 4 ? -1 : pov;
-            Controller.SetJoystickHat(pov, vJoyTypes.Throttle, 1);
+            controller.SetJoystickHat(pov, vJoyTypes.Throttle, 1);
         }
     }
 }

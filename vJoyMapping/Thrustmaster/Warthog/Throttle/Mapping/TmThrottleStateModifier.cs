@@ -7,18 +7,8 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleStateModifier : IObserver<States>
+    public static class TmThrottleStateModifier
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
         // APAH is between 27 and 28.  It is enabled when both repote false.
         static readonly UInt32 apahButton = (UInt32)SwitchNeutral.APAH;
 
@@ -27,34 +17,34 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
         static readonly UInt32 Button01 = (UInt32)Button.Button01;
         static readonly UInt32 Button15 = (UInt32)Button.Button15;
 
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             var previous = value.Previous as State;
 
-            if (null != Controller.SharedState)
+            if (null != controller.SharedState)
             {
                 // If either state of the Autopilot switch is released 
-                if (Controller.TestMultiSwitchStateOff(previous.buttons, current.buttons, apahButton))
-                    Controller.SharedState.ChangeMode(EliteSharedState.Mode.Travel);
+                if (controller.TestMultiSwitchStateOff(previous.buttons, current.buttons, apahButton))
+                    controller.SharedState.ChangeMode(EliteSharedState.Mode.Travel);
 
-                if (Controller.TestButtonPressed(previous.buttons, current.buttons, Button27))
-                    Controller.SharedState.ChangeMode(EliteSharedState.Mode.Fighting);
+                if (controller.TestButtonPressed(previous.buttons, current.buttons, Button27))
+                    controller.SharedState.ChangeMode(EliteSharedState.Mode.Fighting);
 
-                if (Controller.TestButtonPressed(previous.buttons, current.buttons, Button28))
-                    Controller.SharedState.ChangeMode(EliteSharedState.Mode.Mining);
+                if (controller.TestButtonPressed(previous.buttons, current.buttons, Button28))
+                    controller.SharedState.ChangeMode(EliteSharedState.Mode.Mining);
 
-                if (Controller.TestButtonPressed(previous.buttons, current.buttons, Button01))
-                    Controller.SharedState.ThrottleShift1 = true;
+                if (controller.TestButtonPressed(previous.buttons, current.buttons, Button01))
+                    controller.SharedState.ThrottleShift1 = true;
 
-                if (Controller.TestButtonReleased(previous.buttons, current.buttons, Button01))
-                    Controller.SharedState.ThrottleShift1 = false;
+                if (controller.TestButtonReleased(previous.buttons, current.buttons, Button01))
+                    controller.SharedState.ThrottleShift1 = false;
 
-                if (Controller.TestButtonReleased(previous.buttons, current.buttons, Button15))
-                    Controller.SharedState.ThrottleShift2 = true;
+                if (controller.TestButtonReleased(previous.buttons, current.buttons, Button15))
+                    controller.SharedState.ThrottleShift2 = true;
 
-                if (Controller.TestButtonReleased(previous.buttons, current.buttons, Button15))
-                    Controller.SharedState.ThrottleShift2 = false;
+                if (controller.TestButtonReleased(previous.buttons, current.buttons, Button15))
+                    controller.SharedState.ThrottleShift2 = false;
             }
         }
     }

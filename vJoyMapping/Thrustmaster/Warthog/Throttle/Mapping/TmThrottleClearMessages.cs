@@ -7,32 +7,21 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleClearMessages : IObserver<States>
+    public static class TmThrottleClearMessages
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
         static uint pinkyBack = (UInt32)Button.Button14;
 
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             var previous = value.Previous as State;
 
-            if (Controller.TestButtonPressed(previous.buttons, current.buttons, pinkyBack))
+            if (controller.TestButtonPressed(previous.buttons, current.buttons, pinkyBack))
             {
-                Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.TextMessageEntry, 200);
-                Controller.TypeFullString("/clear");
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.TextMessageEntry, 200);
+                controller.TypeFullString("/clear");
                 log.Debug("Clear Message Log");
             }
         }

@@ -5,72 +5,44 @@ using System.Text;
 using System.Threading;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
+using System.Reactive.Linq;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleCycleCommand : IObserver<States>
+    public static class TmThrottleCycleCommand
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Timer timer;
-        private bool pressed;
+        //Observable.Interval: To create the heartbeat the the button will be pressed on
+        private static IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(500)).Select(_ => 1);
 
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
+        // This will be non null while the action is running
+        private static IDisposable cycleSubsystems = null;
 
         private static readonly UInt32 SpeedbrakeForward = (UInt32)Button.Button07;
 
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
 
             if ((current.buttons & SpeedbrakeForward) == SpeedbrakeForward &&
-                Controller.SharedState.CurrentMode == EliteSharedState.Mode.Fighting)
+                controller.SharedState.CurrentMode == EliteSharedState.Mode.Fighting)
             {
-                if (null == timer)
-                    Activate();
+                if (null == cycleSubsystems)
+                {
+                    cycleSubsystems = timer.Subscribe(x => controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 200));
+                    log.Debug($"Cycle Subsystem: Running");
+                }
             }
             else
             {
-                if (null != timer)
+                if (null != cycleSubsystems)
                 {
-                    Disable();
+                    cycleSubsystems.Dispose();
+                    cycleSubsystems = null;
+                    log.Debug($"Cycle Subsystem: Stopped");
                 }
             }
-        }
-
-        public void Activate()
-        {
-            timer = new Timer(new TimerCallback(Action), null, 0, Timeout.Infinite);
-            log.Debug($"Cycle Subsystem: Running");
-        }
-
-        public void Disable()
-        {            
-            if (null != timer)
-            {
-                var temp = timer;
-                timer = null;
-                temp.Dispose();
-                Controller.SetJoystickButton(false, MappedButtons.CycleSubsystem, vJoyTypes.Virtual);
-                pressed = false;
-            }
-            log.Debug($"Cycle Subsystem: Stopped");
-        }
-
-        public virtual void Action(object o)
-        {
-            pressed = !pressed;
-            Controller.SetJoystickButton(pressed, MappedButtons.CycleSubsystem, vJoyTypes.Virtual);
-            timer.Change(250, Timeout.Infinite);
         }
     }
 }

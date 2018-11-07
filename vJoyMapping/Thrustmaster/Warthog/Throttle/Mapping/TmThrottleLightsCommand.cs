@@ -7,28 +7,18 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleLightsCommand : IObserver<States>
+    public static class TmThrottleLightsCommand
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
         static readonly UInt32 FuelLeft = (UInt32)Button.Button16;
 
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             var previous = value.Previous as State;
 
-            if (Controller.TestButtonPressedOrReleased(previous.buttons, current.buttons, FuelLeft))
+            if (controller.TestButtonPressedOrReleased(previous.buttons, current.buttons, FuelLeft))
             {
-                Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LightsToggle, 200);
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LightsToggle, 200);
             }
         }
     }

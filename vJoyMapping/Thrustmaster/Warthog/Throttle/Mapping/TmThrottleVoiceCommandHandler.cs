@@ -7,34 +7,24 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleVoiceCommandHandler : IObserver<States>
+    public static class TmThrottleVoiceCommandHandler
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
         static UInt32 MIC = (UInt32)Button.Button02;
 
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             var previous = value.Previous as State;
 
-            if (Controller.TestButtonPressed(previous.buttons, current.buttons, MIC))
+            if (controller.TestButtonPressed(previous.buttons, current.buttons, MIC))
             {
-                Controller.SharedState.Mute = true;
-                Controller.DepressKey(0xC3);  // KEY_F2    
+                controller.SharedState.Mute = true;
+                controller.DepressKey(0xC3);  // KEY_F2    
             }
-            if (Controller.TestButtonReleased(previous.buttons, current.buttons, MIC))
+            if (controller.TestButtonReleased(previous.buttons, current.buttons, MIC))
             {
-                Controller.SharedState.Mute = false;
-                Controller.ReleaseKey(0xC3);  // KEY_F2
+                controller.SharedState.Mute = false;
+                controller.ReleaseKey(0xC3);  // KEY_F2
             }
         }
     }

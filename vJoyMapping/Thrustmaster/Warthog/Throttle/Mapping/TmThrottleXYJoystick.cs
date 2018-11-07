@@ -7,19 +7,9 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleXYJoystick : IObserver<States>
+    public static class TmThrottleXYJoystick
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
 
@@ -30,8 +20,8 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             int y = current.Y * 32;
             int x = current.X * 32;
 
-            Controller.SetJoystickAxis(x, HID_USAGES.HID_USAGE_X, vJoyTypes.Throttle);
-            Controller.SetJoystickAxis(y, HID_USAGES.HID_USAGE_Y, vJoyTypes.Throttle);
+            controller.SetJoystickAxis(x, HID_USAGES.HID_USAGE_X, vJoyTypes.Throttle);
+            controller.SetJoystickAxis(y, HID_USAGES.HID_USAGE_Y, vJoyTypes.Throttle);
         }
     }
 }

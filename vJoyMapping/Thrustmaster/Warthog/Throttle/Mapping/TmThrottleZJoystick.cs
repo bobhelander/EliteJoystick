@@ -1,5 +1,4 @@
-﻿using EliteJoystick.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
@@ -7,23 +6,13 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public class TmThrottleZJoystick : IObserver<States>
+    public static class TmThrottleZJoystick
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
 
-            if (Controller.SharedState.LeftThrottleEnabled)
+            if (controller.SharedState.LeftThrottleEnabled)
             {
                 int z = current.Zr * 2;
 
@@ -39,10 +28,10 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 // Move the value back up
                 z = shifted_value + (1024 * 16);
 
-                Controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
+                controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
             }
 
-            if (Controller.SharedState.RightThrottleEnabled)
+            if (controller.SharedState.RightThrottleEnabled)
             {
                 int z = current.Z * 2;
 
@@ -57,7 +46,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 // Invert the value again
                 //z = (1024 * 32) - z_inverted;
 
-                Controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_Z, vJoyTypes.Throttle);
+                controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_Z, vJoyTypes.Throttle);
             }
         }
     }
