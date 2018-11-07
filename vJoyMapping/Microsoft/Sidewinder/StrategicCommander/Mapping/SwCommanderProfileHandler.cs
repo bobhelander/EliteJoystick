@@ -6,19 +6,9 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
 {
-    public class SwCommanderProfileHandler : IObserver<States>
+    public static class SwCommanderProfileHandler
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             //current.Profile;

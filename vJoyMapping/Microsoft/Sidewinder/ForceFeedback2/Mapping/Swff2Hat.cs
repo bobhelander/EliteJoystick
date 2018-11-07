@@ -6,66 +6,60 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 {
-    public class Swff2Hat : IObserver<States>
+    public static class Swff2Hat
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
+        private static List<uint> vButtons { get; set; } = new List<uint> { 9, 10, 11, 12, 13 };
 
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public List<uint> vButtons { get; set; }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
+            var previous = value.Previous as State;
+
+            if (current.Hat == previous.Hat)
+                return; // No Change
 
             int pov = current.Hat / 2;
             pov = pov == 4 ? -1 : pov;
 
-            Controller.VirtualJoysticks.SetJoystickHat(pov, 1, 1);
+            controller.VirtualJoysticks.SetJoystickHat(pov, 1, 1);
 
             foreach (var vButton in vButtons)
             {
-                Controller.SetJoystickButton(false, vButton, vJoyTypes.StickAndPedals);
+                controller.SetJoystickButton(false, vButton, vJoyTypes.StickAndPedals);
             }
 
             switch (current.Hat)
             {
                 case 0: // up
-                    Controller.SetJoystickButton(true, vButtons[0], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[0], vJoyTypes.StickAndPedals);
                     break;
                 case 1: // up - right
-                    Controller.SetJoystickButton(true, vButtons[0], vJoyTypes.StickAndPedals);
-                    Controller.SetJoystickButton(true, vButtons[1], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[0], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[1], vJoyTypes.StickAndPedals);
                     break;
                 case 2: // right
-                    Controller.SetJoystickButton(true, vButtons[1], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[1], vJoyTypes.StickAndPedals);
                     break;
                 case 3: // right down
-                    Controller.SetJoystickButton(true, vButtons[1], vJoyTypes.StickAndPedals);
-                    Controller.SetJoystickButton(true, vButtons[2], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[1], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[2], vJoyTypes.StickAndPedals);
                     break;
                 case 4: // down
-                    Controller.SetJoystickButton(true, vButtons[2], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[2], vJoyTypes.StickAndPedals);
                     break;
                 case 5: // left down
-                    Controller.SetJoystickButton(true, vButtons[2], vJoyTypes.StickAndPedals);
-                    Controller.SetJoystickButton(true, vButtons[3], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[2], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[3], vJoyTypes.StickAndPedals);
                     break;
                 case 6: // left
-                    Controller.SetJoystickButton(true, vButtons[3], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[3], vJoyTypes.StickAndPedals);
                     break;
                 case 7: // left up
-                    Controller.SetJoystickButton(true, vButtons[3], vJoyTypes.StickAndPedals);
-                    Controller.SetJoystickButton(true, vButtons[0], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[3], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[0], vJoyTypes.StickAndPedals);
                     break;
                 case 8: // none
-                    Controller.SetJoystickButton(true, vButtons[4], vJoyTypes.StickAndPedals);
+                    controller.SetJoystickButton(true, vButtons[4], vJoyTypes.StickAndPedals);
                     break;
             }   
         }

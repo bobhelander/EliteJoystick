@@ -6,27 +6,21 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 {
-    public class Swff2ButtonsStateHandler : IObserver<States>
+    public static class Swff2ButtonsStateHandler
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
+            var previous = value.Previous as State;
+
+            if (current.Buttons == previous.Buttons)
+                return; // No Change
 
             uint buttonIndex = 1;
             foreach (Button button in Enum.GetValues(typeof(Button)))
             {
                 bool pressed = ((current.Buttons & (int)button) == (int)button);
-                Controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.StickAndPedals);
+                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.StickAndPedals);
                 buttonIndex++;
             }
         }

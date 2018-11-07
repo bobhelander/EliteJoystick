@@ -10,28 +10,31 @@ using vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping;
 
 namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick(devicePath);
 
             MapControls(joystick);
+            MapLights(joystick);
 
             joystick.Initialize();
         }
 
-        List<ObserverMapping<States>> observers = new List<ObserverMapping<States>>();
-
         public void MapControls(Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick swsc)
         {
-            observers.Add(new ObserverMapping<States> { Observer = new SwCommanderButtonStateHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new SwCommanderProfileHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new SwCommanderXYZJoystick { Controller = this } });
-            
-            foreach (var observer in observers)
-                observer.Unsubscriber = swsc.Subscribe(observer.Observer);
+            // Add in the mappings
+            swsc.Subscribe(x => SwCommanderButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            swsc.Subscribe(x => SwCommanderProfileHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            swsc.Subscribe(x => SwCommanderXYZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
+        }
 
+        public void MapLights(Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick swsc)
+        {
             // Turn lights on and off
             SharedState.ModeChanged.Subscribe(x => swsc.SetLights(GetLights(x)));
         }
@@ -46,12 +49,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
                 return new Light[] { Light.Button3 };
 
             return new Light[] {  };
-        }
-
-        public void Dispose()
-        {
-            foreach (var observer in observers)
-                observer.Unsubscriber?.Dispose();
         }
     }
 }

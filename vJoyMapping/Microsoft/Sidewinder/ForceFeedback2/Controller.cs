@@ -10,8 +10,11 @@ using vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Joystick(devicePath);
@@ -21,26 +24,16 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
             joystick.Initialize();
         }
 
-        List<ObserverMapping<States>> observers = new List<ObserverMapping<States>>();
-
         public void MapControls(Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Joystick ffb2)
         {
-            observers.Add(new ObserverMapping<States> { Observer = new Swff2XYJoystick { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new Swff2ZJoystick { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new Swff2SliderJoystick { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new Swff2Hat { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new Swff2ButtonsStateHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new Swff2ClipboardStateHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new Swff2UtilCommandsStateHandler { Controller = this } });
-
-            foreach (var observer in observers)
-                observer.Unsubscriber = ffb2.Subscribe(observer.Observer);
-        }
-
-        public void Dispose()
-        {
-            foreach (var observer in observers)
-                observer.Unsubscriber?.Dispose();
+            // Add in the mappings
+            ffb2.Subscribe(x => Swff2XYJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => Swff2ZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => Swff2SliderJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => Swff2Hat.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => Swff2ButtonsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => Swff2ClipboardStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            ffb2.Subscribe(x => Swff2UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
         }
     }
 }

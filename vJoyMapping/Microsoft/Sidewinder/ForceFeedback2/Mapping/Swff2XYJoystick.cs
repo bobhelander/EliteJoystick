@@ -6,19 +6,9 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 {
-    public class Swff2XYJoystick : IObserver<States>
+    public static class Swff2XYJoystick
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
 
@@ -28,8 +18,8 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
             x = Curves.Calculate(x - (16 * 1024), (16 * 1024), .4) + 16 * 1024;
             y = Curves.Calculate(y - (16 * 1024), (16 * 1024), .4) + 16 * 1024;
 
-            Controller.SetJoystickAxis(x, HID_USAGES.HID_USAGE_X, vJoyTypes.StickAndPedals);
-            Controller.SetJoystickAxis(y, HID_USAGES.HID_USAGE_Y, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(x, HID_USAGES.HID_USAGE_X, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(y, HID_USAGES.HID_USAGE_Y, vJoyTypes.StickAndPedals);
         }
     }
 }

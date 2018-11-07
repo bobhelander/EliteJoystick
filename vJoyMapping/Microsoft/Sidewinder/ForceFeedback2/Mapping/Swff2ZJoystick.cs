@@ -6,19 +6,9 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 {
-    public class Swff2ZJoystick : IObserver<States>
+    public static class Swff2ZJoystick
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             // twist = -32 to 31
 
@@ -28,7 +18,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 
             z = Curves.Calculate(z - (16 * 1024), (16 * 1024), .4) + 16 * 1024;
 
-            Controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_Z, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_Z, vJoyTypes.StickAndPedals);
         }
     }
 }

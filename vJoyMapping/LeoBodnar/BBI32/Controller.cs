@@ -10,8 +10,11 @@ using vJoyMapping.LeoBodnar.BBI32.Mapping;
 
 namespace vJoyMapping.LeoBodnar.BBI32
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.LeoBodnar.BBI32.Joystick(devicePath);
@@ -21,21 +24,11 @@ namespace vJoyMapping.LeoBodnar.BBI32
             joystick.Initialize();
         }
 
-        List<ObserverMapping<States>> observers = new List<ObserverMapping<States>>();
-
-        public void MapControls(Usb.GameControllers.LeoBodnar.BBI32.Joystick ffb2)
+        public void MapControls(Usb.GameControllers.LeoBodnar.BBI32.Joystick bbi32)
         {
-            observers.Add(new ObserverMapping<States> { Observer = new BBI32ButtonStateHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new BBI32UtilCommandsStateHandler { Controller = this } });
-
-            foreach (var observer in observers)
-                observer.Unsubscriber = ffb2.Subscribe(observer.Observer);
-        }
-
-        public void Dispose()
-        {
-            foreach (var observer in observers)
-                observer.Unsubscriber?.Dispose();
+            // Add in the mappings
+            bbi32.Subscribe(x => BBI32ButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            bbi32.Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
         }
     }
 }

@@ -7,42 +7,26 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 {
-    public class SwGameLandingGearHandler : IObserver<States>
+    public static class SwGameLandingGearHandler
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
         static private byte button1 = (byte)Button.Button1;
 
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             var previous = value.Previous as State;
 
             if (0 == (previous.Buttons & button1) && (current.Buttons & button1) == button1)
             {
-                Controller.SharedState.ChangeGear(true);
-                // On
-                //Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
-                //log.Debug($"Virtual: Landing Gear: Deployed");
+                // Deployed
+                controller.SharedState.ChangeGear(true);
             }
             else if (button1 == (previous.Buttons & button1) && 0 == (current.Buttons & button1))
             {
-                // Off
-                Controller.SharedState.ChangeGear(false);
-                // Off
-                //Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
-                //log.Debug($"Virtual: Landing Gear: Retracted");
+                // Retracted
+                controller.SharedState.ChangeGear(false);
             }
         }
     }

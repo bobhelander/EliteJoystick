@@ -1,45 +1,37 @@
-﻿using EliteJoystick.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Usb.GameControllers.Interfaces;
 using Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Models;
-using vJoyMapping.Common;
 using vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping;
 
 namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick(devicePath);
-
             MapControls(joystick);
-
+            MapLights(joystick);
             joystick.Initialize();
         }
 
-        List<ObserverMapping<States>> observers = new List<ObserverMapping<States>>();
-
         public void MapControls(Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick swgv)
         {
-            observers.Add(new ObserverMapping<States> { Observer = new SwGameButtonStateHandler { Controller = this } });
-            observers.Add(new ObserverMapping<States> { Observer = new SwGameLandingGearHandler { Controller = this } });
-
-            foreach (var observer in observers)
-                observer.Unsubscriber = swgv.Subscribe(observer.Observer);
-
-            // Turn lights on and off
-            SharedState.GearChanged.Subscribe(x => 
-                swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights | ~(byte)Button.Button1));
+            // Add in the mappings
+            swgv.Subscribe(x => SwGameButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            swgv.Subscribe(x => SwGameLandingGearHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
         }
 
-        public void Dispose()
+        public void MapLights(Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick swgv)
         {
-            foreach (var observer in observers)
-                observer.Unsubscriber?.Dispose();
+            // Turn lights on and off
+            SharedState.GearChanged.Subscribe(x =>
+                swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights | ~(byte)Button.Button1));
         }
     }
 }

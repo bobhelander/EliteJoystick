@@ -1,5 +1,4 @@
-﻿using EliteJoystick.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.CHProducts.ProPedals.Models;
@@ -7,19 +6,9 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.CHProducts.ProPedals.Mapping
 {
-    public class ChPedalsXYR : IObserver<States>
+    public static class ChPedalsXYR
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
 
@@ -37,8 +26,8 @@ namespace vJoyMapping.CHProducts.ProPedals.Mapping
             int combined = ((128 * 255) / 2) + (current.Y * 64 - current.X * 64);
             combined = Curves.Calculate(combined - (16 * 1024), (16 * 1024), .2) + 16 * 1024;
 
-            Controller.SetJoystickAxis(combined, HID_USAGES.HID_USAGE_RX, vJoyTypes.StickAndPedals);
-            Controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_RZ, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(combined, HID_USAGES.HID_USAGE_RX, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_RZ, vJoyTypes.StickAndPedals);
         }
     }
 }

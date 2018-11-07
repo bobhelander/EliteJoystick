@@ -6,32 +6,18 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 {
-    public class Swff2ClipboardStateHandler : IObserver<States>
+    public static class Swff2ClipboardStateHandler
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
         static readonly UInt32 button6 = (UInt32)Button.Button6;
 
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
             var previous = value.Previous as State;
 
-            if (Controller.TestButtonPressed(current.Buttons, previous.Buttons, button6))
+            if (controller.TestButtonPressed(current.Buttons, previous.Buttons, button6))
             {
-                //if (System.Windows.Clipboard.ContainsText())
-                //{
-                    Controller.TypeFromClipboard();
-                //}
+                controller.TypeFromClipboard();
             }
         }
     }

@@ -10,8 +10,11 @@ using vJoyMapping.CHProducts.ProPedals.Mapping;
 
 namespace vJoyMapping.CHProducts.ProPedals
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.CHProducts.ProPedals.Joystick(devicePath);
@@ -21,20 +24,10 @@ namespace vJoyMapping.CHProducts.ProPedals
             joystick.Initialize();
         }
 
-        List<ObserverMapping<States>> observers = new List<ObserverMapping<States>>();
-
-        public void MapControls(Usb.GameControllers.CHProducts.ProPedals.Joystick ffb2)
+        public void MapControls(Usb.GameControllers.CHProducts.ProPedals.Joystick proPedals)
         {
-            observers.Add(new ObserverMapping<States> { Observer = new ChPedalsXYR { Controller = this } });
-
-            foreach (var observer in observers)
-                observer.Unsubscriber = ffb2.Subscribe(observer.Observer);
-        }
-
-        public void Dispose()
-        {
-            foreach (var observer in observers)
-                observer.Unsubscriber?.Dispose();
+            // Add in the mappings
+            proPedals.Subscribe(x => ChPedalsXYR.Process(x, this), ex => log.Error($"Exception : {ex}"));
         }
     }
 }

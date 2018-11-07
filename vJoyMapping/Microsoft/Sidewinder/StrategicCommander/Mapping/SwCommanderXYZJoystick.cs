@@ -6,19 +6,9 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
 {
-    public class SwCommanderXYZJoystick : IObserver<States>
+    public static class SwCommanderXYZJoystick
     {
-        public vJoyMapping.Common.Controller Controller { get; set; }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(States value)
+        public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
 
@@ -33,9 +23,9 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
             x = Curves.Calculate(x - (16 * 1024), (16 * 1024), .5) + 16 * 1024;
             y = Curves.Calculate(y - (16 * 1024), (16 * 1024), .5) + 16 * 1024;
 
-            Controller.SetJoystickAxis(x, HID_USAGES.HID_USAGE_X, vJoyTypes.Commander);
-            Controller.SetJoystickAxis(y, HID_USAGES.HID_USAGE_Y, vJoyTypes.Commander);
-            Controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_Z, vJoyTypes.Commander);
+            controller.SetJoystickAxis(x, HID_USAGES.HID_USAGE_X, vJoyTypes.Commander);
+            controller.SetJoystickAxis(y, HID_USAGES.HID_USAGE_Y, vJoyTypes.Commander);
+            controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_Z, vJoyTypes.Commander);
         }
     }
 }
