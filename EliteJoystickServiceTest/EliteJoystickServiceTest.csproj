@@ -65,6 +65,10 @@
       <Project>{acdbc5c4-8eaa-4258-9081-21e8dabcccab}</Project>
       <Name>Controllers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj">
+      <Project>{3dfb3fbb-5e24-4942-8e30-83e99fed2d33}</Project>
+      <Name>EliteJoystick.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteJoystickClient\EliteJoystickClient.csproj">
       <Project>{0b771627-5640-403f-9985-9e93539ada6c}</Project>
       <Name>EliteJoystickClient</Name>
@@ -72,6 +76,10 @@
     <ProjectReference Include="..\EliteJoystickService\EliteJoystickService.csproj">
       <Project>{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}</Project>
       <Name>EliteJoystickService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vJoyMapping\vJoyMapping.csproj">
+      <Project>{57d363bb-fbf9-4781-9ca8-2f3b8993ac74}</Project>
+      <Name>vJoyMapping</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

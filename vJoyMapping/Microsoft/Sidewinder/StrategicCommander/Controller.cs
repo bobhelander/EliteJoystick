@@ -31,6 +31,21 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
             
             foreach (var observer in observers)
                 observer.Unsubscriber = swsc.Subscribe(observer.Observer);
+
+            // Turn lights on and off
+            SharedState.ModeChanged.Subscribe(x => swsc.SetLights(GetLights(x)));
+        }
+
+        private IEnumerable<Light> GetLights(EliteSharedState.Mode mode)
+        {
+            if (mode == EliteSharedState.Mode.Fighting)
+                return new Light[] { Light.Button1 };
+            if (mode == EliteSharedState.Mode.Travel)
+                return new Light[] { Light.Button2 };
+            if (mode == EliteSharedState.Mode.Mining)
+                return new Light[] { Light.Button3 };
+
+            return new Light[] {  };
         }
 
         public void Dispose()

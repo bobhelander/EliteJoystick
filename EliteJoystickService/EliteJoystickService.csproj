@@ -41,7 +41,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -128,10 +128,6 @@
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj">
       <Project>{3dfb3fbb-5e24-4942-8e30-83e99fed2d33}</Project>
       <Name>EliteJoystick.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GameEnvironment\GameEnvironment.csproj">
-      <Project>{f1c0c723-805c-4518-95fe-e26093a3c8a7}</Project>
-      <Name>GameEnvironment</Name>
     </ProjectReference>
     <ProjectReference Include="..\vJoyMapping\vJoyMapping.csproj">
       <Project>{57d363bb-fbf9-4781-9ca8-2f3b8993ac74}</Project>

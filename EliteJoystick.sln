@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystick", "EliteJoystick\EliteJoystick.csproj", "{9D83154C-46C5-4602-881E-4FF42E2CC726}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faz.SideWinderSC.Logic", "Faz.SideWinderSC.Logic\Faz.SideWinderSC.Logic.csproj", "{EA9BDD2D-E8FD-4D03-8CDB-CCC34CA3C85E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "Communication\CommonCommunication.csproj", "{EAA556AF-5DA8-4C20-8511-5D78D04786D0}"
@@ -16,14 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		3rdParty\vJoyInstall.dll = 3rdParty\vJoyInstall.dll
 		3rdParty\vJoyInterface.dll = 3rdParty\vJoyInterface.dll
-		C:\Program Files\vJoy\x64\vJoyInterfaceWrap.dll = C:\Program Files\vJoy\x64\vJoyInterfaceWrap.dll
+		..\..\..\Program Files\vJoy\x64\vJoyInterfaceWrap.dll = ..\..\..\Program Files\vJoy\x64\vJoyInterfaceWrap.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickService", "EliteJoystickService\EliteJoystickService.csproj", "{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEnvironment", "GameEnvironment\GameEnvironment.csproj", "{F1C0C723-805C-4518-95FE-E26093A3C8A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickConsole", "EliteJoystickConsole\EliteJoystickConsole.csproj", "{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}"
 EndProject
@@ -37,9 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiJoystickResponderTest",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickServiceTest", "EliteJoystickServiceTest\EliteJoystickServiceTest.csproj", "{D954D70D-4308-4426-BCB8-039B185A1292}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vJoyMapping", "vJoyMapping\vJoyMapping.csproj", "{57D363BB-FBF9-4781-9CA8-2F3B8993AC74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vJoyMapping", "vJoyMapping\vJoyMapping.csproj", "{57D363BB-FBF9-4781-9CA8-2F3B8993AC74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystick.Common", "EliteJoystick.Common\EliteJoystick.Common.csproj", "{3DFB3FBB-5E24-4942-8E30-83E99FED2D33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteJoystick.Common", "EliteJoystick.Common\EliteJoystick.Common.csproj", "{3DFB3FBB-5E24-4942-8E30-83E99FED2D33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9D83154C-46C5-4602-881E-4FF42E2CC726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D83154C-46C5-4602-881E-4FF42E2CC726}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D83154C-46C5-4602-881E-4FF42E2CC726}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D83154C-46C5-4602-881E-4FF42E2CC726}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA9BDD2D-E8FD-4D03-8CDB-CCC34CA3C85E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA9BDD2D-E8FD-4D03-8CDB-CCC34CA3C85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA9BDD2D-E8FD-4D03-8CDB-CCC34CA3C85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA9BDD2D-E8FD-4D03-8CDB-CCC34CA3C85E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,10 +57,6 @@ Global
 		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1C0C723-805C-4518-95FE-E26093A3C8A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
