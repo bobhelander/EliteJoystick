@@ -18,6 +18,18 @@ namespace EliteJoystick.Common
         public bool ThrottleShift1 { get; set; }
         public bool ThrottleShift2 { get; set; }
 
+        public bool LeftThrottleEnabled { get; set; }
+        public bool RightThrottleEnabled { get; set; }
+
+        public bool OrbitLines { get; set; }
+        public bool HeadsUpDisplay { get; set; }
+
+        public bool HardpointsDeployed { get; set; }
+        public bool CameraActive { get; set; }
+        public bool SecondaryFireActive { get; set; }
+
+        public bool Mute { get; set; }
+
         #endregion
 
         #region RX Properties
@@ -41,37 +53,6 @@ namespace EliteJoystick.Common
 
         #endregion
 
-
-        public class ShiftChangedEventArgs : EventArgs
-        {
-            public ShiftState ShiftState { get; set; }
-        }
-        public class ThrottleShiftChangedEventArgs : EventArgs
-        {
-            public ThrottleShiftState ThrottleShiftState { get; set; }
-        }
-        public class MuteChangedEventArgs : EventArgs
-        {
-            public bool MuteState { get; set; }
-        }
-        public class GearDeployedEventArgs : EventArgs
-        {
-            public bool Deployed { get; set; }
-        }
-
-        public event EventHandler<ShiftChangedEventArgs> ShiftChanged;
-        public event EventHandler<ThrottleShiftChangedEventArgs> ThrottleShiftChanged;
-        public event EventHandler<MuteChangedEventArgs> MuteChanged;
-        //public event EventHandler<GearDeployedEventArgs> GearChanged;
-
-        public enum ShiftState { None, Shift1, Shift2, Shift3 }
-        public enum ThrottleShiftState { None, Shift1, Shift2, Shift3 }
-        public bool HardpointsDeployed { get; set; }
-        public bool CameraActive { get; set; }
-        public bool SecondaryFireActive { get; set; }
-
-        
-
         public enum Mode
         {
             Fighting,
@@ -82,87 +63,6 @@ namespace EliteJoystick.Common
             SRV,
             Fighter,
             Map
-        }
-
-        private ShiftState shiftStateValue;
-        public ShiftState ShiftStateValue
-        {
-            get { return shiftStateValue; }
-            set
-            {
-                if (value != shiftStateValue)
-                {
-                    shiftStateValue = value;
-                    OnShiftChanged(value);
-                }
-            }
-        }
-
-        private ThrottleShiftState throttleShiftStateValue;
-        public ThrottleShiftState ThrottleShiftStateValue
-        {
-            get { return throttleShiftStateValue; }
-            set
-            {
-                if (value != throttleShiftStateValue)
-                {
-                    throttleShiftStateValue = value;
-                    OnThrottleShiftChanged(value);
-                }
-            }
-        }
-
-        private bool mute;
-        public bool Mute
-        {
-            get { return mute; }
-            set
-            {
-                if (value != mute)
-                {
-                    mute = value;
-                    OnMuteChanged(value);
-                }
-            }
-        }
-
-        private bool gearDeployed;
-        public bool GearDeployed
-        {
-            get { return gearDeployed; }
-            set
-            {
-                if (value != gearDeployed)
-                {
-                    gearDeployed = value;
-                    OnGearChanged(value);
-                }
-            }
-        }
-
-        public bool LeftThrottleEnabled { get; set; }
-        public bool RightThrottleEnabled { get; set; }
-
-        public bool OrbitLines { get; set; }
-        public bool HeadsUpDisplay { get; set; }
-
-
-        private void OnShiftChanged(ShiftState shift)
-        {
-            if (null != ShiftChanged)
-                ShiftChanged(this, new ShiftChangedEventArgs { ShiftState = shift });
-        }
-
-        private void OnThrottleShiftChanged(ThrottleShiftState shift)
-        {
-            if (null != ThrottleShiftChanged)
-                ThrottleShiftChanged(this, new ThrottleShiftChangedEventArgs { ThrottleShiftState = shift });
-        }
-
-        private void OnMuteChanged(bool mute)
-        {
-            if (null != MuteChanged)
-                MuteChanged(this, new MuteChangedEventArgs { MuteState = mute });
         }
     }
 }

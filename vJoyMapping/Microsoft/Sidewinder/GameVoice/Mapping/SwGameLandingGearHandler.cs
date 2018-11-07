@@ -31,15 +31,18 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 
             if (0 == (previous.Buttons & button1) && (current.Buttons & button1) == button1)
             {
+                Controller.SharedState.ChangeGear(true);
                 // On
-                Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
-                log.Debug($"Virtual: Landing Gear: Deployed");
+                //Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
+                //log.Debug($"Virtual: Landing Gear: Deployed");
             }
             else if (button1 == (previous.Buttons & button1) && 0 == (current.Buttons & button1))
             {
                 // Off
-                Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
-                log.Debug($"Virtual: Landing Gear: Retracted");
+                Controller.SharedState.ChangeGear(false);
+                // Off
+                //Controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200);
+                //log.Debug($"Virtual: Landing Gear: Retracted");
             }
         }
     }

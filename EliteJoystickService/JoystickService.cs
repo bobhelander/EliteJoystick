@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using vJoyMapping.Common;
 using EliteJoystick.Common;
 using CommonCommunication;
+using System.Reactive.Linq;
 
 namespace EliteJoystickService
 {
@@ -152,11 +153,12 @@ namespace EliteJoystickService
 
                 Controllers.Add(bbi32);
 
-                var subscription = SharedState.GearChanged.Subscribe(x => () { ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200); });
+                // State Handlers
+                var subscription = SharedState.GearChanged.Subscribe(
+                    x => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
 
                 foreach (var controller in Controllers)
                     controller.Initialize();
-
 
                 ClientActions.ClientInformationAction(this, "Controllers Ready");
                 log.Debug("Controllers Ready");

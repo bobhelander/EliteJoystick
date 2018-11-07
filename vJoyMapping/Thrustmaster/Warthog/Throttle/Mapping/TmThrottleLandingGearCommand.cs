@@ -28,12 +28,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
             if (Controller.TestButtonPressed(previous.buttons, current.buttons, rightThrottleIdle))
             {
-                Controller.SharedState.GearDeployed = true;
+                Controller.SharedState.ChangeGear(true);
             }
 
             if (Controller.TestButtonReleased(previous.buttons, current.buttons, rightThrottleIdle))
             {
-                Controller.SharedState.GearDeployed = false;
+                Controller.SharedState.ChangeGear(false);
             }
         }
     }

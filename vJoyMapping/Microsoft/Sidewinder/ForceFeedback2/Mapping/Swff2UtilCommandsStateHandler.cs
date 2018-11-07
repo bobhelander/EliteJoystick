@@ -49,12 +49,12 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
                 Controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
             }
 
-            if (Controller.TestButtonPressed(previous.Buttons, current.Buttons, Button2) &&
-                Controller.SharedState.ThrottleShiftStateValue == EliteSharedState.ThrottleShiftState.Shift1)
-            {
+            //if (Controller.TestButtonPressed(previous.Buttons, current.Buttons, Button2) &&
+            //    Controller.SharedState.ThrottleShiftStateValue == EliteSharedState.ThrottleShiftState.Shift1)
+            //{
                 // Focus window
-                System.Console.WriteLine(Utils.FocusWindow("EliteDangerous64"));
-            }
+            //    System.Console.WriteLine(Utils.FocusWindow("EliteDangerous64"));
+            //}
         }
     }
 }

@@ -30,6 +30,10 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 
             foreach (var observer in observers)
                 observer.Unsubscriber = swgv.Subscribe(observer.Observer);
+
+            // Turn lights on and off
+            SharedState.GearChanged.Subscribe(x => 
+                swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights | ~(byte)Button.Button1));
         }
 
         public void Dispose()
