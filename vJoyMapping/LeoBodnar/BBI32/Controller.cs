@@ -6,10 +6,12 @@ using vJoyMapping.LeoBodnar.BBI32.Mapping;
 
 namespace vJoyMapping.LeoBodnar.BBI32
 {
-    public class Controller : Common.Controller
+    public class Controller : Common.Controller, IDisposable
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private List<IDisposable> Disposables { get; set; }
 
         void Initialize(string devicePath)
         {
@@ -23,8 +25,16 @@ namespace vJoyMapping.LeoBodnar.BBI32
         public void MapControls(Usb.GameControllers.LeoBodnar.BBI32.Joystick bbi32)
         {
             // Add in the mappings
-            bbi32.Subscribe(x => BBI32ButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
-            bbi32.Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            Disposables = new List<IDisposable> {
+                bbi32.Subscribe(x => BBI32ButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                bbi32.Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+            };
+        }
+
+        public void Dispose()
+        {
+            foreach (var disposable in Disposables)
+                disposable?.Dispose();
         }
     }
 }

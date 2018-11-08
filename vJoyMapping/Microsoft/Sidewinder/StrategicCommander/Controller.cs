@@ -10,10 +10,12 @@ using vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping;
 
 namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
 {
-    public class Controller : Common.Controller
+    public class Controller : Common.Controller, IDisposable
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private List<IDisposable> Disposables { get; set; }
 
         void Initialize(string devicePath)
         {
@@ -28,9 +30,11 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
         public void MapControls(Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick swsc)
         {
             // Add in the mappings
-            swsc.Subscribe(x => SwCommanderButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
-            swsc.Subscribe(x => SwCommanderProfileHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
-            swsc.Subscribe(x => SwCommanderXYZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            Disposables = new List<IDisposable> {
+                swsc.Subscribe(x => SwCommanderButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                swsc.Subscribe(x => SwCommanderProfileHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                swsc.Subscribe(x => SwCommanderXYZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
+            };
         }
 
         public void MapLights(Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick swsc)
@@ -49,6 +53,12 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
                 return new Light[] { Light.Button3 };
 
             return new Light[] {  };
+        }
+
+        public void Dispose()
+        {
+            foreach (var disposable in Disposables)
+                disposable?.Dispose();
         }
     }
 }

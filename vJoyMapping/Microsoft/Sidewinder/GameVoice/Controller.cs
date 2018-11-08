@@ -7,10 +7,12 @@ using vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping;
 
 namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 {
-    public class Controller : Common.Controller
+    public class Controller : Common.Controller, IDisposable
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private List<IDisposable> Disposables { get; set; }
 
         void Initialize(string devicePath)
         {
@@ -23,8 +25,10 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
         public void MapControls(Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick swgv)
         {
             // Add in the mappings
-            swgv.Subscribe(x => SwGameButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
-            swgv.Subscribe(x => SwGameLandingGearHandler.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            Disposables = new List<IDisposable> {
+                swgv.Subscribe(x => SwGameButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                swgv.Subscribe(x => SwGameLandingGearHandler.Process(x, this), ex => log.Error($"Exception : {ex}"))
+            };
         }
 
         public void MapLights(Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick swgv)
@@ -32,6 +36,12 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
             // Turn lights on and off
             SharedState.GearChanged.Subscribe(x =>
                 swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights | ~(byte)Button.Button1));
+        }
+
+        public void Dispose()
+        {
+            foreach (var disposable in Disposables)
+                disposable?.Dispose();
         }
     }
 }

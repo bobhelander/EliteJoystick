@@ -10,10 +10,12 @@ using vJoyMapping.CHProducts.ProPedals.Mapping;
 
 namespace vJoyMapping.CHProducts.ProPedals
 {
-    public class Controller : Common.Controller
+    public class Controller : Common.Controller, IDisposable
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private List<IDisposable> Disposables { get; set; }
 
         void Initialize(string devicePath)
         {
@@ -27,7 +29,15 @@ namespace vJoyMapping.CHProducts.ProPedals
         public void MapControls(Usb.GameControllers.CHProducts.ProPedals.Joystick proPedals)
         {
             // Add in the mappings
-            proPedals.Subscribe(x => ChPedalsXYR.Process(x, this), ex => log.Error($"Exception : {ex}"));
+            Disposables = new List<IDisposable> {
+                proPedals.Subscribe(x => ChPedalsXYR.Process(x, this), ex => log.Error($"Exception : {ex}"))
+            };
+        }
+
+        public void Dispose()
+        {
+            foreach (var disposable in Disposables)
+                disposable?.Dispose();
         }
     }
 }
