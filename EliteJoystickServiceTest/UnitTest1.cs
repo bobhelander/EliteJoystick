@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
-using Controllers;
+using EliteJoystick.Common;
 using EliteJoystickService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using vJoyMapping.Common;
 
 namespace EliteJoystickServiceTest
 {
@@ -14,71 +16,85 @@ namespace EliteJoystickServiceTest
         {
             try
             {
-                EliteControllers eliteControllers = new EliteControllers();
+                List<Controller> Controllers = new List<Controller>();
                 EliteVirtualJoysticks eliteVirtualJoysticks = new EliteVirtualJoysticks();
                 vJoyMapper vJoyMapper = new vJoyMapper();
-                EliteSharedState sharedState = new EliteSharedState { OrbitLines = true, HeadsUpDisplay = true };
+                EliteSharedState SharedState = new EliteSharedState { OrbitLines = true, HeadsUpDisplay = true };
                 ArduinoCommunication.Arduino arduino = null;
 
                 Settings settings = Settings.Load();
+ 
+                var ffb2 = new vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Controller
+                {
+                    Arduino = arduino,
+                    Name = "Force Feedback 2",
+                    SharedState = SharedState,
+                    vJoyMapper = vJoyMapper,
+                    VirtualJoysticks = eliteVirtualJoysticks
+                };
 
-                //for (uint joyId = 1; joyId <= 6; joyId++)
-                //{
-                //    eliteVirtualJoysticks.Controllers.Add(new EliteVirtualJoystick
-                //    {
-                //        Joystick = eliteVirtualJoysticks.Joystick,
-                //        JoystickId = joyId,
-                //    });
-                //}
+                Controllers.Add(ffb2);
 
-                eliteVirtualJoysticks.Initialize();
+                var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller
+                {
+                    Arduino = arduino,
+                    Name = "Game Voice",
+                    SharedState = SharedState,
+                    vJoyMapper = vJoyMapper,
+                    VirtualJoysticks = eliteVirtualJoysticks
+                };
 
-                eliteControllers.Controllers.Add(
-                        Controllers.Sidewinder.ForceFeedback2.Swff2Controller.Create(
-                            sharedState,
-                            eliteVirtualJoysticks.Joystick,
-                            eliteVirtualJoysticks,
-                            vJoyMapper,
-                            arduino));
+                Controllers.Add(swgv);
 
-                eliteControllers.Controllers.Add(
-                    Controllers.Thrustmaster.Warthog.TmThrottleController.Create(
-                        sharedState,
-                        eliteVirtualJoysticks.Joystick,
-                        eliteVirtualJoysticks,
-                        vJoyMapper,
-                        arduino));
+                var swsc = new vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Controller
+                {
+                    Arduino = arduino,
+                    Name = "Strategic Commander",
+                    SharedState = SharedState,
+                    vJoyMapper = vJoyMapper,
+                    VirtualJoysticks = eliteVirtualJoysticks
+                };
 
-                eliteControllers.Controllers.Add(
-                    Controllers.ChProducts.ChPedalsController.Create(
-                        sharedState,
-                        eliteVirtualJoysticks.Joystick,
-                        eliteVirtualJoysticks,
-                        vJoyMapper));
+                Controllers.Add(swsc);
 
-                eliteControllers.Controllers.Add(
-                    Controllers.Sidewinder.Commander.ScController.Create(
-                        sharedState,
-                        eliteVirtualJoysticks.Joystick,
-                        eliteVirtualJoysticks,
-                        vJoyMapper));
+                var warthog = new vJoyMapping.Thrustmaster.Warthog.Throttle.Controller
+                {
+                    Arduino = arduino,
+                    Name = "Warthog Throttle",
+                    SharedState = SharedState,
+                    vJoyMapper = vJoyMapper,
+                    VirtualJoysticks = eliteVirtualJoysticks
+                };
 
-                eliteControllers.Controllers.Add(
-                    Controllers.Sidewinder.GameVoice.SwGvController.Create(
-                        sharedState,
-                        eliteVirtualJoysticks.Joystick,
-                        eliteVirtualJoysticks,
-                        vJoyMapper));
+                Controllers.Add(warthog);
 
-                eliteControllers.Controllers.Add(
-                    Controllers.Other.BBI32.ButtonBoxController.Create(
-                        sharedState,
-                        eliteVirtualJoysticks.Joystick,
-                        eliteVirtualJoysticks,
-                        vJoyMapper,
-                        arduino));
+                var pedals = new vJoyMapping.CHProducts.ProPedals.Controller
+                {
+                    Arduino = arduino,
+                    Name = "Pro Pedals",
+                    SharedState = SharedState,
+                    vJoyMapper = vJoyMapper,
+                    VirtualJoysticks = eliteVirtualJoysticks
+                };
 
-                eliteControllers.Initialize();
+                Controllers.Add(pedals);
+
+                var bbi32 = new vJoyMapping.LeoBodnar.BBI32.Controller
+                {
+                    Arduino = arduino,
+                    Name = "BBI32",
+                    SharedState = SharedState,
+                    vJoyMapper = vJoyMapper,
+                    VirtualJoysticks = eliteVirtualJoysticks
+                };
+
+                Controllers.Add(bbi32);
+
+                // State Handlers
+                var subscription = SharedState.GearChanged.Subscribe(
+                    x => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
+
+                
 
                 while (true)
                     Thread.Sleep(1000);

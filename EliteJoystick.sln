@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickService", "EliteJoystickService\EliteJoystickService.csproj", "{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickConsole", "EliteJoystickConsole\EliteJoystickConsole.csproj", "{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickClient", "EliteJoystickClient\EliteJoystickClient.csproj", "{0B771627-5640-403F-9985-9E93539ADA6C}"
@@ -53,10 +51,6 @@ Global
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ACDBC5C4-8EAA-4258-9081-21E8DABCCCAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E9C00FC-5F1C-4C49-AEDD-A5A2EA22CF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
