@@ -15,7 +15,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
 
         private List<IDisposable> Disposables { get; set; }
 
-        void Initialize(string devicePath)
+        public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick(devicePath);
             MapControls(joystick);

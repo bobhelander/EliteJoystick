@@ -33,23 +33,23 @@
   <ItemGroup>
     <Reference Include="EddiCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\elite\EDDI\bin\Release\EddiCommon.dll</HintPath>
+      <HintPath>..\..\EDDI\EddiCommon.dll</HintPath>
     </Reference>
     <Reference Include="EddiDataDefinitions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\elite\EDDI\bin\Release\EddiDataDefinitions.dll</HintPath>
+      <HintPath>..\..\EDDI\EddiDataDefinitions.dll</HintPath>
     </Reference>
     <Reference Include="EddiDataProviderService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\elite\EDDI\bin\Release\EddiDataProviderService.dll</HintPath>
+      <HintPath>..\..\EDDI\EddiDataProviderService.dll</HintPath>
     </Reference>
     <Reference Include="EddiEvents, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\elite\EDDI\bin\Release\EddiEvents.dll</HintPath>
+      <HintPath>..\..\EDDI\EddiEvents.dll</HintPath>
     </Reference>
     <Reference Include="EddiJournalMonitor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\elite\EDDI\bin\Release\EddiJournalMonitor.dll</HintPath>
+      <HintPath>..\..\EDDI\EddiJournalMonitor.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

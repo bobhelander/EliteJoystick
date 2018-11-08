@@ -19,7 +19,7 @@ namespace vJoyMapping.Common
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public virtual void Initialize() { }
+        //public virtual void Initialize() { }
 
         public String Name { get; set; }
 
@@ -36,7 +36,7 @@ namespace vJoyMapping.Common
         public void SetJoystickButton(bool down, uint vButton, string vJoyType)
         {
             VirtualJoysticks.SetJoystickButton(down, vButton, vJoyMapper.GetJoystickId(vJoyType));
-            log.Debug($"{vJoyType}: {vButton}: {down}");
+            //log.Debug($"{vJoyType}: {vButton}: {down}");
         }
 
         public void SetJoystickAxis(int value, HID_USAGES usage, string vJoyType)

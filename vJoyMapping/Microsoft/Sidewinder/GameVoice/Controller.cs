@@ -14,7 +14,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 
         private List<IDisposable> Disposables { get; set; }
 
-        void Initialize(string devicePath)
+        public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick(devicePath);
             MapControls(joystick);
@@ -33,9 +33,11 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 
         public void MapLights(Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick swgv)
         {
+            swgv.Lights = 0;
             // Turn lights on and off
             SharedState.GearChanged.Subscribe(x =>
-                swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights | ~(byte)Button.Button1));
+            //swgv.Lights = x ? (byte)Button.Button1 : (byte)0);
+            swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights & ~(byte)Button.Button1));
         }
 
         public void Dispose()

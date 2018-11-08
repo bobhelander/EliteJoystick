@@ -83,7 +83,7 @@ namespace EliteJoystickService
             EliteVirtualJoysticks eliteVirtualJoysticks,
             EliteSharedState sharedState)
         {
-            log.Debug("Connecting to Controllers");           
+            log.Debug("Connecting to Controllers");   
 
             try
             {
@@ -96,7 +96,12 @@ namespace EliteJoystickService
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
+                ffb2.Initialize(Controller.GetDevicePath(
+                    Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Joystick.VendorId,
+                    Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Joystick.ProductId));
+
                 Controllers.Add(ffb2);
+
 
                 var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller
                 {
@@ -106,6 +111,10 @@ namespace EliteJoystickService
                     vJoyMapper = vJoyMapper,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
+
+                swgv.Initialize(Controller.GetDevicePath(
+                    Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick.VendorId,
+                    Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick.ProductId));
 
                 Controllers.Add(swgv);
 
@@ -118,6 +127,10 @@ namespace EliteJoystickService
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
+                swsc.Initialize(Controller.GetDevicePath(
+                    Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick.VendorId,
+                    Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick.ProductId));
+
                 Controllers.Add(swsc);
 
                 var warthog = new vJoyMapping.Thrustmaster.Warthog.Throttle.Controller
@@ -128,6 +141,10 @@ namespace EliteJoystickService
                     vJoyMapper = vJoyMapper,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
+
+                warthog.Initialize(Controller.GetDevicePath(
+                    Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick.VendorId,
+                    Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick.ProductId));
 
                 Controllers.Add(warthog);
 
@@ -140,6 +157,10 @@ namespace EliteJoystickService
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
+                pedals.Initialize(Controller.GetDevicePath(
+                    Usb.GameControllers.CHProducts.ProPedals.Joystick.VendorId,
+                    Usb.GameControllers.CHProducts.ProPedals.Joystick.ProductId));
+
                 Controllers.Add(pedals);
 
                 var bbi32 = new vJoyMapping.LeoBodnar.BBI32.Controller
@@ -151,14 +172,15 @@ namespace EliteJoystickService
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
+                bbi32.Initialize(Controller.GetDevicePath(
+                    Usb.GameControllers.LeoBodnar.BBI32.Joystick.VendorId,
+                    Usb.GameControllers.LeoBodnar.BBI32.Joystick.ProductId));
+
                 Controllers.Add(bbi32);
 
                 // State Handlers
                 var subscription = SharedState.GearChanged.Subscribe(
                     x => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
-
-                foreach (var controller in Controllers)
-                    controller.Initialize();
 
                 ClientActions.ClientInformationAction(this, "Controllers Ready");
                 log.Debug("Controllers Ready");

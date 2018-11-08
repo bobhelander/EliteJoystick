@@ -19,7 +19,7 @@ namespace EliteJoystick.Common
         public bool ThrottleShift2 { get; set; }
 
         public bool LeftThrottleEnabled { get; set; }
-        public bool RightThrottleEnabled { get; set; }
+        public bool RightThrottleEnabled { get; set; } = true;
 
         public bool OrbitLines { get; set; }
         public bool HeadsUpDisplay { get; set; }

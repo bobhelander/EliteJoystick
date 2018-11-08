@@ -20,7 +20,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
             foreach (Button button in Enum.GetValues(typeof(Button)))
             {
                 bool pressed = ((current.Buttons & (int)button) == (int)button);
-                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.StickAndPedals);
+                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.Commander);
                 buttonIndex++;
             }
         }

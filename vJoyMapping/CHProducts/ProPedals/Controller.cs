@@ -17,7 +17,7 @@ namespace vJoyMapping.CHProducts.ProPedals
 
         private List<IDisposable> Disposables { get; set; }
 
-        void Initialize(string devicePath)
+        public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.CHProducts.ProPedals.Joystick(devicePath);
 

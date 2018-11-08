@@ -13,7 +13,7 @@ namespace vJoyMapping.LeoBodnar.BBI32
 
         private List<IDisposable> Disposables { get; set; }
 
-        void Initialize(string devicePath)
+        public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.LeoBodnar.BBI32.Joystick(devicePath);
 

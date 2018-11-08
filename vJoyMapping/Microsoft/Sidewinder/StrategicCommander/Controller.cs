@@ -17,7 +17,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
 
         private List<IDisposable> Disposables { get; set; }
 
-        void Initialize(string devicePath)
+        public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick(devicePath);
 
