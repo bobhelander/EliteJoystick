@@ -36,8 +36,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
             swgv.Lights = 0;
             // Turn lights on and off
             SharedState.GearChanged.Subscribe(x =>
-            //swgv.Lights = x ? (byte)Button.Button1 : (byte)0);
-            swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights & ~(byte)Button.Button1));
+                swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights & ~(byte)Button.Button1));
         }
 
         public void Dispose()

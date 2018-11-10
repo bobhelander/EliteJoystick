@@ -14,8 +14,7 @@ namespace vJoyMapping.Common
         public static String StickAndPedals = "StickAndPedals";
         public static String Throttle = "Throttle";
         public static String Commander = "Commander";
-        public static String Voice = "Voice";
         public static String Virtual = "Virtual";
-        public static String Buttons = "Buttons";
+        //public static String Buttons = "Buttons";
     }
 }

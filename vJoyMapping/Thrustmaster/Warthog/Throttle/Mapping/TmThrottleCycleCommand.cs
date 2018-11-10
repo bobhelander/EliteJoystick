@@ -30,7 +30,11 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             {
                 if (null == cycleSubsystems)
                 {
-                    cycleSubsystems = timer.Subscribe(x => controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 200));
+                    cycleSubsystems = timer.Subscribe(x =>
+                    {
+                        controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 200);
+                        log.Debug($"Cycle Subsystem: Next");
+                    });
                     log.Debug($"Cycle Subsystem: Running");
                 }
             }

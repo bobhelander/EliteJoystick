@@ -43,9 +43,7 @@ namespace vJoyMapping.Common
                 {vJoyTypes.StickAndPedals, 1 },
                 {vJoyTypes.Throttle, 2 },
                 {vJoyTypes.Commander, 3 },
-                {vJoyTypes.Voice, 4 },
-                {vJoyTypes.Virtual, 5 },
-                {vJoyTypes.Buttons, 6 },
+                {vJoyTypes.Virtual, 4 }
             };
         }
 
@@ -59,9 +57,7 @@ namespace vJoyMapping.Common
                     new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.StickAndPedals },
                     new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Throttle },
                     new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Commander },
-                    new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Voice },
                     new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Virtual },
-                    new vJoyMapItem { vJoyMapper = this, Key = vJoyTypes.Buttons }
                 };
             }
         }

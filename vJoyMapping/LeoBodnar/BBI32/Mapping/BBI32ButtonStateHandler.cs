@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.LeoBodnar.BBI32.Models;
@@ -16,8 +17,8 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (current.Buttons == previous.Buttons)
                 return; // No Change
 
-            // Buttons 21 - 32 On the combined controller
-            uint buttonIndex = 21;
+            // Buttons 21 - 32 On the Commander controller
+            uint buttonIndex = MappedButtons.BBI32Button1;
             foreach (UInt32 button in Enum.GetValues(typeof(BBI32Button)))
             {
                 bool pressed = controller.TestButtonDown(current.Buttons, button);

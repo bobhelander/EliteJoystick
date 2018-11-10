@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Models;
@@ -18,11 +19,17 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
             if (current.Buttons == previous.Buttons)
                 return; // No Change
 
-            uint buttonIndex = 1;
+            if ((current.Buttons & (byte)Button.ButtonAll) == (byte)Button.ButtonAll)
+            {
+                controller.SetJoystickButton(true, MappedButtons.VoiceButtonAll, vJoyTypes.Commander);
+                return;
+            }
+
+            uint buttonIndex = MappedButtons.VoiceButtonAll;
             foreach (Button button in Enum.GetValues(typeof(Button)))
             {
                 bool pressed = ((current.Buttons & (byte)button) == (byte)button);
-                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.Voice);
+                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.Commander);
                 buttonIndex++;
             }
         }

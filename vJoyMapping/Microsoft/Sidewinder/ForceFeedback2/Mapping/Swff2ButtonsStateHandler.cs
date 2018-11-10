@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Models;
@@ -16,7 +17,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
             if (current.Buttons == previous.Buttons)
                 return; // No Change
 
-            uint buttonIndex = 1;
+            uint buttonIndex = MappedButtons.ForceFeedback2Trigger;
             foreach (Button button in Enum.GetValues(typeof(Button)))
             {
                 bool pressed = ((current.Buttons & (int)button) == (int)button);

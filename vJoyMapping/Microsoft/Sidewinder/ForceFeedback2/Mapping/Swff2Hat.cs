@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Models;
@@ -8,7 +9,12 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 {
     public static class Swff2Hat
     {
-        private static List<uint> vButtons { get; set; } = new List<uint> { 9, 10, 11, 12, 13 };
+        private static List<uint> vButtons { get; set; } = new List<uint> {
+            MappedButtons.ForceFeedback2HatUp,
+            MappedButtons.ForceFeedback2HatRight,
+            MappedButtons.ForceFeedback2HatDown,
+            MappedButtons.ForceFeedback2HatLeft,
+            MappedButtons.ForceFeedback2HatCentered};
 
         public static void Process(States value, Controller controller)
         {

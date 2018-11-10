@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Models;
@@ -16,7 +17,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
             if (current.Buttons == previous.Buttons)
                 return; // No Change
 
-            uint buttonIndex = 1;
+            uint buttonIndex = MappedButtons.CommanderButton1;
             foreach (Button button in Enum.GetValues(typeof(Button)))
             {
                 bool pressed = ((current.Buttons & (int)button) == (int)button);

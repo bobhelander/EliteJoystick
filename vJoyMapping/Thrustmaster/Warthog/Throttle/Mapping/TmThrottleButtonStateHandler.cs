@@ -25,11 +25,11 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 buttonIndex++;
             }
 
-            buttonIndex = 1;
+            buttonIndex = MappedButtons.ThrottleMSNone;
             foreach (UInt32 nbutton in Enum.GetValues(typeof(SwitchNeutral)))
             {
                 bool buttonPressed = (current.buttons & (uint)nbutton) != 0;
-                controller.SetJoystickButton(!buttonPressed, buttonIndex, vJoyTypes.Virtual);
+                controller.SetJoystickButton(!buttonPressed, buttonIndex, vJoyTypes.StickAndPedals);
                 buttonIndex++;
             }
         }
