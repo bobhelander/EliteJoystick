@@ -34,6 +34,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
                 swsc.Subscribe(x => SwCommanderButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 swsc.Subscribe(x => SwCommanderProfileHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 swsc.Subscribe(x => SwCommanderXYZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                swsc.Subscribe(x => SwCommanderProgramIds.Process(x, this), ex => log.Error($"Exception : {ex}"))
             };
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Models;
+using EliteJoystick.Common;
 using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping

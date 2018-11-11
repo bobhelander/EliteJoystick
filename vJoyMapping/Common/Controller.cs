@@ -25,7 +25,7 @@ namespace vJoyMapping.Common
 
         public EliteVirtualJoysticks VirtualJoysticks { get; set; }
 
-        public vJoyMapper vJoyMapper { get; set; }
+        public Settings Settings { get; set; }
 
         public IArduino Arduino { get; set; }
 
@@ -35,18 +35,18 @@ namespace vJoyMapping.Common
 
         public void SetJoystickButton(bool down, uint vButton, string vJoyType)
         {
-            VirtualJoysticks.SetJoystickButton(down, vButton, vJoyMapper.GetJoystickId(vJoyType));
+            VirtualJoysticks.SetJoystickButton(down, vButton, Settings.vJoyMapper.GetJoystickId(vJoyType));
             //log.Debug($"{vJoyType}: {vButton}: {down}");
         }
 
         public void SetJoystickAxis(int value, HID_USAGES usage, string vJoyType)
         {
-            VirtualJoysticks.SetJoystickAxis(value, usage, vJoyMapper.GetJoystickId(vJoyType));
+            VirtualJoysticks.SetJoystickAxis(value, usage, Settings.vJoyMapper.GetJoystickId(vJoyType));
         }
 
         public void SetJoystickHat(int value, string vJoyType, uint hatNumber)
         {
-            VirtualJoysticks.SetJoystickHat(value, hatNumber, vJoyMapper.GetJoystickId(vJoyType));
+            VirtualJoysticks.SetJoystickHat(value, hatNumber, Settings.vJoyMapper.GetJoystickId(vJoyType));
         }
 
         #endregion
@@ -92,7 +92,7 @@ namespace vJoyMapping.Common
 
         public void CallActivateButton(string vJoyType, uint vButton, int delay)
         {
-            uint joyId = vJoyMapper.GetJoystickId(vJoyType);
+            uint joyId = Settings.vJoyMapper.GetJoystickId(vJoyType);
 
             Task.Run(async () => {
                 VirtualJoysticks.SetJoystickButton(true, vButton, joyId);

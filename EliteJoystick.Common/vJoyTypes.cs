@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace vJoyMapping.Common
+namespace EliteJoystick.Common
 {
     /// <summary>
     /// List of the different virtual joystick types in use
@@ -15,6 +15,5 @@ namespace vJoyMapping.Common
         public static String Throttle = "Throttle";
         public static String Commander = "Commander";
         public static String Virtual = "Virtual";
-        //public static String Buttons = "Buttons";
     }
 }

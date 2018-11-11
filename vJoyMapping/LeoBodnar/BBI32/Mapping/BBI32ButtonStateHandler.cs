@@ -22,7 +22,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             foreach (UInt32 button in Enum.GetValues(typeof(BBI32Button)))
             {
                 bool pressed = controller.TestButtonDown(current.Buttons, button);
-                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.StickAndPedals);
+                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.Commander);
                 buttonIndex++;
             }
         }

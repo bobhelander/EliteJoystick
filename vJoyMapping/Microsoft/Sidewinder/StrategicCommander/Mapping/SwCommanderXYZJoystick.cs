@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Models;
+using EliteJoystick.Common;
 using vJoyMapping.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping

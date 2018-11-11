@@ -51,6 +51,15 @@ namespace EliteJoystick.Common
 
         public void ChangeGear(bool deployed) { LandingGear = deployed; this.gearChanged.OnNext(LandingGear); }
 
+        // This mode allows us to change the vJoy ids to match what the ganme is mapped to
+        public bool ProgramIdsMode { get; private set; } = false;
+
+        private Subject<bool> programModeChanged = new Subject<bool>();
+
+        public IObservable<bool> ProgramModeChanged { get { return this.programModeChanged.AsObservable(); } }
+
+        public void ChangeProgramMode(bool on) { ProgramIdsMode = on; this.programModeChanged.OnNext(ProgramIdsMode); }
+
         #endregion
 
         public enum Mode

@@ -79,7 +79,7 @@ namespace EliteJoystickService
         }
 
         private void StartControllers(
-            vJoyMapper vJoyMapper, 
+            Settings settings,
             EliteVirtualJoysticks eliteVirtualJoysticks,
             EliteSharedState sharedState)
         {
@@ -92,7 +92,7 @@ namespace EliteJoystickService
                     Arduino = arduino,
                     Name = "Force Feedback 2",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -108,7 +108,7 @@ namespace EliteJoystickService
                     Arduino = arduino,
                     Name = "Game Voice",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -123,7 +123,7 @@ namespace EliteJoystickService
                     Arduino = arduino,
                     Name = "Strategic Commander",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -138,7 +138,7 @@ namespace EliteJoystickService
                     Arduino = arduino,
                     Name = "Warthog Throttle",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -153,7 +153,7 @@ namespace EliteJoystickService
                     Arduino = arduino,
                     Name = "Pro Pedals",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -168,7 +168,7 @@ namespace EliteJoystickService
                     Arduino = arduino,
                     Name = "BBI32",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -236,7 +236,7 @@ namespace EliteJoystickService
                     Client = client,
                     ConnectJoysticks = () => {
                         eliteVirtualJoysticks = StartVirtualJoysticks();
-                        StartControllers(settings.vJoyMapper, eliteVirtualJoysticks, SharedState);
+                        StartControllers(settings, eliteVirtualJoysticks, SharedState);
                     },
                     ConnectArduino = () => ConnectArduino(),
                 };
@@ -252,7 +252,6 @@ namespace EliteJoystickService
         private void StopService()
         {
             server.ContinueListening = false;
-            settings.vJoyMapper.Save();
             settings.Save();
             eliteVirtualJoysticks?.Release();
         }        

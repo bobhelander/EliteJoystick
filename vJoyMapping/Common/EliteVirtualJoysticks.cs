@@ -13,13 +13,11 @@ namespace vJoyMapping.Common
     public class EliteVirtualJoysticks
     {
         public vJoy Joystick { get; set; } = new vJoy();
-        public EliteVirtualJoystick[] Controllers { get; set; } = new EliteVirtualJoystick[6] {
-                        new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick(),
-                        new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick()};
+        public EliteVirtualJoystick[] Controllers { get; set; } = new EliteVirtualJoystick[4] {
+                        new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick() };
 
-        public vJoy.JoystickState[] States { get; set; } = new vJoy.JoystickState[6] {
-                        new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState(),
-                        new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState()};
+        public vJoy.JoystickState[] States { get; set; } = new vJoy.JoystickState[4] {
+                        new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState() };
 
         public void Initialize()
         {
