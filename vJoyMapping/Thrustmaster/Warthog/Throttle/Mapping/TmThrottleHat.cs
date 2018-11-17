@@ -27,7 +27,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             foreach (int hatValue in Enum.GetValues(typeof(Hat)))
             {
                 bool pressed = (current.Hat & (int)hatValue) != 0;
-                controller.SetJoystickButton(pressed, vButtons[index], vJoyTypes.Virtual);
+                controller.SetJoystickButton(pressed, vButtons[index], vJoyTypes.StickAndPedals);
                 index++;
             }
 

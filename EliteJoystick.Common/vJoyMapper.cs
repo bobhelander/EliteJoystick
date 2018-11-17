@@ -19,8 +19,6 @@ namespace EliteJoystick.Common
                 {vJoyTypes.Virtual, 4 }
             };
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public uint GetJoystickId(string vJoyType)
         {
             return vJoyMap[vJoyType];

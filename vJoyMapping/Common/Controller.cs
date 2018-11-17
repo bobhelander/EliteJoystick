@@ -19,8 +19,6 @@ namespace vJoyMapping.Common
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        //public virtual void Initialize() { }
-
         public String Name { get; set; }
 
         public EliteVirtualJoysticks VirtualJoysticks { get; set; }
@@ -98,7 +96,7 @@ namespace vJoyMapping.Common
                 VirtualJoysticks.SetJoystickButton(true, vButton, joyId);
                 await Task.Delay(delay);
                 VirtualJoysticks.SetJoystickButton(false, vButton, joyId);
-                log.Debug($"Button {vJoyType} Button {vButton}");
+                log.Debug($"Press {vJoyType} Button {vButton}");
             }).ContinueWith(t => { log.Error($"CallActivateButton Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
         }
 

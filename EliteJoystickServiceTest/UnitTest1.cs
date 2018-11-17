@@ -29,7 +29,7 @@ namespace EliteJoystickServiceTest
                     Arduino = arduino,
                     Name = "Force Feedback 2",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -40,7 +40,7 @@ namespace EliteJoystickServiceTest
                     Arduino = arduino,
                     Name = "Game Voice",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -51,7 +51,7 @@ namespace EliteJoystickServiceTest
                     Arduino = arduino,
                     Name = "Strategic Commander",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -62,7 +62,7 @@ namespace EliteJoystickServiceTest
                     Arduino = arduino,
                     Name = "Warthog Throttle",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -73,7 +73,7 @@ namespace EliteJoystickServiceTest
                     Arduino = arduino,
                     Name = "Pro Pedals",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
@@ -84,7 +84,7 @@ namespace EliteJoystickServiceTest
                     Arduino = arduino,
                     Name = "BBI32",
                     SharedState = SharedState,
-                    vJoyMapper = vJoyMapper,
+                    Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks
                 };
 
