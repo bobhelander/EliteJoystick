@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -16,12 +17,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             var current = value.Current as State;
             var previous = value.Previous as State;
 
-            if (controller.TestButtonPressed(previous.buttons, current.buttons, MIC))
+            if (Reactive.ButtonPressed(value, MIC))
             {
                 controller.SharedState.Mute = true;
                 controller.DepressKey(0xC3);  // KEY_F2    
             }
-            if (controller.TestButtonReleased(previous.buttons, current.buttons, MIC))
+            if (Reactive.ButtonReleased(value, MIC))
             {
                 controller.SharedState.Mute = false;
                 controller.ReleaseKey(0xC3);  // KEY_F2

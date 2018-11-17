@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Models;
 using vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping;
 
@@ -26,7 +28,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
         {
             // Add in the mappings
             Disposables = new List<IDisposable> {
-                swgv.Subscribe(x => SwGameButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 swgv.Subscribe(x => SwGameLandingGearHandler.Process(x, this), ex => log.Error($"Exception : {ex}"))
             };
         }

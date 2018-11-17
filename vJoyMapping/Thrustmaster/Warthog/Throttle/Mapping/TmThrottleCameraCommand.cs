@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -18,11 +19,8 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
             // Camera On/Off
-            if (controller.TestButtonPressedOrReleased(previous.buttons, current.buttons, button22))
+            if (Reactive.ButtonPressedOrReleased(value, button22))
             {
                 if (controller.SharedState.CameraActive)
                 {
@@ -41,12 +39,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
             // Momentary Camera On/Off
             // Camera turns on so we can switch views quickly
-            if (controller.TestButtonPressed(previous.buttons, current.buttons, button15))
+            if (Reactive.ButtonPressed(value, button15))
             {
                 // Start Camera
                 controller.CallActivateButton(vJoyTypes.Virtual, 16, 150);
             }
-            else if (controller.TestButtonReleased(previous.buttons, current.buttons, button15))
+            else if (Reactive.ButtonReleased(value, button15))
             {
                 // Quit Camera
                 controller.CallActivateButton(vJoyTypes.Virtual, 18, 150);

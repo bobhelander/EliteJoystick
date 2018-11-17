@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Interfaces;
 using Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Models;
 using vJoyMapping.Common;
@@ -31,10 +33,10 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
         {
             // Add in the mappings
             Disposables = new List<IDisposable> {
-                swsc.Subscribe(x => SwCommanderButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                swsc.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwCommanderButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 swsc.Subscribe(x => SwCommanderProfileHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 swsc.Subscribe(x => SwCommanderXYZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                swsc.Subscribe(x => SwCommanderProgramIds.Process(x, this), ex => log.Error($"Exception : {ex}"))
+                swsc.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwCommanderProgramIds.Process(x, this), ex => log.Error($"Exception : {ex}"))
             };
         }
 

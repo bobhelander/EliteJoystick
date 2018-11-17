@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -15,17 +16,14 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
-            if (controller.TestButtonPressed(previous.buttons, current.buttons, leftThrottleParked))
+            if (Reactive.ButtonPressed(value, leftThrottleParked))
             {
                 // Set the left throttle to the middle so we don't move forward or backward when the throttle is parked
                 controller.SharedState.LeftThrottleEnabled = false;
                 controller.SetJoystickAxis(16*1024, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
                 log.Debug($"Left Throttle Parked");
             }
-            else if (controller.TestButtonReleased(previous.buttons, current.buttons, leftThrottleParked))
+            else if (Reactive.ButtonReleased(value, leftThrottleParked))
             {
                 // Left throttle is set to move forward and backward from the center 
                 controller.SharedState.LeftThrottleEnabled = true;

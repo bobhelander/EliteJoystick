@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -13,14 +14,11 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
             // Use the speedbrake to lock the secondary fire button down.  
             // This will hold the mining laser or discovery scanner on until the switch is moved off.
             // In fighting mode this switch is used to cycle the subsystem targeting.
 
-            if (controller.TestButtonDown(current.buttons, SpeedbrakeForward) &&
+            if (Reactive.ButtonDown(value, SpeedbrakeForward) &&
                (controller.SharedState.CurrentMode == EliteSharedState.Mode.Travel ||
                 controller.SharedState.CurrentMode == EliteSharedState.Mode.Mining))
             {

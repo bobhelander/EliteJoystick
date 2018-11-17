@@ -2,7 +2,6 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiJournalMonitor;
-using Faz.SideWinderSC.Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EliteJoystickTest
@@ -39,12 +38,6 @@ namespace EliteJoystickTest
             StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem("HR 1185", true);
             //StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem("Gorgonea Secunda", true);
             EddiJoystickResponder.Exploration.Actions.OutputValuableSystems(null, starSystem); 
-        }
-
-        [TestMethod]
-        public void TestJoystickStartup()
-        {
-            var test = Faz.SideWinderSC.Logic.Swff2Controller.RetrieveAll();
         }
     }
 }

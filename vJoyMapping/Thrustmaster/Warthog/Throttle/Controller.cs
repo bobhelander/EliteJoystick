@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping;
 
@@ -28,7 +30,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
             // Add in the mappings
             Disposables = new List<IDisposable> {
                 warthog.Subscribe(x => TmThrottle75Command.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Subscribe(x => TmThrottleButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 warthog.Subscribe(x => TmThrottleCameraCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 warthog.Subscribe(x => TmThrottleClearMessages.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 warthog.Subscribe(x => TmThrottleCycleCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),

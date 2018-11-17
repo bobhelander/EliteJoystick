@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
+using Usb.GameControllers.Common;
 using vJoyMapping.LeoBodnar.BBI32.Mapping;
 
 namespace vJoyMapping.LeoBodnar.BBI32
@@ -26,7 +28,8 @@ namespace vJoyMapping.LeoBodnar.BBI32
         {
             // Add in the mappings
             Disposables = new List<IDisposable> {
-                bbi32.Subscribe(x => BBI32ButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(
+                    x => BBI32ButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 bbi32.Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
             };
         }

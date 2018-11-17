@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Models;
 using vJoyMapping.Common;
 
@@ -15,15 +16,12 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
-            if (0 == (previous.Buttons & button1) && (current.Buttons & button1) == button1)
+            if (Reactive.ButtonPressed(value, button1))
             {
                 // Deployed
                 controller.SharedState.ChangeGear(true);
             }
-            else if (button1 == (previous.Buttons & button1) && 0 == (current.Buttons & button1))
+            else if (Reactive.ButtonReleased(value, button1))
             {
                 // Retracted
                 controller.SharedState.ChangeGear(false);
