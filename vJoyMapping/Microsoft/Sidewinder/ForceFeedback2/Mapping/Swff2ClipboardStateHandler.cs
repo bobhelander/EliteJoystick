@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Models;
 using vJoyMapping.Common;
 
@@ -12,10 +13,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
-            if (controller.TestButtonPressed(current.Buttons, previous.Buttons, button6))
+            if (Reactive.ButtonPressed(value, button6))
             {
                 controller.TypeFromClipboard();
             }

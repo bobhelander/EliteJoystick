@@ -1,0 +1,30 @@
+﻿vJoyTypes.StickAndPedals Device 2
+X Y FFB2 Stick
+Z FFB2 Stick Twist
+S0 FFB2 Slider
+Rx Pedals Rotate
+Rz Pedal Toes Combined
+1-8 FFB2 buttons
+9-13 FFB2 Hat
+14-17 Throttle Hat
+18-26 Warthog Neutral Switches
+27-32 Unassigned
+
+vJoyTypes.Throttle Device 1
+X Y Nipple Mouse
+Z Right Throttle
+Rz Left Throttle
+sl0 Warthog slider
+1-32 Warthog Buttons
+
+vJoyTypes.Commander Device 0
+X Y Commander XY
+Z Commander Z
+1-12 Commander Buttons
+13-20 Game Voice Buttons
+21-32 BBI32
+
+
+vJoyTypes.Virtual Device 3
+
+

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Models;
 using vJoyMapping.Common;
 
@@ -16,31 +17,25 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
             if (false == controller.SharedState.ProgramIdsMode)
                 return; // Not programming
 
-            if (current.Buttons == previous.Buttons)
-                return; // No Change
-
             // Change vJoyTypes.StickAndPedals
-            if (controller.TestButtonPressed(previous.Buttons, current.Buttons, (uint)Button.Button1))
+            if (Reactive.ButtonPressed(value, (uint)Button.Button1))
             {
                 // swap next
                 SwapNext(controller, vJoyTypes.StickAndPedals, new string[] { vJoyTypes.Throttle, vJoyTypes.Commander, vJoyTypes.Virtual });
             }
 
             // Change vJoyTypes.Throttle
-            if (controller.TestButtonPressed(previous.Buttons, current.Buttons, (uint)Button.Button2))
+            if (Reactive.ButtonPressed(value, (uint)Button.Button2))
             {
                 // swap next
                 SwapNext(controller, vJoyTypes.Throttle, new string[] { vJoyTypes.Commander, vJoyTypes.Virtual });
             }
 
             // Change vJoyTypes.Commander
-            if (controller.TestButtonPressed(previous.Buttons, current.Buttons, (uint)Button.Button3))
+            if (Reactive.ButtonPressed(value, (uint)Button.Button3))
             {
                 Swap(controller, vJoyTypes.Commander, vJoyTypes.Virtual);
             }

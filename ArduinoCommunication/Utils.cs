@@ -40,18 +40,6 @@ namespace ArduinoCommunication
         static public async Task<string> CallClipboard()
         {
             return await StartSTATask<string>(() => System.Windows.Clipboard.GetText());
-            /*
-            object returnValue = null;  
-            var t = new Thread((ThreadStart)(() =>
-            {
-                returnValue = System.Windows.Clipboard.GetText();
-            }));
-
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            t.Join();
-            return returnValue as String;
-            */
         }
 
         public static Task<T> StartSTATask<T>(Func<T> func)

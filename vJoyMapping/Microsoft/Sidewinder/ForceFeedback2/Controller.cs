@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using Usb.GameControllers.Interfaces;
 using Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Models;
 using vJoyMapping.Common;
 using vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping;
+using Usb.GameControllers.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
 {
@@ -34,7 +36,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
                 ffb2.Subscribe(x => Swff2ZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 ffb2.Subscribe(x => Swff2SliderJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 ffb2.Subscribe(x => Swff2Hat.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                ffb2.Subscribe(x => Swff2ButtonsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                ffb2.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => Swff2ButtonsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 ffb2.Subscribe(x => Swff2ClipboardStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 ffb2.Subscribe(x => Swff2UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
             };

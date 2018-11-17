@@ -6,6 +6,7 @@ using System.Threading;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 using System.Reactive.Linq;
+using Usb.GameControllers.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
@@ -23,9 +24,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-
-            if ((current.buttons & SpeedbrakeForward) == SpeedbrakeForward &&
+            if (Reactive.ButtonPressed(value, SpeedbrakeForward) &&
                 controller.SharedState.CurrentMode == EliteSharedState.Mode.Fighting)
             {
                 if (null == cycleSubsystems)

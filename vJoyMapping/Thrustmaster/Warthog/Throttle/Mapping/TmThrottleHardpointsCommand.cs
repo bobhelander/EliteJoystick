@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -15,21 +16,18 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
             if (controller.SharedState.HardpointsDeployed == false &&
-                controller.TestButtonPressed(previous.buttons, current.buttons, EORDown))
+                Reactive.ButtonPressed(value, EORDown))
             {
-                log.Debug($"Hardpoints out {controller.SharedState.HardpointsDeployed} {previous.buttons} {current.buttons}");
+                log.Debug($"Hardpoints out {controller.SharedState.HardpointsDeployed}");
                 controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48);
                 controller.SharedState.HardpointsDeployed = true;
             }
 
             if (controller.SharedState.HardpointsDeployed == true &&
-                controller.TestButtonReleased(previous.buttons, current.buttons, EORDown))
+                Reactive.ButtonReleased(value, EORDown))
             {
-                log.Debug($"Hardpoints in {controller.SharedState.HardpointsDeployed} {previous.buttons} {current.buttons}");
+                log.Debug($"Hardpoints in {controller.SharedState.HardpointsDeployed}");
                 controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48);
                 controller.SharedState.HardpointsDeployed = false;
             }

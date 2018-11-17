@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -16,15 +17,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
-            if (controller.TestButtonPressed(previous.buttons, current.buttons, FuelRight))
+            if (Reactive.ButtonPressed(value, FuelRight))
             {
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.SilentRunningToggle, 200);
                 log.Debug($"Silent Running Activated");
             }
-            if (controller.TestButtonReleased(previous.buttons, current.buttons, FuelRight))
+            if (Reactive.ButtonReleased(value, FuelRight))
             {
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.SilentRunningToggle, 200);
                 log.Debug($"Silent Running Deactivated");

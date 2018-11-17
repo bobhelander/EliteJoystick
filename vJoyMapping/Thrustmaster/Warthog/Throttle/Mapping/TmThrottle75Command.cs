@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -16,10 +17,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
-            if (controller.TestButtonReleased(previous.buttons, current.buttons, rdrAlt))
+            if (Reactive.ButtonReleased(value, rdrAlt))
             {
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);
                 log.Debug("75% throttle");

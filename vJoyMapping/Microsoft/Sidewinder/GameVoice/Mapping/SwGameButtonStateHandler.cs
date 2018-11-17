@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Models;
 using vJoyMapping.Common;
 
@@ -13,13 +14,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
-            if (current.Buttons == previous.Buttons)
-                return; // No Change
-
-            if ((current.Buttons & (byte)Button.ButtonAll) == (byte)Button.ButtonAll)
+            if ((value.Current.Buttons & (byte)Button.ButtonAll) == (byte)Button.ButtonAll)
             {
                 controller.SetJoystickButton(true, MappedButtons.VoiceButtonAll, vJoyTypes.Commander);
                 return;
@@ -28,8 +23,8 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
             uint buttonIndex = MappedButtons.VoiceButtonAll;
             foreach (Button button in Enum.GetValues(typeof(Button)))
             {
-                bool pressed = ((current.Buttons & (byte)button) == (byte)button);
-                controller.SetJoystickButton(pressed, buttonIndex, vJoyTypes.Commander);
+                controller.SetJoystickButton(
+                    Reactive.ButtonPressed(value, (uint)button), buttonIndex, vJoyTypes.Commander);
                 buttonIndex++;
             }
         }

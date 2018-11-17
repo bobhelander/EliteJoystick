@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.LeoBodnar.BBI32.Models;
 using vJoyMapping.Common;
 
@@ -11,12 +12,8 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
     {
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
             // Orbit Lines Toggle Off
-            if (controller.TestButtonPressed(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button8))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button8))
             {
                 // Orbit Lines Toggle
                 if (controller.SharedState.OrbitLines)
@@ -26,8 +23,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             }
 
             // Orbit Lines Toggle On
-            if (controller.TestButtonPressed(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button9))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button9))
             {
                 // Orbit Lines Toggle
                 if (false == controller.SharedState.OrbitLines)
@@ -37,8 +33,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             }
 
             // HUD Toggle Off
-            if (controller.TestButtonPressed(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button10))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button10))
             {
                 // HUD off  CRTL+ALT+G
                 if (controller.SharedState.HeadsUpDisplay)
@@ -48,8 +43,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             }
 
             // HUD Toggle On
-            if (controller.TestButtonPressed(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button11))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button11))
             {
                 // HUD off  CRTL+ALT+G
                 if (false == controller.SharedState.HeadsUpDisplay)
@@ -63,16 +57,14 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             //    buttonBoxController.SendKeyCombo(new byte[] { 0x80 }, 0x31);
             //}
 
-            if (controller.TestButtonPressed(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button7))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button7))
             {
                 // Take Picture  ALT-F10
                 controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB);
             }
 
             // Camera On/Off
-            if (controller.TestButtonPressedOrReleased(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button12))
+            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button12))
             {
                 if (controller.SharedState.CameraActive)
                 {
@@ -88,22 +80,19 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             }
 
             // Free Camera On/Off
-            if (controller.TestButtonPressedOrReleased(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button12))
+            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button12))
             {
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.FreeCameraToggle, 150);
             }
 
             // ToggleAdvanceMode
-            if (controller.TestButtonPressedOrReleased(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button4))
+            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button4))
             {
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraAdvanceModeToggle, 150);
             }
 
             // Kill process
-            if (controller.TestButtonPressed(
-                previous.Buttons, current.Buttons, (UInt32)BBI32Button.Button2))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button2))
             {
                 Utils.KillProcess("EliteDangerous64").Wait();
             }

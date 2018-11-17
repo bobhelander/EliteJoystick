@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Usb.GameControllers.Common;
 using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 
@@ -19,32 +20,26 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
             if (null != controller.SharedState)
             {
                 // If either state of the Autopilot switch is released 
-                if (controller.TestMultiSwitchStateOff(previous.buttons, current.buttons, apahButton))
+                if (Reactive.MultiSwitchStateOff(value, apahButton))
                     controller.SharedState.ChangeMode(EliteSharedState.Mode.Travel);
 
-                if (controller.TestButtonPressed(previous.buttons, current.buttons, Button27))
+                if (Reactive.ButtonPressed(value, Button27))
                     controller.SharedState.ChangeMode(EliteSharedState.Mode.Fighting);
 
-                if (controller.TestButtonPressed(previous.buttons, current.buttons, Button28))
+                if (Reactive.ButtonPressed(value, Button28))
                     controller.SharedState.ChangeMode(EliteSharedState.Mode.Mining);
 
-                if (controller.TestButtonPressed(previous.buttons, current.buttons, Button01))
+                if (Reactive.ButtonPressed(value, Button01))
                     controller.SharedState.ThrottleShift1 = true;
 
-                if (controller.TestButtonReleased(previous.buttons, current.buttons, Button01))
+                if (Reactive.ButtonReleased(value, Button01))
                     controller.SharedState.ThrottleShift1 = false;
 
-                if (controller.TestButtonReleased(previous.buttons, current.buttons, Button15))
+                if (Reactive.ButtonReleased(value, Button15))
                     controller.SharedState.ThrottleShift2 = true;
-
-                if (controller.TestButtonReleased(previous.buttons, current.buttons, Button15))
-                    controller.SharedState.ThrottleShift2 = false;
             }
         }
     }
