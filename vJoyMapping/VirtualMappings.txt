@@ -8,7 +8,8 @@ Rz Pedal Toes Combined
 9-13 FFB2 Hat
 14-17 Throttle Hat
 18-26 Warthog Neutral Switches
-27-32 Unassigned
+27-30 Unassigned
+31-32 BBI32 13-14
 
 vJoyTypes.Throttle Device 1
 X Y Nipple Mouse
@@ -22,7 +23,7 @@ X Y Commander XY
 Z Commander Z
 1-12 Commander Buttons
 13-20 Game Voice Buttons
-21-32 BBI32
+21-32 BBI32 1-12
 
 
 vJoyTypes.Virtual Device 3

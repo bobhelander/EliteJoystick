@@ -30,7 +30,8 @@ namespace vJoyMapping.LeoBodnar.BBI32
             Disposables = new List<IDisposable> {
                 bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(
                     x => BBI32ButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                bbi32.Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(
+                    x => BBI32UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
             };
         }
 

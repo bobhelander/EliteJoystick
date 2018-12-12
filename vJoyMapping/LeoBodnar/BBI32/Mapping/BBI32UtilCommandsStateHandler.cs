@@ -10,47 +10,31 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
 {
     public static class BBI32UtilCommandsStateHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static void Process(States value, Controller controller)
         {
-            // Orbit Lines Toggle Off
-            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button8))
-            {
-                // Orbit Lines Toggle
-                if (controller.SharedState.OrbitLines)
-                    controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.OrbitLinesToggle, 150);
-
-                controller.SharedState.OrbitLines = false;
-            }
-
-            // Orbit Lines Toggle On
-            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button9))
-            {
-                // Orbit Lines Toggle
-                if (false == controller.SharedState.OrbitLines)
-                    controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.OrbitLinesToggle, 150);
-
-                controller.SharedState.OrbitLines = true;
-            }
-
-            // HUD Toggle Off
-            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button10))
-            {
-                // HUD off  CRTL+ALT+G
-                if (controller.SharedState.HeadsUpDisplay)
-                    controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
-
-                controller.SharedState.HeadsUpDisplay = false;
-            }
-
-            // HUD Toggle On
+            // Orbit Lines Toggle On/Off
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button11))
             {
-                // HUD off  CRTL+ALT+G
-                if (false == controller.SharedState.HeadsUpDisplay)
-                    controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
 
-                controller.SharedState.HeadsUpDisplay = true;
+                // Orbit Lines Toggle
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.OrbitLinesToggle, 150);
+
+                controller.SharedState.OrbitLines = !controller.SharedState.OrbitLines;
+                log.Debug($"OrbitLines: {controller.SharedState.OrbitLines}");
             }
+
+            // HUD Toggle On/Off
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button12))
+            {
+                // HUD off  CRTL+ALT+G
+                controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
+
+                controller.SharedState.HeadsUpDisplay = !controller.SharedState.HeadsUpDisplay;
+                log.Debug($"HeadsUpDisplay: {controller.SharedState.HeadsUpDisplay}");
+            }
+
             //if (ButtonBoxController.TestButtonPressed(e.ButtonsState, (UInt32)Faz.SideWinderSC.Logic.BBI32Button.Button17))
             //{
             //    // Oculus ASW off  CRTL+KP1
@@ -61,10 +45,11 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             {
                 // Take Picture  ALT-F10
                 controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB);
+                log.Debug($"Take Picture ");
             }
 
             // Camera On/Off
-            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button12))
+            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button1))
             {
                 if (controller.SharedState.CameraActive)
                 {
@@ -80,10 +65,10 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             }
 
             // Free Camera On/Off
-            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button12))
-            {
-                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.FreeCameraToggle, 150);
-            }
+            //if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button12))
+            //{
+            //    controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.FreeCameraToggle, 150);
+            //}
 
             // ToggleAdvanceMode
             if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button4))
@@ -92,8 +77,9 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             }
 
             // Kill process
-            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button2))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button5))
             {
+                log.Debug($"Kill process");
                 Utils.KillProcess("EliteDangerous64").Wait();
             }
         }

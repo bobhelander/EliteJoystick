@@ -29,7 +29,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
             // Add in the mappings
             Disposables = new List<IDisposable> {
                 swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                swgv.Subscribe(x => SwGameLandingGearHandler.Process(x, this), ex => log.Error($"Exception : {ex}"))
+                swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameLandingGearHandler.Process(x, this), ex => log.Error($"Exception : {ex}"))
             };
         }
 
