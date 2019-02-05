@@ -91,13 +91,18 @@ namespace vJoyMapping.Common
         public void CallActivateButton(string vJoyType, uint vButton, int delay)
         {
             uint joyId = Settings.vJoyMapper.GetJoystickId(vJoyType);
+            uint modJoyId = Settings.vJoyMapper.GetJoystickId(vJoyTypes.StickAndPedals);
 
             Task.Run(async () => {
+                VirtualJoysticks.SetJoystickButton(true, 27, modJoyId);
                 VirtualJoysticks.SetJoystickButton(true, vButton, joyId);
                 await Task.Delay(delay);
                 VirtualJoysticks.SetJoystickButton(false, vButton, joyId);
-                log.Debug($"Press {vJoyType} Button {vButton}");
-            }).ContinueWith(t => { log.Error($"CallActivateButton Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+                VirtualJoysticks.SetJoystickButton(false, 27, modJoyId);
+            }).ContinueWith(t => {
+                if (t.IsCanceled) log.Error($"CallActivateButton Canceled");
+                else if (t.IsFaulted) log.Error($"CallActivateButton Exception: {t.Exception}");
+                else log.Debug($"Press {vJoyType} Button {vButton}"); });
         }
 
         #endregion

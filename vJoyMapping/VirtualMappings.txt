@@ -8,7 +8,8 @@ Rz Pedal Toes Combined
 9-13 FFB2 Hat
 14-17 Throttle Hat
 18-26 Warthog Neutral Switches
-27-30 Unassigned
+27 Modifier For Virtual Device
+28-30 Unassigned
 31-32 BBI32 13-14
 
 vJoyTypes.Throttle Device 1

@@ -42,12 +42,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             if (Reactive.ButtonPressed(value, button15))
             {
                 // Start Camera
-                controller.CallActivateButton(vJoyTypes.Virtual, 16, 150);
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
             }
             else if (Reactive.ButtonReleased(value, button15))
             {
                 // Quit Camera
-                controller.CallActivateButton(vJoyTypes.Virtual, 18, 150);
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraDisabled, 150);
             }
         }
     }
