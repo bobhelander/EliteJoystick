@@ -28,6 +28,7 @@ namespace EliteJoystick.Common
         public static uint SilentRunningToggle = 22;
 
         // Combined Joystick (StickAndPedals)
+        public static uint ForceFeedbackButtonMask = 0xFF;
         public static uint ForceFeedback2Trigger = 1;
         public static uint ForceFeedback2Button2 = 2;
         public static uint ForceFeedback2Button3 = 3;
@@ -49,18 +50,26 @@ namespace EliteJoystick.Common
         public static uint ThrottleHatLeft = 17;
 
         // Throttle Neutral
+        public static uint ThrottleNeutralMask = 0xFFF803F;
         public static uint ThrottleMSNone = 18;
         public static uint ThrottleSPDM = 19;
         public static uint ThrottleBSM = 20;
         public static uint ThrottleCHM = 21;
         public static uint ThrottlePSM = 22;
-        public static uint ThrottleEOLNORM = 23;
-        public static uint ThrottleEORNORM = 24;
-        public static uint ThrottleFLAPM = 25;
-        public static uint ThrottleAPAH = 26;
-        // 27 - 32 Unassigned
+        public static uint ThrottleFLAPM = 23;
+        public static uint ThrottleAPAH = 24;
+        public static uint ThrottleEOLNORM = 25;
+        public static uint ThrottleEORNORM = 26;
+        
+        // Command button.  Used to signal that a user button is being pressed.  Set in combination with other buttons
+        public static uint CommandButton = 27;
+        // 26 - 30 Unassigned
+        public static uint BBI32ButtonMask2 = 0xFFFFFFFC;
+        public static uint BBI32Button13 = 31;
+        public static uint BBI32Button14 = 32;
 
         // Sidwinder Commander / Game Voice  (Commander)
+        public static uint CommanderButtonMask = 0xFFF;
         public static uint CommanderButton1 = 1;
         public static uint CommanderButton2 = 2;
         public static uint CommanderButton3 = 3;
@@ -83,6 +92,7 @@ namespace EliteJoystick.Common
         public static uint VoiceCommandButton3 = 19;
         public static uint VoiceMuteButton3 = 20;
 
+        public static uint BBI32ButtonMask = 0xFFFFF000;
         public static uint BBI32Button1 = 21;
         public static uint BBI32Button2 = 22;
         public static uint BBI32Button3 = 23;

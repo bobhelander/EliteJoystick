@@ -39,18 +39,94 @@ namespace vJoyMapping.Common
 
         public void SetJoystickButton(bool down, uint vButton, uint vJoyId)
         {
-            //States[vJoyId-1].
-            Joystick.SetBtn(down, vJoyId, vButton);
+            // Offset by one
+            vButton = vButton - 1;
+
+            // Set the position or don't
+            var buttons = down ? (uint)0x1 << (int)vButton : 0;
+
+            // Build a mask for that position
+            var mask = (uint)0x1 << (int)vButton;
+
+            // Clear just that position
+            var holdValues = States[vJoyId - 1].Buttons & ~mask;
+
+            // Set the new value
+            States[vJoyId - 1].Buttons = holdValues | buttons;
+
+            // Update
+            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
+        }
+
+        public void SetJoystickButtons(UInt32 buttons,  uint vJoyId, UInt32 mask = 0xFFFFFFFF)
+        {
+            // Clear the buttons we are assigning
+            var holdValues = States[vJoyId - 1].Buttons & ~mask;
+            States[vJoyId - 1].Buttons = holdValues | buttons;
+            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
         }
 
         public void SetJoystickAxis(int value, HID_USAGES usage, uint vJoyId)
         {
-            Joystick.SetAxis(value, vJoyId, usage);
+            //Joystick.SetAxis(value, vJoyId, usage);
+
+            switch (usage)
+            {
+                case HID_USAGES.HID_USAGE_X:
+                    States[vJoyId - 1].AxisX = value;
+                    break;
+                case HID_USAGES.HID_USAGE_Y:
+                    States[vJoyId - 1].AxisY = value;
+                    break;
+                case HID_USAGES.HID_USAGE_Z:
+                    States[vJoyId - 1].AxisZ = value;
+                    break;
+                case HID_USAGES.HID_USAGE_RX:
+                    States[vJoyId - 1].AxisXRot = value;
+                    break;
+                case HID_USAGES.HID_USAGE_RY:
+                    States[vJoyId - 1].AxisYRot = value;
+                    break;
+                case HID_USAGES.HID_USAGE_RZ:
+                    States[vJoyId - 1].AxisZRot = value;
+                    break;
+                case HID_USAGES.HID_USAGE_SL0:
+                    States[vJoyId - 1].Slider = value;
+                    break;
+                case HID_USAGES.HID_USAGE_SL1:
+                    States[vJoyId - 1].Dial = value;
+                    break;
+                case HID_USAGES.HID_USAGE_WHL:
+                    States[vJoyId - 1].Wheel = value;
+                    break;
+                case HID_USAGES.HID_USAGE_POV:
+                    //States[vJoyId - 1]. = value;
+                    break;
+            }
+
+            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
         }
 
         public void SetJoystickHat(int value, uint hatNumber, uint vJoyId)
         {
-            Joystick.SetDiscPov(value, vJoyId, hatNumber);
+            //Joystick.SetDiscPov(value, vJoyId, hatNumber);
+
+            switch (hatNumber)
+            {
+                case 1:
+                    States[vJoyId - 1].bHats = (byte)value;
+                    break;
+                case 2:
+                    States[vJoyId - 1].bHatsEx1 = (byte)value;
+                    break;
+                case 3:
+                    States[vJoyId - 1].bHatsEx2 = (byte)value;
+                    break;
+                case 4:
+                    States[vJoyId - 1].bHatsEx3 = (byte)value;
+                    break;
+            }
+            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
         }
     }
 }

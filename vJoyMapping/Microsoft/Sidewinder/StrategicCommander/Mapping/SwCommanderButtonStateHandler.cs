@@ -12,13 +12,15 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
     {
         public static void Process(States value, Controller controller)
         {
-            uint buttonIndex = MappedButtons.CommanderButton1;
-            foreach (Button button in Enum.GetValues(typeof(Button)))
-            {
-                controller.SetJoystickButton(
-                    Reactive.ButtonDown(value, (uint)button), buttonIndex, vJoyTypes.Commander);
-                buttonIndex++;
-            }
+            controller.SetJoystickButtons(value.Current.Buttons, vJoyTypes.Commander, MappedButtons.CommanderButtonMask);
+
+            //uint buttonIndex = MappedButtons.CommanderButton1;
+            //foreach (Button button in Enum.GetValues(typeof(Button)))
+            //{
+            //    controller.SetJoystickButton(
+            //        Reactive.ButtonDown(value, (uint)button), buttonIndex, vJoyTypes.Commander);
+            //    buttonIndex++;
+            //}
         }
     }
 }

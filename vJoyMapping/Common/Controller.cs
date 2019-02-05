@@ -37,6 +37,11 @@ namespace vJoyMapping.Common
             //log.Debug($"{vJoyType}: {vButton}: {down}");
         }
 
+        public void SetJoystickButtons(uint buttons, string vJoyType, uint mask)
+        {
+            VirtualJoysticks.SetJoystickButtons(buttons, Settings.vJoyMapper.GetJoystickId(vJoyType), mask);
+        }
+
         public void SetJoystickAxis(int value, HID_USAGES usage, string vJoyType)
         {
             VirtualJoysticks.SetJoystickAxis(value, usage, Settings.vJoyMapper.GetJoystickId(vJoyType));
