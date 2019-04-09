@@ -20,12 +20,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             if (Reactive.ButtonPressed(value, MIC))
             {
                 controller.SharedState.Mute = true;
-                controller.DepressKey(0xC3);  // KEY_F2    
+                controller.DepressKey(0xCA);  // KEY_F9    
             }
             if (Reactive.ButtonReleased(value, MIC))
             {
                 controller.SharedState.Mute = false;
-                controller.ReleaseKey(0xC3);  // KEY_F2
+                controller.ReleaseKey(0xCA);  // KEY_F9
             }
         }
     }

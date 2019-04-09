@@ -14,7 +14,7 @@ namespace EliteJoystickConsole
 
         static void Main(string[] args)
         {
-            if (false)
+            if (true)
             {
                 var chrome = new Chrome("http://localhost:9222");
 
@@ -23,17 +23,22 @@ namespace EliteJoystickConsole
                     Console.WriteLine(session.title);
                 }
 
+                var sessionEddb = chrome.OpenNewTab("https://eddb.io/commodity/350");
+                var google = chrome.OpenNewTab("https://google.com");
+
+                chrome.Scroll(sessionEddb, 800);
+
+                chrome.ActivateTab(google);
+
                 var sessions = chrome.GetAvailableSessions();
 
-                var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
-                chrome.SetActiveSession(sessionWSEndpoint);
                 var uri = @"http://localhost:8080/explore.html";
 
-                //chrome.NavigateTo("http://eddb.io");
-
-                chrome.NavigateTo(uri);
+                chrome.ActivateTab(sessions[0]);
+                chrome.NavigateTo(sessions[0], "http://eddb.io");
+                //chrome.NavigateTo(sessions[0], uri);
             }
-            if (true)
+            if (false)
             {
                 var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
 

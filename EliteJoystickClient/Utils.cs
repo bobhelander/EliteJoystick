@@ -66,9 +66,8 @@ namespace EliteJoystickClient
             {
                 var chrome = new Chrome("http://localhost:9222");
                 var sessions = chrome.GetAvailableSessions();
-                var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
-                chrome.SetActiveSession(sessionWSEndpoint);
-                chrome.NavigateTo(url);
+                chrome.ActivateTab(sessions[0]);
+                chrome.NavigateTo(sessions[0], url);
             }
             catch (Exception ex)
             {

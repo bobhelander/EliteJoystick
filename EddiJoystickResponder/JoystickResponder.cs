@@ -33,6 +33,11 @@ namespace EddiJoystickResponder
                 Client.HandleCommand(((JoystickCommandEvent)theEvent).command, JoystickCommandEvent.VARIABLES).Wait();
             }
 
+            if (theEvent is JoystickActionEvent)
+            {
+                EventHandlers.EddiAction(Client, (JoystickActionEvent)theEvent, JoystickActionEvent.VARIABLES);
+            }
+
             if (theEvent is DockedEvent)
             {
                 EventHandlers.DockedEvent(Client, (DockedEvent)theEvent);

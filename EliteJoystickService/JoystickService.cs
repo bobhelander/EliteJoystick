@@ -30,6 +30,7 @@ namespace EliteJoystickService
         private MessageHandler messageHandler = null;
         private Task IpcProcessingTask;
         private List<Controller> Controllers { get; set; } = new List<Controller>();
+        private IDisposable virtualControllerUpdater = null;
 
         public JoystickService()
         {
@@ -182,6 +183,8 @@ namespace EliteJoystickService
                 var subscription = SharedState.GearChanged.Subscribe(
                     x => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
 
+                virtualControllerUpdater = StartUpdateData(eliteVirtualJoysticks, 300);
+
                 ClientActions.ClientInformationAction(this, "Controllers Ready");
                 log.Debug("Controllers Ready");
             }
@@ -212,6 +215,12 @@ namespace EliteJoystickService
             IpcProcessingTask = Task.Factory.StartNew(() => server.StartListening("elite_joystick", this.ReceiveMessage),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
                 .ContinueWith(t => { log.Error($"IPC Service Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        private IDisposable StartUpdateData(EliteVirtualJoysticks eliteVirtualJoysticks, int updateFrequency = 100)
+        {
+            // Send an update message every x milliseconds
+            return Observable.Interval(TimeSpan.FromMilliseconds(updateFrequency)).Subscribe(x => eliteVirtualJoysticks.UpdateAll());
         }
 
         private void ReceiveMessage(string message)

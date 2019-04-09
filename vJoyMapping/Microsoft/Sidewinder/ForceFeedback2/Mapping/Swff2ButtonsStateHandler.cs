@@ -13,13 +13,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
         public static void Process(States value, Controller controller)
         {
             controller.SetJoystickButtons(value.Current.Buttons, vJoyTypes.StickAndPedals, MappedButtons.ForceFeedbackButtonMask);
-            //uint buttonIndex = MappedButtons.ForceFeedback2Trigger;
-            //foreach (Button button in Enum.GetValues(typeof(Button)))
-            //{
-            //    controller.SetJoystickButton(
-            //        Reactive.ButtonDown(value, (uint)button), buttonIndex, vJoyTypes.StickAndPedals);
-            //    buttonIndex++;
-            //}
         }
     }
 }

@@ -49,7 +49,7 @@ namespace EliteJoystickClient
             log.Debug($"Receieved command: {command}");
             switch (command)
             {
-                case "connect_joysticks":                    
+                case "connect_joysticks":
                     await ConnectJoysticks();
                     break;
                 case "connect_arduino":
@@ -93,11 +93,29 @@ namespace EliteJoystickClient
             var sessions = Chrome.GetAvailableSessions();
             if (sessions?.Count > 0)
             {
-                var sessionWSEndpoint = sessions[0].webSocketDebuggerUrl;
-                Chrome.SetActiveSession(sessionWSEndpoint);
-
-                Chrome.NavigateTo(url);
+                Chrome.ActivateTab(sessions[0]);
+                Chrome.NavigateTo(sessions[0], url);
             }
+        }
+
+        public void Scroll(int distance)
+        {
+            if (null != Chrome.CurrentSession)
+            {
+                Chrome.Scroll(Chrome.CurrentSession, distance);
+            }
+        }
+
+        public void ChangeTab(int number)
+        {
+            Chrome.ChangeTab(number);
+        }
+
+        public void NewChromeTab(string url, int scrollDistance = 0)
+        {
+            var session = Chrome.OpenNewTab(url);
+            Thread.Sleep(1500);
+            Chrome.Scroll(session, scrollDistance);
         }
     }
 }

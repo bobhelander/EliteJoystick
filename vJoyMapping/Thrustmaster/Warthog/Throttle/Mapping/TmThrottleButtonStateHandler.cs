@@ -12,6 +12,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
     {
         public static void Process(States value, Controller controller)
         {
+            // Set normal buttons
             controller.SetJoystickButtons(value.Current.Buttons, vJoyTypes.Throttle, 0xFFFFFFFF);
 
             uint neutralButtons = 0;
@@ -27,25 +28,8 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 buttonIndex++;
             }
 
+            // Set the neutral position buttons
             controller.SetJoystickButtons(neutralButtons, vJoyTypes.StickAndPedals, MappedButtons.ThrottleNeutralMask);
-
-
-            //uint buttonIndex = 1;
-
-            //foreach (uint button in Enum.GetValues(typeof(Button)))
-            //{
-            //    controller.SetJoystickButton(
-            //        Reactive.ButtonDown(value, (uint)button), buttonIndex, vJoyTypes.Throttle);
-            //    buttonIndex++;
-            //}
-
-            //buttonIndex = MappedButtons.ThrottleMSNone;
-            //foreach (UInt32 nbutton in Enum.GetValues(typeof(SwitchNeutral)))
-            //{
-            //    bool buttonPressed = (value.Current.Buttons & (uint)nbutton) != 0;
-            //    controller.SetJoystickButton(!buttonPressed, buttonIndex, vJoyTypes.StickAndPedals);
-            //    buttonIndex++;
-            //}
         }
     }
 }

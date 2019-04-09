@@ -13,6 +13,7 @@ namespace vJoyMapping.Common
     public class EliteVirtualJoysticks
     {
         public vJoy Joystick { get; set; } = new vJoy();
+
         public EliteVirtualJoystick[] Controllers { get; set; } = new EliteVirtualJoystick[4] {
                         new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick() };
 
@@ -35,6 +36,16 @@ namespace vJoyMapping.Common
         {
             foreach (var controller in Controllers)
                 controller.Release();
+        }
+
+        public void UpdateAll()
+        {
+            uint vJoyId = 1;
+            foreach (var controller in Controllers)
+            {
+                Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
+                vJoyId++;
+            }
         }
 
         public void SetJoystickButton(bool down, uint vButton, uint vJoyId)

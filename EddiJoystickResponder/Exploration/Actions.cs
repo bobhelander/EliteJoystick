@@ -14,6 +14,7 @@ namespace EddiJoystickResponder.Exploration
         {
             var page = new Explore(starSystem);
             String pageContent = page.TransformText();
+            
             /*
             var bodyReport = new StringBuilder();
 
@@ -34,6 +35,7 @@ namespace EddiJoystickResponder.Exploration
                 }
             }
             */
+
             var fileName = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\EliteJoystick\\Pages\\explore.html";
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName))
