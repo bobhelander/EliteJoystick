@@ -10,12 +10,14 @@ using vJoyInterfaceWrap;
 
 namespace vJoyMapping.Common
 {
-    public class Controller
+    public class Controller : IDisposable
     {
         public static string GetDevicePath(int vendorId, int productId)
         {
             return Usb.Hid.Connection.Devices.RetrieveAllDevicePath(vendorId, productId).FirstOrDefault();
         }
+
+        protected List<IDisposable> Disposables { get; set; }
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -28,6 +30,12 @@ namespace vJoyMapping.Common
         public IArduino Arduino { get; set; }
 
         public EliteSharedState SharedState { get; set; }
+
+        public void Dispose()
+        {
+            foreach (var disposable in Disposables)
+                disposable?.Dispose();
+        }
 
         #region  Virtual Joystick Actions
 

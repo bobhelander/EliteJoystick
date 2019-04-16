@@ -15,8 +15,6 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private List<IDisposable> Disposables { get; set; }
-
         public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick(devicePath);
@@ -68,12 +66,6 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
                 return Intensity.EXTRA_LOW;
 
             return Intensity.OFF;
-        }
-
-        public void Dispose()
-        {
-            foreach (var disposable in Disposables)
-                disposable?.Dispose();
         }
     }
 }

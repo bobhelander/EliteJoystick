@@ -103,7 +103,6 @@ namespace EliteJoystickService
 
                 Controllers.Add(ffb2);
 
-
                 var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller
                 {
                     Arduino = arduino,
@@ -195,10 +194,42 @@ namespace EliteJoystickService
             }
         }
 
+        private void StopControllers()
+        {
+            foreach (var controller in Controllers)
+                controller.Dispose();
+
+            Controllers = new List<Controller>();
+
+            try
+            {
+                eliteVirtualJoysticks?.Release();;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+
+            eliteVirtualJoysticks = null;
+        }
+
         private void ConnectArduino()
         {
             arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort);
             ClientActions.ClientInformationAction(this, "Arduino Ready");
+        }
+
+        private void DisconnectArduino()
+        {
+            arduino?.ReleaseAll();
+            arduino?.Close();
+            ClientActions.ClientInformationAction(this, "Arduino Disconnected");
+        }
+
+        private void ReconnectArduino()
+        {
+            DisconnectArduino();
+            ConnectArduino();
         }
 
         private void ClientActions_ClientAction(object sender, ClientActions.ClientEventArgs e)
@@ -247,7 +278,10 @@ namespace EliteJoystickService
                         eliteVirtualJoysticks = StartVirtualJoysticks();
                         StartControllers(settings, eliteVirtualJoysticks, SharedState);
                     },
+                    DisconnectJoysticks = () => StopControllers(),
                     ConnectArduino = () => ConnectArduino(),
+                    DisconnectArduino = () => DisconnectArduino(),
+                    ReconnectArduino = () => ReconnectArduino(),
                 };
 
                 StartIpcServer();
@@ -263,6 +297,7 @@ namespace EliteJoystickService
             server.ContinueListening = false;
             settings.Save();
             eliteVirtualJoysticks?.Release();
+            DisconnectArduino();
         }        
     }
 }

@@ -9,12 +9,10 @@ using vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping;
 
 namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private List<IDisposable> Disposables { get; set; }
 
         public void Initialize(string devicePath)
         {
@@ -40,12 +38,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
             // Turn lights on and off
             SharedState.GearChanged.Subscribe(x =>
                 swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights & ~(byte)Button.Button1));
-        }
-
-        public void Dispose()
-        {
-            foreach (var disposable in Disposables)
-                disposable?.Dispose();
         }
     }
 }

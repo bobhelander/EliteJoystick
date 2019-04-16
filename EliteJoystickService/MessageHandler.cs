@@ -14,7 +14,10 @@ namespace EliteJoystickService
 
         public CommonCommunication.Client Client { get; set; }
         public Action ConnectJoysticks { get; set; }
+        public Action DisconnectJoysticks { get; set; }
         public Action ConnectArduino { get; set; }
+        public Action DisconnectArduino { get; set; }
+        public Action ReconnectArduino { get; set; }
 
         public async Task HandleMessage(
             string rawMessage, 
@@ -33,8 +36,17 @@ namespace EliteJoystickService
                 case "connect_joysticks":
                     await Task.Run(ConnectJoysticks);
                     break;
+                case "disconnect_joysticks":
+                    await Task.Run(DisconnectJoysticks);
+                    break;
                 case "connect_arduino":
                     await Task.Run(ConnectArduino);
+                    break;
+                case "disconnect_arduino":
+                    await Task.Run(DisconnectArduino);
+                    break;
+                case "reconnect_arduino":
+                    await Task.Run(ReconnectArduino);
                     break;
                 case "keyboard_output":
                     log.Debug($"Arduino: testing");

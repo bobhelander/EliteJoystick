@@ -12,12 +12,10 @@ using vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping;
 
 namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private List<IDisposable> Disposables { get; set; }
 
         public void Initialize(string devicePath)
         {
@@ -56,12 +54,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
                 return new Light[] { Light.Button3 };
 
             return new Light[] {  };
-        }
-
-        public void Dispose()
-        {
-            foreach (var disposable in Disposables)
-                disposable?.Dispose();
         }
     }
 }

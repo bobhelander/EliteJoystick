@@ -67,9 +67,21 @@ namespace EliteJoystickClient
             await MessageHandler.Client.SendMessageAsync(message);
         }
 
+        public async Task DisconnectJoysticks()
+        {
+            var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_joysticks" });
+            await MessageHandler.Client.SendMessageAsync(message);
+        }
+
         public async Task ConnectArduino()
         {
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_arduino" });
+            await MessageHandler.Client.SendMessageAsync(message);
+        }
+
+        public async Task DisconnectArduino()
+        {
+            var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_arduino" });
             await MessageHandler.Client.SendMessageAsync(message);
         }
 
@@ -86,6 +98,11 @@ namespace EliteJoystickClient
 
                 await MessageHandler.Client.SendMessageAsync(outputMessage);
             }
+        }
+
+        public void CopyToClipboard(string text)
+        {
+            Utils.SetClipboardText(text);
         }
 
         public void Navigate(string url)
@@ -109,6 +126,11 @@ namespace EliteJoystickClient
         public void ChangeTab(int number)
         {
             Chrome.ChangeTab(number);
+        }
+
+        public string ChromeCommand(string command)
+        {
+            return Chrome.Eval(Chrome.CurrentSession, command);
         }
 
         public void NewChromeTab(string url, int scrollDistance = 0)

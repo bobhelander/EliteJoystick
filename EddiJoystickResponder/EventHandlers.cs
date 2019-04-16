@@ -2,6 +2,7 @@
 using EddiDataProviderService;
 using EddiEvents;
 using EliteJoystickClient;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,8 +41,17 @@ namespace EddiJoystickResponder
                 case "material_traders_edsm":
                     MaterialTradersEdsm(client, actionEvent.var1);
                     break;
+                case "high_grade_emissions_edsm":
+                    HighGradeEmissionsEdsm(client, actionEvent.var1);
+                    break;
+                case "interstellar_factors_contact_edsm":
+                    InterstellarFactorsContactEdsm(client, actionEvent.var1);
+                    break;
                 case "material_traders_eddb":
                     MaterialTradersEddb(client, actionEvent.var1, actionEvent.var2);
+                    break;
+                case "copy_edsm_system_name_to_clipboard":
+                    SelectEdsmSystemRowToClipboard(client, actionEvent.var1);
                     break;
                 case "scroll":
                     Scroll(client, actionEvent.var1);
@@ -70,6 +80,49 @@ namespace EddiJoystickResponder
             // https://www.edsm.net/en/search/stations/index/service/71/cmdrPosition/Hydrae+Sector+EW-W+b1-4/sortBy/distanceCMDR
             var url = $"https://www.edsm.net/en/search/stations/index/service/71/cmdrPosition/{Uri.EscapeUriString(systemName)}/sortBy/distanceCMDR";
             client.NewChromeTab(url, 700);
+        }
+
+        public static void HighGradeEmissionsEdsm(Client client, string systemName)
+        {
+            // https://www.edsm.net/en/search/systems/index/cmdrPosition/Hydrae+Sector+EW-W+b1-4/onlyPopulated/1/radius/250/sortBy/distanceCMDR/ussDrop/85
+            var url = $"https://www.edsm.net/en/search/systems/index/cmdrPosition/{Uri.EscapeUriString(systemName)}/onlyPopulated/1/radius/250/sortBy/distanceCMDR/ussDrop/85";
+            client.NewChromeTab(url, 700);
+        }
+        
+        public static void InterstellarFactorsContactEdsm(Client client, string systemName)
+        {
+            // https://www.edsm.net/en/search/stations/index/cmdrPosition/Hydrae+Sector+EW-W+b1-4/service/39/sortBy/distanceCMDR
+            var url = $"https://www.edsm.net/en/search/stations/index/cmdrPosition/{Uri.EscapeUriString(systemName)}/service/39/sortBy/distanceCMDR";
+            client.NewChromeTab(url, 700);
+        }
+
+        public static void SelectEdsmSystemRowToClipboard(Client client, string row)
+        {
+            // F12 to evaluate Chrome DOM
+
+            // If this returns "System" use systemDom
+            var typeJson = client.ChromeCommand($"document.getElementsByClassName('table table-hover')[0].rows[0].cells[1].innerText");
+
+            dynamic tableType = JObject.Parse(typeJson);
+            var value = (string)tableType.result.result.value;
+
+            var json = string.Empty;
+
+            if (string.IsNullOrEmpty(value))
+            {
+                // Station Table
+                json = client.ChromeCommand($"document.getElementsByClassName('table table-hover')[0].rows[{row}].cells[1].childNodes[4].childNodes[0].childNodes[0].textContent");
+            }
+            else
+            {
+                // System Table
+                json = client.ChromeCommand($"document.getElementsByClassName('table table-hover')[0].rows[{row}].cells[1].childNodes[1].childNodes[0].childNodes[0].textContent");
+            }
+
+            dynamic d = JObject.Parse(json);
+            var systemName = (string)d.result.result.value;
+
+            client.CopyToClipboard(systemName);
         }
 
         public static void MaterialTradersEddb(Client client, string systemName, string type)

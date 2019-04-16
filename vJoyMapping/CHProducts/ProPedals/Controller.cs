@@ -10,12 +10,10 @@ using vJoyMapping.CHProducts.ProPedals.Mapping;
 
 namespace vJoyMapping.CHProducts.ProPedals
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private List<IDisposable> Disposables { get; set; }
 
         public void Initialize(string devicePath)
         {
@@ -32,12 +30,6 @@ namespace vJoyMapping.CHProducts.ProPedals
             Disposables = new List<IDisposable> {
                 proPedals.Subscribe(x => ChPedalsXYR.Process(x, this), ex => log.Error($"Exception : {ex}"))
             };
-        }
-
-        public void Dispose()
-        {
-            foreach (var disposable in Disposables)
-                disposable?.Dispose();
-        }
+        }        
     }
 }

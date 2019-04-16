@@ -83,6 +83,8 @@ namespace EddiJoystickResponder
 
         public void Stop()
         {
+            Client.DisconnectArduino().Wait();
+            Client.DisconnectJoysticks().Wait();
         }
     }
 }

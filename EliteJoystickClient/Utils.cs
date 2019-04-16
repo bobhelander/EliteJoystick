@@ -34,6 +34,21 @@ namespace EliteJoystickClient
             return returnValue as String;
         }
 
+        static public void SetClipboardText(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            var t = new Thread((ThreadStart)(() =>
+            {
+                System.Windows.Clipboard.SetText(text);
+            }));
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+        }
+
         private const int SW_SHOWNORMAL = 1;
 
         public static string FocusWindow(string name)

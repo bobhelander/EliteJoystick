@@ -12,12 +12,10 @@ using Usb.GameControllers.Common;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
 {
-    public class Controller : Common.Controller, IDisposable
+    public class Controller : Common.Controller
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private List<IDisposable> Disposables { get; set; }
 
         public void Initialize(string devicePath)
         {
@@ -40,12 +38,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
                 ffb2.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => Swff2ClipboardStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 ffb2.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => Swff2UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
             };
-        }
-
-        public void Dispose()
-        {
-            foreach (var disposable in Disposables)
-                disposable?.Dispose();
         }
     }
 }

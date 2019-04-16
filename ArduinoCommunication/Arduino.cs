@@ -16,13 +16,24 @@ namespace ArduinoCommunication
 
         public Arduino(String commPort)
         {
-            SerialPort = new System.IO.Ports.SerialPort(commPort, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
-            SerialPort.Open();
+            Open(commPort);
         }
 
         public bool IsOpen()
         {
-            return SerialPort.IsOpen;
+            return SerialPort?.IsOpen ?? false;
+        }
+
+        public void Open(String commPort)
+        {
+            SerialPort = new System.IO.Ports.SerialPort(commPort, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
+            SerialPort.Open();
+        }
+
+        public void Close()
+        {
+            SerialPort?.Close();
+            SerialPort = null;
         }
 
         public async Task ReleaseKey(byte key)
@@ -37,7 +48,7 @@ namespace ArduinoCommunication
 
         public async Task ReleaseAll()
         {
-            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4);
+            await SerialPort?.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4);
         }
 
         public async Task PressKey(byte key, int duration = 30)
