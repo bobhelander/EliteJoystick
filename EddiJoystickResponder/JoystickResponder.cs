@@ -2,6 +2,7 @@
 using EddiEvents;
 using Newtonsoft.Json;
 using System;
+using System.AddIn;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ using System.Windows.Controls;
 
 namespace EddiJoystickResponder
 {
+    [AddIn("EliteJoystickResponder", Version = "1.0.0.0")]
     public class JoystickResponder : EDDIResponder
     {
         //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

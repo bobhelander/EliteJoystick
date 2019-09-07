@@ -31,25 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EddiCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\EDDI\bin\Release\EddiCommon.dll</HintPath>
+    <Reference Include="EDDI">
+      <HintPath>..\..\EDDI\bin\Release\EDDI.exe</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="EddiDataDefinitions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EddiDataDefinitions">
       <HintPath>..\..\EDDI\bin\Release\EddiDataDefinitions.dll</HintPath>
     </Reference>
-    <Reference Include="EddiDataProviderService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EddiDataProviderService">
       <HintPath>..\..\EDDI\bin\Release\EddiDataProviderService.dll</HintPath>
     </Reference>
-    <Reference Include="EddiEvents, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EddiEvents">
       <HintPath>..\..\EDDI\bin\Release\EddiEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="EddiJournalMonitor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\EDDI\bin\Release\EddiJournalMonitor.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -57,6 +50,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.AddIn" />
     <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
