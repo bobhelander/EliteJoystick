@@ -23,11 +23,11 @@
 
 		<# foreach (var body in starSystem.bodies) 
 		{ 
-			var starScan = new BodyScan();
-			if (null != body.planettype && Exploration.StarTypes.Bodies.ContainsKey(body.planettype))
-				starScan = Exploration.StarTypes.Bodies[body.planettype];
-			if (null != body.stellarclass && Exploration.StarTypes.Stars.ContainsKey(body.stellarclass))
-				starScan = Exploration.StarTypes.Stars[body.stellarclass];
+			var starScan = new EddiJoystickResponder.Exploration.ScanBody();
+			if (null != body.planettype && Exploration.EliteStarTypes.Bodies.ContainsKey(body.planettype))
+				starScan = Exploration.EliteStarTypes.Bodies[body.planettype];
+			if (null != body.stellarclass && Exploration.EliteStarTypes.Stars.ContainsKey(body.stellarclass))
+				starScan = Exploration.EliteStarTypes.Stars[body.stellarclass];
 		  #>
 			<div class="row<#	if (starScan.scan)	{ #><#= " bg-success text-white" #><# } #>">
 				<div class="col-md-1">

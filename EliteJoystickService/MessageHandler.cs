@@ -20,8 +20,8 @@ namespace EliteJoystickService
         public Action ReconnectArduino { get; set; }
 
         public async Task HandleMessage(
-            string rawMessage, 
-            EliteSharedState sharedState, 
+            string rawMessage,
+            EliteSharedState sharedState,
             ArduinoCommunication.Arduino arduino)
         {
             var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);
@@ -31,26 +31,26 @@ namespace EliteJoystickService
             switch (message?.Type)
             {
                 case "client_ready":
-                    await Task.Run(() => Client.CreateConnection(message.Data));
+                    await Task.Run(() => Client.CreateConnection(message.Data)).ConfigureAwait(false);
                     break;
                 case "connect_joysticks":
-                    await Task.Run(ConnectJoysticks);
+                    await Task.Run(ConnectJoysticks).ConfigureAwait(false);
                     break;
                 case "disconnect_joysticks":
-                    await Task.Run(DisconnectJoysticks);
+                    await Task.Run(DisconnectJoysticks).ConfigureAwait(false);
                     break;
                 case "connect_arduino":
-                    await Task.Run(ConnectArduino);
+                    await Task.Run(ConnectArduino).ConfigureAwait(false);
                     break;
                 case "disconnect_arduino":
-                    await Task.Run(DisconnectArduino);
+                    await Task.Run(DisconnectArduino).ConfigureAwait(false);
                     break;
                 case "reconnect_arduino":
-                    await Task.Run(ReconnectArduino);
+                    await Task.Run(ReconnectArduino).ConfigureAwait(false);
                     break;
                 case "keyboard_output":
                     log.Debug($"Arduino: testing");
-                    await Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(arduino, message.Data));
+                    await Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(arduino, message.Data).ConfigureAwait(false)).ConfigureAwait(false);
                     break;
                 default:
                     //Unknown message

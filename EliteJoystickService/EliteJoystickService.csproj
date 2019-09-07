@@ -53,14 +53,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
@@ -77,6 +69,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameService.cs" />
     <Compile Include="JoystickService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -108,6 +101,10 @@
     <ProjectReference Include="..\Communication\CommonCommunication.csproj">
       <Project>{eaa556af-5da8-4c20-8511-5d78d04786d0}</Project>
       <Name>CommonCommunication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteGameStatus\EliteGameStatus.csproj">
+      <Project>{f14ce2df-9f7c-4a6b-b0b5-a7744a575759}</Project>
+      <Name>EliteGameStatus</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj">
       <Project>{3dfb3fbb-5e24-4942-8e30-83e99fed2d33}</Project>
@@ -144,11 +141,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="log4net">
+      <Version>2.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
     <PackageReference Include="System.Reactive">
-      <Version>4.1.2</Version>
+      <Version>4.1.6</Version>
     </PackageReference>
     <PackageReference Include="System.Reactive.Linq">
-      <Version>4.1.2</Version>
+      <Version>4.1.6</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

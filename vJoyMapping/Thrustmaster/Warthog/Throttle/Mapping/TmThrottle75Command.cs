@@ -8,7 +8,7 @@ using vJoyMapping.Common;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
-    public static class TmThrottle75Command 
+    public static class TmThrottle75Command
     {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

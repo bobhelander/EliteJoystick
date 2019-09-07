@@ -67,7 +67,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
                 case 8: // none
                     controller.SetJoystickButton(true, vButtons[4], vJoyTypes.StickAndPedals);
                     break;
-            }   
+            }
         }
     }
 }

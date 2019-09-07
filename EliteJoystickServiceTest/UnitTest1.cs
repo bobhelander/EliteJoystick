@@ -23,7 +23,7 @@ namespace EliteJoystickServiceTest
                 ArduinoCommunication.Arduino arduino = null;
 
                 Settings settings = Settings.Load();
- 
+
                 var ffb2 = new vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Controller
                 {
                     Arduino = arduino,
@@ -94,12 +94,12 @@ namespace EliteJoystickServiceTest
                 var subscription = SharedState.GearChanged.Subscribe(
                     x => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
 
-                
+
 
                 while (true)
                     Thread.Sleep(1000);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 ;
             }

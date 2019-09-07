@@ -30,6 +30,6 @@ namespace vJoyMapping.CHProducts.ProPedals
             Disposables = new List<IDisposable> {
                 proPedals.Subscribe(x => ChPedalsXYR.Process(x, this), ex => log.Error($"Exception : {ex}"))
             };
-        }        
+        }
     }
 }

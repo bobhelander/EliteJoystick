@@ -28,7 +28,7 @@ namespace ArduinoCommunication
         {
             if (false == stepOne)
             {
-                foreach(byte modifier in Modifier)
+                foreach (byte modifier in Modifier)
                     Arduino?.DepressKey(modifier);
                 stepOne = true;
             }

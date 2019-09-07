@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace EliteJoystickConsole
 {
-    class Program
+    public static class Program
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             if (false)
             {
@@ -23,10 +23,9 @@ namespace EliteJoystickConsole
                     Console.WriteLine(session.title);
                 }
 
-//                var sessionEddb = chrome.OpenNewTab("https://eddb.io/commodity/350");
+                //                var sessionEddb = chrome.OpenNewTab("https://eddb.io/commodity/350");
 
                 var sessionEddb = chrome.OpenNewTab("https://www.edsm.net/en/search/systems/index/cmdrPosition/Hydrae+Sector+EW-W+b1-4/onlyPopulated/1/radius/250/sortBy/distanceCMDR/ussDrop/85");
-
 
                 var json1 = chrome.Eval(chrome.CurrentSession, $"document.getElementsByClassName('table table-hover')[0].rows[1].cells[1].childNodes[1].childNodes[0].childNodes[0].textContent");
 
@@ -40,7 +39,7 @@ namespace EliteJoystickConsole
 
                 var sessions = chrome.GetAvailableSessions();
 
-                var uri = @"http://localhost:8080/explore.html";
+                var uri = "http://localhost:8080/explore.html";
 
                 chrome.ActivateTab(sessions[0]);
                 chrome.NavigateTo(sessions[0], "http://eddb.io");
@@ -58,8 +57,8 @@ namespace EliteJoystickConsole
                 //Console.ReadKey();
                 //client.PasteClipboard().Wait();
 
-                var task = Task.Run(async () => await client.ConnectJoysticks())
-                    .ContinueWith(t => { log.Error($"ConnectJoysticks Exception: {t.Exception}"); }, 
+                var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
+                    .ContinueWith(t => log.Error($"ConnectJoysticks Exception: {t.Exception}"),
                     TaskContinuationOptions.OnlyOnFaulted);
             }
             Console.ReadKey();

@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vJoyMapping", "vJoyMapping\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteJoystick.Common", "EliteJoystick.Common\EliteJoystick.Common.csproj", "{3DFB3FBB-5E24-4942-8E30-83E99FED2D33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteGameStatus", "EliteGameStatus\EliteGameStatus.csproj", "{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{3DFB3FBB-5E24-4942-8E30-83E99FED2D33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DFB3FBB-5E24-4942-8E30-83E99FED2D33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DFB3FBB-5E24-4942-8E30-83E99FED2D33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -50,10 +50,11 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
         public void MapLights(Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick warthog)
         {
             // Turn lights on and off
-            SharedState.ModeChanged.Subscribe(x => {
+            SharedState.ModeChanged.Subscribe(x =>
+            {
                 warthog.Lights = (byte)Light.LEDBacklight;
                 warthog.LightIntensity = (byte)GetIntensity(x);
-                });
+            });
         }
 
         private Intensity GetIntensity(EliteSharedState.Mode mode)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -30,6 +31,8 @@ namespace EliteJoystick.Common
 
         public bool Mute { get; set; }
 
+        public IEliteGameStatus EliteGameStatus { get; set; }
+
         #endregion
 
         #region RX Properties
@@ -37,7 +40,7 @@ namespace EliteJoystick.Common
         public Mode CurrentMode { get; private set; }
 
         private Subject<Mode> modeChanged = new Subject<Mode>();
-        
+
         public IObservable<Mode> ModeChanged { get { return this.modeChanged.AsObservable(); } }
 
         public void ChangeMode(Mode mode) { CurrentMode = mode; this.modeChanged.OnNext(CurrentMode); }

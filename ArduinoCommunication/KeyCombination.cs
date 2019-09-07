@@ -15,13 +15,13 @@ namespace ArduinoCommunication
 
         public Task Play()
         {
-            return Task.Run(async () => await PressKeys(Arduino, Modifier, true))
-                .ContinueWith(async (t) => { await Task.Delay(Delay); }, TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (t) => { await PressKeys(Arduino, new byte[] { Key }, true); }, TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (t) => { await Task.Delay(Delay); }, TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (t) => { await PressKeys(Arduino, new byte[] { Key }, false); }, TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (t) => { await Task.Delay(Delay); }, TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (t) => { await PressKeys(Arduino, Modifier, false); }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            return Task.Run(async () => await PressKeys(Arduino, Modifier, true).ConfigureAwait(false))
+                .ContinueWith(async (t) => { await Task.Delay(Delay).ConfigureAwait(false); }, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async (t) => { await PressKeys(Arduino, new byte[] { Key }, true).ConfigureAwait(false); }, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async (t) => { await Task.Delay(Delay).ConfigureAwait(false); }, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async (t) => { await PressKeys(Arduino, new byte[] { Key }, false).ConfigureAwait(false); }, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async (t) => { await Task.Delay(Delay).ConfigureAwait(false); }, TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async (t) => { await PressKeys(Arduino, Modifier, false).ConfigureAwait(false); }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         private static async Task PressKeys(Arduino arduino, byte[] keys, bool pressKeys)

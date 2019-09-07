@@ -12,9 +12,9 @@ namespace EddiJoystickResponder
 {
     public class JoystickResponder : EDDIResponder
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        ConfigurationWindow configWindow;
+        private ConfigurationWindow configWindow;
 
         public EliteJoystickClient.Client Client { get; set; }
 
@@ -26,26 +26,26 @@ namespace EddiJoystickResponder
 
         public void Handle(Event theEvent)
         {
-            log.Debug($"Received event {JsonConvert.SerializeObject(theEvent)}");
+            //log.Debug($"Received event {JsonConvert.SerializeObject(theEvent)}");
 
-            if (theEvent is JoystickCommandEvent)
+            if (theEvent is JoystickCommandEvent joystickCommandEvent)
             {
-                Client.HandleCommand(((JoystickCommandEvent)theEvent).command, JoystickCommandEvent.VARIABLES).Wait();
+                Client.HandleCommand(joystickCommandEvent.command, JoystickCommandEvent.VARIABLES).Wait();
             }
 
-            if (theEvent is JoystickActionEvent)
+            if (theEvent is JoystickActionEvent joystickActionEvent)
             {
-                EventHandlers.EddiAction(Client, (JoystickActionEvent)theEvent, JoystickActionEvent.VARIABLES);
+                EliteEventHandlers.EddiAction(Client, joystickActionEvent, JoystickActionEvent.VARIABLES);
             }
 
-            if (theEvent is DockedEvent)
+            if (theEvent is DockedEvent dockedEvent)
             {
-                EventHandlers.DockedEvent(Client, (DockedEvent)theEvent);
+                EliteEventHandlers.DockedEvent(Client, dockedEvent);
             }
 
-            if (theEvent is JumpedEvent)
+            if (theEvent is JumpedEvent jumpedEvent)
             {
-                EventHandlers.JumpedEvent(Client, (JumpedEvent)theEvent);
+                EliteEventHandlers.JumpedEvent(Client, jumpedEvent);
             }
         }
 

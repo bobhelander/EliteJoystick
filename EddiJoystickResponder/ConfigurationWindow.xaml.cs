@@ -29,7 +29,7 @@ namespace EddiJoystickResponder
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            JoystickResponder.Client.ConnectArduino();
+            //JoystickResponder.Client.ConnectArduino();
         }
     }
 }

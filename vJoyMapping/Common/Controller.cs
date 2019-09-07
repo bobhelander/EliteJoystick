@@ -79,22 +79,22 @@ namespace vJoyMapping.Common
             Arduino?.ReleaseAll();
         }
 
-        public void TypeFullString(String text)
+        public async Task TypeFullString(String text)
         {
-            Task.Run(async () => await Arduino.TypeFullString(text))
-             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+            await Task.Run(async () => await Arduino.TypeFullString(text).ConfigureAwait(false))
+             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
         }
 
-        public void TypeFromClipboard()
+        public async Task TypeFromClipboard()
         {
-            Task.Run(async () => await Arduino.TypeFromClipboard())
-             .ContinueWith(t => { log.Error($"TypeFromClipboard Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+            await Task.Run(async () => await Arduino.TypeFromClipboard().ConfigureAwait(false))
+             .ContinueWith(t => log.Error($"TypeFromClipboard Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
         }
 
-        public void SendKeyCombo(byte[] modifier, byte key)
+        public async Task SendKeyCombo(byte[] modifier, byte key)
         {
-            Task.Run(async () => await Arduino.KeyCombo(modifier, key)
-             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted));
+            await Task.Run(async () => await Arduino.KeyCombo(modifier, key)
+             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         #endregion
@@ -106,16 +106,19 @@ namespace vJoyMapping.Common
             uint joyId = Settings.vJoyMapper.GetJoystickId(vJoyType);
             uint modJoyId = Settings.vJoyMapper.GetJoystickId(vJoyTypes.StickAndPedals);
 
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 VirtualJoysticks.SetJoystickButton(true, 27, modJoyId);
                 VirtualJoysticks.SetJoystickButton(true, vButton, joyId);
-                await Task.Delay(delay);
+                await Task.Delay(delay).ConfigureAwait(false);
                 VirtualJoysticks.SetJoystickButton(false, vButton, joyId);
                 VirtualJoysticks.SetJoystickButton(false, 27, modJoyId);
-            }).ContinueWith(t => {
+            }).ContinueWith(t =>
+            {
                 if (t.IsCanceled) log.Error($"CallActivateButton Canceled");
                 else if (t.IsFaulted) log.Error($"CallActivateButton Exception: {t.Exception}");
-                else log.Debug($"Press {vJoyType} Button {vButton}"); });
+                else log.Debug($"Press {vJoyType} Button {vButton}");
+            });
         }
 
         #endregion

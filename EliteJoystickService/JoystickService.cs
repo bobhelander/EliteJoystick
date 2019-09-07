@@ -22,7 +22,6 @@ namespace EliteJoystickService
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private EliteVirtualJoysticks eliteVirtualJoysticks = null;
-        private EliteSharedState SharedState { get; set; } = new EliteSharedState();
         private ArduinoCommunication.Arduino arduino = null;
         private CommonCommunication.Server server = null;
         private CommonCommunication.Client client = null;
@@ -31,10 +30,13 @@ namespace EliteJoystickService
         private Task IpcProcessingTask;
         private List<Controller> Controllers { get; set; } = new List<Controller>();
         private IDisposable virtualControllerUpdater = null;
+        private GameService GameService { get; } = new GameService();
+        private EliteSharedState SharedState { get; } = new EliteSharedState();
 
         public JoystickService()
         {
             InitializeComponent();
+            SharedState.EliteGameStatus = GameService;
         }
 
         internal void TestStartupAndStop(string[] args)
@@ -62,7 +64,7 @@ namespace EliteJoystickService
             log.Debug("Stopping Service");
             StopService();
         }
-        
+
         private EliteVirtualJoysticks StartVirtualJoysticks()
         {
             var eliteVirtualJoysticks = new EliteVirtualJoysticks();
@@ -71,7 +73,7 @@ namespace EliteJoystickService
             {
                 eliteVirtualJoysticks.Initialize();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(ex);
             }
@@ -81,10 +83,9 @@ namespace EliteJoystickService
 
         private void StartControllers(
             Settings settings,
-            EliteVirtualJoysticks eliteVirtualJoysticks,
-            EliteSharedState sharedState)
+            EliteVirtualJoysticks eliteVirtualJoysticks)
         {
-            log.Debug("Connecting to Controllers");   
+            log.Debug("Connecting to Controllers");
 
             try
             {
@@ -186,6 +187,10 @@ namespace EliteJoystickService
 
                 ClientActions.ClientInformationAction(this, "Controllers Ready");
                 log.Debug("Controllers Ready");
+
+                log.Debug("Connecting to Elite Game");
+                GameService.Initialize();
+                log.Debug("Connected to Elite Game");
             }
             catch (Exception ex)
             {
@@ -203,7 +208,8 @@ namespace EliteJoystickService
 
             try
             {
-                eliteVirtualJoysticks?.Release();;
+                eliteVirtualJoysticks?.Release();
+                GameService?.Dispose();
             }
             catch (Exception ex)
             {
@@ -235,23 +241,23 @@ namespace EliteJoystickService
         private void ClientActions_ClientAction(object sender, ClientActions.ClientEventArgs e)
         {
             Task.Run(() => client.SendMessageAsync(e.Message))
-                .ContinueWith(t => { log.Error($"Send Message Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+                .ContinueWith(t => log.Error($"Send Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private void StartIpcServer()
         {
             log.Debug("Starting IPC services");
             server = new CommonCommunication.Server { ContinueListening = true };
-            
+
             IpcProcessingTask = Task.Factory.StartNew(() => server.StartListening("elite_joystick", this.ReceiveMessage),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
-                .ContinueWith(t => { log.Error($"IPC Service Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+                .ContinueWith(t => log.Error($"IPC Service Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private IDisposable StartUpdateData(EliteVirtualJoysticks eliteVirtualJoysticks, int updateFrequency = 100)
         {
             // Send an update message every x milliseconds
-            return Observable.Interval(TimeSpan.FromMilliseconds(updateFrequency)).Subscribe(x => eliteVirtualJoysticks.UpdateAll());
+            return Observable.Interval(TimeSpan.FromMilliseconds(updateFrequency)).Subscribe(_ => eliteVirtualJoysticks.UpdateAll());
         }
 
         private void ReceiveMessage(string message)
@@ -259,8 +265,8 @@ namespace EliteJoystickService
             log.Debug($"Message: {message}");
             if (false == String.IsNullOrEmpty(message))
             {
-                var task = Task.Run(async () => await messageHandler.HandleMessage(message, SharedState, arduino))
-                    .ContinueWith(t => { log.Error($"Message Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+                var task = Task.Run(async () => await messageHandler.HandleMessage(message, SharedState, arduino).ConfigureAwait(false))
+                    .ContinueWith(t => log.Error($"Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
             }
         }
 
@@ -269,14 +275,14 @@ namespace EliteJoystickService
             try
             {
                 settings = Settings.Load();
-                ClientActions.ClientAction += ClientActions_ClientAction;                
+                ClientActions.ClientAction += ClientActions_ClientAction;
                 client = new CommonCommunication.Client();
                 messageHandler = new MessageHandler
-                {                    
+                {
                     Client = client,
                     ConnectJoysticks = () => {
                         eliteVirtualJoysticks = StartVirtualJoysticks();
-                        StartControllers(settings, eliteVirtualJoysticks, SharedState);
+                        StartControllers(settings, eliteVirtualJoysticks);
                     },
                     DisconnectJoysticks = () => StopControllers(),
                     ConnectArduino = () => ConnectArduino(),
@@ -298,6 +304,6 @@ namespace EliteJoystickService
             settings.Save();
             eliteVirtualJoysticks?.Release();
             DisconnectArduino();
-        }        
+        }
     }
 }

@@ -29,11 +29,12 @@ namespace ChromeController
         public class Message
         {
             public string method { get; set; } = "Runtime.evaluate";
+
             [JsonProperty(PropertyName = "params")]
             public Parameters Params { get; set; } = new Parameters();
+
             public int id { get; set; } = 1;
         }
-
 
         const string JsonPostfix = "/json";
 
@@ -41,7 +42,8 @@ namespace ChromeController
 
         public ChromeSession CurrentSession { get; set; }
 
-        public Chrome(string remoteDebuggingUri) {
+        public Chrome(string remoteDebuggingUri)
+        {
             this.remoteDebuggingUri = remoteDebuggingUri;
         }
 
@@ -66,9 +68,9 @@ namespace ChromeController
                         where r.devtoolsFrontendUrl != null
                         select r).ToList();
             }
-            catch(Exception ex)
+            catch (Exception)
             {
-                var test= "test";
+                ;
             }
             return null;
         }
@@ -82,9 +84,9 @@ namespace ChromeController
                         where r.devtoolsFrontendUrl != null && r.type == "page"
                         select r).ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var test = "test";
+                ;
             }
             return null;
         }
@@ -177,7 +179,7 @@ namespace ChromeController
             //var json = @"{""method"":""Page.navigate"",""params"":{""url"":""" + uri + @"""},""id"":1}";
 
             // Instead of Page.navigate, we can use document.location
-            var json = @"{""method"":""Runtime.evaluate"",""params"":{""expression"":""document.location.href='"+uri+@"'"",""objectGroup"":""console"",""includeCommandLineAPI"":true,""doNotPauseOnExceptions"":false,""returnByValue"":false},""id"":1}";
+            var json = @"{""method"":""Runtime.evaluate"",""params"":{""expression"":""document.location.href='" + uri + @"'"",""objectGroup"":""console"",""includeCommandLineAPI"":true,""doNotPauseOnExceptions"":false,""returnByValue"":false},""id"":1}";
             return this.SendCommand(session, json);
         }
 
@@ -187,14 +189,13 @@ namespace ChromeController
             //var json = @"{""method"":""Page.navigate"",""params"":{""url"":""http://www.seznam.cz""},""id"":1}";
 
             // Instead of Page.navigate, we can use document.location
-            var json = @"{""method"":""Runtime.evaluate"",""params"":{""expression"":""document.getElementsByTagName('" + tagName+ @"')"",""objectGroup"":""console"",""includeCommandLineAPI"":true,""doNotPauseOnExceptions"":false,""returnByValue"":false},""id"":1}";
+            var json = @"{""method"":""Runtime.evaluate"",""params"":{""expression"":""document.getElementsByTagName('" + tagName + @"')"",""objectGroup"":""console"",""includeCommandLineAPI"":true,""doNotPauseOnExceptions"":false,""returnByValue"":false},""id"":1}";
             return this.SendCommand(session, json);
         }
 
-
         public string Eval(ChromeSession session, string cmd)
         {
-            var json = @"{""method"":""Runtime.evaluate"",""params"":{""expression"":"""+cmd+@""",""objectGroup"":""console"",""includeCommandLineAPI"":true,""doNotPauseOnExceptions"":false,""returnByValue"":false},""id"":1}";
+            var json = @"{""method"":""Runtime.evaluate"",""params"":{""expression"":""" + cmd + @""",""objectGroup"":""console"",""includeCommandLineAPI"":true,""doNotPauseOnExceptions"":false,""returnByValue"":false},""id"":1}";
             return this.SendCommand(session, json);
         }
 
@@ -212,34 +213,36 @@ namespace ChromeController
             byte[] data;
 
             Exception exc = null;
-            j.Opened += delegate(System.Object o, EventArgs e) {
+            j.Opened += delegate (System.Object o, EventArgs e)
+            {
                 j.Send(cmd);
             };
 
-            j.MessageReceived += delegate(System.Object o, MessageReceivedEventArgs e) {
+            j.MessageReceived += delegate (System.Object o, MessageReceivedEventArgs e)
+            {
                 message = e.Message;
                 waitEvent.Set();
             };
 
-            j.Error += delegate(System.Object o, SuperSocket.ClientEngine.ErrorEventArgs e)
+            j.Error += delegate (System.Object o, SuperSocket.ClientEngine.ErrorEventArgs e)
             {
                 exc = e.Exception;
                 waitEvent.Set();
             };
 
-            j.Closed += delegate(System.Object o, EventArgs e)
+            j.Closed += delegate (System.Object o, EventArgs e)
             {
                 closedEvent.Set();
             };
 
-            j.DataReceived += delegate(System.Object o, DataReceivedEventArgs e)
+            j.DataReceived += delegate (System.Object o, DataReceivedEventArgs e)
             {
                 data = e.Data;
                 waitEvent.Set();
             };
 
             j.Open();
-            
+
             waitEvent.WaitOne();
             if (j.State == WebSocket4Net.WebSocketState.Open)
             {
@@ -248,7 +251,7 @@ namespace ChromeController
             }
             if (exc != null)
                 throw exc;
-            
+
             return message;
         }
 

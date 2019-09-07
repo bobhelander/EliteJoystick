@@ -53,7 +53,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
             if (mode == EliteSharedState.Mode.Mining)
                 return new Light[] { Light.Button3 };
 
-            return new Light[] {  };
+            return new Light[] { };
         }
     }
 }

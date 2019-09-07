@@ -15,7 +15,7 @@ namespace ArduinoCommunication
 
         public Task Play()
         {
-            return Task.Run(async () => await SendKeys(Arduino, Text, Delay, Newline));
+            return Task.Run(async () => await SendKeys(Arduino, Text, Delay, Newline).ConfigureAwait(false));
         }
 
         private async Task SendKeys(Arduino arduino, string text, int delay, bool newline)
@@ -24,7 +24,7 @@ namespace ArduinoCommunication
                 await arduino?.PressKey((byte)character, delay);
 
             if (newline)
-                await arduino?.PressKey(0xB0, delay); 
+                await arduino?.PressKey(0xB0, delay);
         }
     }
 }

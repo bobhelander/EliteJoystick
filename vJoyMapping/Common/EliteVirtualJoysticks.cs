@@ -69,7 +69,7 @@ namespace vJoyMapping.Common
             Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
         }
 
-        public void SetJoystickButtons(UInt32 buttons,  uint vJoyId, UInt32 mask = 0xFFFFFFFF)
+        public void SetJoystickButtons(UInt32 buttons, uint vJoyId, UInt32 mask = 0xFFFFFFFF)
         {
             // Clear the buttons we are assigning
             var holdValues = States[vJoyId - 1].Buttons & ~mask;

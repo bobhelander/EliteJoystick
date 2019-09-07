@@ -39,7 +39,7 @@ namespace EliteJoystick.Common
 
                 return JsonConvert.DeserializeObject<Settings>(File.ReadAllText(fileName));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return new Settings();
             }

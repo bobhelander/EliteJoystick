@@ -22,7 +22,7 @@ namespace CommonCommunication
             {
                 client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out, PipeOptions.Asynchronous);
                 //await client.ConnectAsync(30000);
-                await client.ConnectAsync(30000);
+                await client.ConnectAsync(30000).ConfigureAwait(false);
                 stream = new StreamWriter(client);
                 log.Debug($"Connection established to: {pipeName}");
             }
@@ -37,8 +37,8 @@ namespace CommonCommunication
             try
             {
                 // write the message to the pipe stream 
-                await stream.WriteLineAsync(message);
-                await stream.FlushAsync();
+                await stream.WriteLineAsync(message).ConfigureAwait(false);
+                await stream.FlushAsync().ConfigureAwait(false);
             }
             catch (Exception exception)
             {

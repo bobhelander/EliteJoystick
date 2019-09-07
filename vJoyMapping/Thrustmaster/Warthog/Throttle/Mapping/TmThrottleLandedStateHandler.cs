@@ -20,14 +20,14 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             {
                 // Set the left throttle to the middle so we don't move forward or backward when the throttle is parked
                 controller.SharedState.LeftThrottleEnabled = false;
-                controller.SetJoystickAxis(16*1024, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
+                controller.SetJoystickAxis(16 * 1024, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
                 log.Debug($"Left Throttle Parked");
             }
             else if (Reactive.ButtonReleased(value, leftThrottleParked))
             {
                 // Left throttle is set to move forward and backward from the center 
                 controller.SharedState.LeftThrottleEnabled = true;
-                controller.SetJoystickAxis(32*1024, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
+                controller.SetJoystickAxis(32 * 1024, HID_USAGES.HID_USAGE_RZ, vJoyTypes.Throttle);
                 log.Debug($"Left Throttle Activated");
             }
         }

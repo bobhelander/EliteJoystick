@@ -18,7 +18,7 @@ namespace EliteJoystick.Common
 
         [DllImport("vJoyInstall.dll", EntryPoint = "refresh_vjoy_specific")]
         private static extern void refresh_vjoy_specific(ushort Revision);
-        
+
         [DllImport("vJoyInterface.dll", EntryPoint = "GetvJoyVersion")]
         private static extern short _GetvJoyVersion();
 
@@ -71,7 +71,7 @@ namespace EliteJoystick.Common
                 {
                     p.Kill();
                 }
-            });
+            }).ConfigureAwait(false);
         }
     }
 }

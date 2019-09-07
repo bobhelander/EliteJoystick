@@ -9,9 +9,9 @@ namespace EddiJoystickResponder.Exploration
 {
     /* https://msdn.microsoft.com/en-us/library/ee844259.aspx */
 
-    public partial class Explore
+    internal partial class Explore
     {
-        private StarSystem starSystem;
-        public Explore(StarSystem starSystem) { this.starSystem = starSystem; }
+        private readonly StarSystem starSystem;
+        internal Explore(StarSystem starSystem) { this.starSystem = starSystem; }
     }
 }

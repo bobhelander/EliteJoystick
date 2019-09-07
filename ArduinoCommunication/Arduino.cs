@@ -38,12 +38,12 @@ namespace ArduinoCommunication
 
         public async Task ReleaseKey(byte key)
         {
-            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, key, 0x00, 0xFF}, 0, 4);
+            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, key, 0x00, 0xFF }, 0, 4).ConfigureAwait(false);
         }
 
         public async Task DepressKey(byte key)
         {
-            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, key, 0xFF}, 0, 4);
+            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, key, 0xFF }, 0, 4).ConfigureAwait(false);
         }
 
         public async Task ReleaseAll()
@@ -53,27 +53,27 @@ namespace ArduinoCommunication
 
         public async Task PressKey(byte key, int duration = 30)
         {
-            await DepressKey(key);
-            await Task.Delay(duration);
-            await ReleaseKey(key);
+            await DepressKey(key).ConfigureAwait(false);
+            await Task.Delay(duration).ConfigureAwait(false);
+            await ReleaseKey(key).ConfigureAwait(false);
         }
 
         public async Task TypeFullString(String text)
         {
-            Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(this, text))
-             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+            await Task.Run(async () => await Utils.TypeFullString(this, text).ConfigureAwait(false))
+             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
         }
 
         public async Task TypeFromClipboard()
         {
-            Task.Run(async () => await ArduinoCommunication.Utils.TypeFromClipboard(this))
-             .ContinueWith(t => { log.Error($"TypeFromClipboard Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+            await Task.Run(async () => await Utils.TypeFromClipboard(this).ConfigureAwait(false))
+             .ContinueWith(t => log.Error($"TypeFromClipboard Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
         }
 
         public async Task KeyCombo(byte[] modifier, byte key)
         {
-            Task.Run(async () => await ArduinoCommunication.Utils.KeyCombo(this, modifier, key))
-             .ContinueWith(t => { log.Error($"SendKeyCombo Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+            await Task.Run(async () => await Utils.KeyCombo(this, modifier, key).ConfigureAwait(false))
+             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
         }
     }
 }

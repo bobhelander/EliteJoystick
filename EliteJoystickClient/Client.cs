@@ -33,13 +33,13 @@ namespace EliteJoystickClient
             // Contact the Service Pipe
             MessageHandler.Client = new CommonCommunication.Client();
 
-            await MessageHandler.Client.CreateConnection("elite_joystick");
+            await MessageHandler.Client.CreateConnection("elite_joystick").ConfigureAwait(false);
 
             // Begin two way communication
             var message = JsonConvert.SerializeObject(
                 new CommonCommunication.Message { Type = "client_ready", Data = Name });
 
-            await MessageHandler.Client.SendMessageAsync(message);
+            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
 
             Chrome = new ChromeController.Chrome("http://localhost:9222");
         }
@@ -50,13 +50,13 @@ namespace EliteJoystickClient
             switch (command)
             {
                 case "connect_joysticks":
-                    await ConnectJoysticks();
+                    await ConnectJoysticks().ConfigureAwait(false);
                     break;
                 case "connect_arduino":
-                    await ConnectArduino();
+                    await ConnectArduino().ConfigureAwait(false);
                     break;
                 case "paste_clipboard":
-                    await PasteClipboard();
+                    await PasteClipboard().ConfigureAwait(false);
                     break;
             }
         }
@@ -64,25 +64,25 @@ namespace EliteJoystickClient
         public async Task ConnectJoysticks()
         {
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_joysticks" });
-            await MessageHandler.Client.SendMessageAsync(message);
+            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
         }
 
         public async Task DisconnectJoysticks()
         {
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_joysticks" });
-            await MessageHandler.Client.SendMessageAsync(message);
+            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
         }
 
         public async Task ConnectArduino()
         {
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_arduino" });
-            await MessageHandler.Client.SendMessageAsync(message);
+            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
         }
 
         public async Task DisconnectArduino()
         {
             var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_arduino" });
-            await MessageHandler.Client.SendMessageAsync(message);
+            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
         }
 
         public async Task PasteClipboard()
@@ -96,7 +96,7 @@ namespace EliteJoystickClient
 
                 log.Debug($"Sending Clipboard Contents: {data}");
 
-                await MessageHandler.Client.SendMessageAsync(outputMessage);
+                await MessageHandler.Client.SendMessageAsync(outputMessage).ConfigureAwait(false);
             }
         }
 

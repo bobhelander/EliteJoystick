@@ -32,7 +32,7 @@ namespace CommonCommunication
                             while (ContinueListening)
                             {
                                 // read the message from the stream - async
-                                var message = await streamReader.ReadLineAsync();
+                                var message = await streamReader.ReadLineAsync().ConfigureAwait(false);
 
                                 // invoke the message received action
                                 var task = Task.Run(() => messageRecieved?.Invoke(message))

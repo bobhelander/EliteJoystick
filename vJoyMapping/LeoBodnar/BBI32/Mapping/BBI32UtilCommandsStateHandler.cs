@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Usb.GameControllers.Common;
 using Usb.GameControllers.LeoBodnar.BBI32.Models;
 using vJoyMapping.Common;
@@ -17,7 +18,6 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             // Orbit Lines Toggle On/Off
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button11))
             {
-
                 // Orbit Lines Toggle
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.OrbitLinesToggle, 150);
 
@@ -29,7 +29,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button12))
             {
                 // HUD off  CRTL+ALT+G
-                controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47);
+                Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47).ConfigureAwait(false));
 
                 controller.SharedState.HeadsUpDisplay = !controller.SharedState.HeadsUpDisplay;
                 log.Debug($"HeadsUpDisplay: {controller.SharedState.HeadsUpDisplay}");
@@ -44,7 +44,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button7))
             {
                 // Take Picture  ALT-F10
-                controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB);
+                Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB).ConfigureAwait(false));
                 log.Debug($"Take Picture ");
             }
 

@@ -11,7 +11,7 @@ namespace EliteJoystick.Common
     /// </summary>
     public class vJoyMapper
     {
-        public Dictionary<string, uint> vJoyMap { get; set; } = 
+        public Dictionary<string, uint> vJoyMap { get; set; } =
             new Dictionary<string, uint> {
                 {vJoyTypes.StickAndPedals, 1 },
                 {vJoyTypes.Throttle, 2 },

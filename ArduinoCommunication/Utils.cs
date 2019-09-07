@@ -11,8 +11,8 @@ namespace ArduinoCommunication
     {
         public static async Task TypeFromClipboard(Arduino arduino)
         {
-            var text = await Utils.CallClipboard();
-            await TypeFullString(arduino, text);
+            var text = await Utils.CallClipboard().ConfigureAwait(false);
+            await TypeFullString(arduino, text).ConfigureAwait(false);
         }
 
         public static Task TypeFullString(Arduino arduino, String text)
@@ -39,7 +39,7 @@ namespace ArduinoCommunication
 
         static public async Task<string> CallClipboard()
         {
-            return await StartSTATask<string>(() => System.Windows.Clipboard.GetText());
+            return await StartSTATask<string>(() => System.Windows.Clipboard.GetText()).ConfigureAwait(false);
         }
 
         public static Task<T> StartSTATask<T>(Func<T> func)

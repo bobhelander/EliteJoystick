@@ -58,7 +58,7 @@ namespace EliteJoystickClient
                         break;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Debug($"Error: {ex}");
             }

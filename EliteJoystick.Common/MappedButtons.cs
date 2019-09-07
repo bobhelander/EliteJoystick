@@ -60,7 +60,7 @@ namespace EliteJoystick.Common
         public static uint ThrottleAPAH = 24;
         public static uint ThrottleEOLNORM = 25;
         public static uint ThrottleEORNORM = 26;
-        
+
         // Command button.  Used to signal that a user button is being pressed.  Set in combination with other buttons
         public static uint CommandButton = 27;
         // 26 - 30 Unassigned
