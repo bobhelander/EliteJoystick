@@ -75,6 +75,8 @@
       <DependentUpon>Explore.tt</DependentUpon>
     </Compile>
     <Compile Include="Exploration\ExploreCode.cs" />
+    <Compile Include="JoystickActionEvent.cs" />
+    <Compile Include="JoystickCommandEvent.cs" />
     <Compile Include="JoystickResponder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exploration\EliteStarTypes.cs" />
