@@ -69,6 +69,18 @@ namespace vJoyMapping.Common
             Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
         }
 
+        public bool GetJoystickButton(uint vButton, uint vJoyId)
+        {
+            // Offset by one
+            vButton = vButton - 1;
+
+            // Build a mask for that position
+            var mask = (uint)0x1 << (int)vButton;
+
+            var result = States[vJoyId - 1].Buttons & mask;
+            return (States[vJoyId - 1].Buttons & mask) == mask;
+        }
+
         public void SetJoystickButtons(UInt32 buttons, uint vJoyId, UInt32 mask = 0xFFFFFFFF)
         {
             // Clear the buttons we are assigning

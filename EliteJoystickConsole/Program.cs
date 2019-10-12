@@ -1,8 +1,10 @@
 ﻿using ChromeController;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,6 +62,11 @@ namespace EliteJoystickConsole
                 var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
                     .ContinueWith(t => log.Error($"ConnectJoysticks Exception: {t.Exception}"),
                     TaskContinuationOptions.OnlyOnFaulted);
+            }
+            if (false)
+            {
+                var started = VoiceMeeter.Remote.Initialize().Result;
+                VoiceMeeter.Remote.SetParameter("Bus[1].Mute", 1);
             }
             Console.ReadKey();
         }

@@ -15,7 +15,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -71,6 +71,10 @@
     <ProjectReference Include="..\EliteJoystickClient\EliteJoystickClient.csproj">
       <Project>{0b771627-5640-403f-9985-9e93539ada6c}</Project>
       <Name>EliteJoystickClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Voicemeeter\Voicemeeter.csproj">
+      <Project>{6487dc1a-605a-4ffb-8877-0f54a1a34dc0}</Project>
+      <Name>Voicemeeter</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

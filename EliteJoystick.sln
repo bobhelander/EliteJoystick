@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}"
 EndProject
@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vJoyMapping", "vJoyMapping\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteJoystick.Common", "EliteJoystick.Common\EliteJoystick.Common.csproj", "{3DFB3FBB-5E24-4942-8E30-83E99FED2D33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteGameStatus", "EliteGameStatus\EliteGameStatus.csproj", "{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteGameStatus", "EliteGameStatus\EliteGameStatus.csproj", "{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voicemeeter", "Voicemeeter\Voicemeeter.csproj", "{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

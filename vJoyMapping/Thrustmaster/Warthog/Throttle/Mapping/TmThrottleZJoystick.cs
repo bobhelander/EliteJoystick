@@ -9,6 +9,9 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleZJoystick
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
@@ -38,6 +41,25 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
                 // Zero is full throttle
                 // 32K is no throttle
+
+                // When the throttles split and Zr is is around 32K turn on reverse thrusting
+                var difference = current.Zr - current.Z;
+                if (current.Zr > 15500 && difference > 1000)
+                {
+                    if (controller.GetJoystickButton(MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual) == false)
+                    {
+                        log.Debug("Reverse Throttle On");
+                        controller.SetJoystickButton(true, MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual);
+                    }
+                }
+                else
+                {
+                    if (controller.GetJoystickButton(MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual) == true)
+                    {
+                        log.Debug("Reverse Throttle Off");
+                        controller.SetJoystickButton(false, MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual);
+                    }
+                }
 
                 // Invert the values.  We want the multipler to rise the closer we get to full throttle
                 //int z_inverted = (1024 * 32) - z;

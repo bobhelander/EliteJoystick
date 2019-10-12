@@ -39,6 +39,11 @@ namespace vJoyMapping.Common
 
         #region  Virtual Joystick Actions
 
+        public bool GetJoystickButton(uint vButton, string vJoyType)
+        {
+            return VirtualJoysticks.GetJoystickButton(vButton, Settings.vJoyMapper.GetJoystickId(vJoyType));
+        }
+
         public void SetJoystickButton(bool down, uint vButton, string vJoyType)
         {
             VirtualJoysticks.SetJoystickButton(down, vButton, Settings.vJoyMapper.GetJoystickId(vJoyType));

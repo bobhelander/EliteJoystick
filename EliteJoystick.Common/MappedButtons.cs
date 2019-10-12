@@ -26,6 +26,7 @@ namespace EliteJoystick.Common
         public static uint FreeCameraToggle = 20;
         public static uint CameraAdvanceModeToggle = 21;
         public static uint SilentRunningToggle = 22;
+        public static uint AlternateReverseToggle = 23;
 
         // Combined Joystick (StickAndPedals)
         public static uint ForceFeedbackButtonMask = 0xFF;

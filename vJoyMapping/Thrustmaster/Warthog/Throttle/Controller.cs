@@ -41,7 +41,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
                 warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleSilentCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 warthog.Subscribe(x => TmThrottleSliderJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleStateModifier.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleVoiceCommandHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                //warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleVoiceCommandHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 warthog.Subscribe(x => TmThrottleXYJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 warthog.Subscribe(x => TmThrottleZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
             };

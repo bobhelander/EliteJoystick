@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
+    <ProjectReference Include="..\Voicemeeter\Voicemeeter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
