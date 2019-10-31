@@ -24,9 +24,9 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
             x = Curves.Calculate(x - (16 * 1024), (16 * 1024), .5) + 16 * 1024;
             y = Curves.Calculate(y - (16 * 1024), (16 * 1024), .5) + 16 * 1024;
 
-            controller.SetJoystickAxis(x, HID_USAGES.HID_USAGE_X, vJoyTypes.Commander);
-            controller.SetJoystickAxis(y, HID_USAGES.HID_USAGE_Y, vJoyTypes.Commander);
-            controller.SetJoystickAxis(z, HID_USAGES.HID_USAGE_Z, vJoyTypes.Commander);
+            controller.SetJoystickAxis(x, vJoy.Wrapper.Axis.HID_USAGE_X, vJoyTypes.Commander);
+            controller.SetJoystickAxis(y, vJoy.Wrapper.Axis.HID_USAGE_Y, vJoyTypes.Commander);
+            controller.SetJoystickAxis(z, vJoy.Wrapper.Axis.HID_USAGE_Z, vJoyTypes.Commander);
         }
     }
 }

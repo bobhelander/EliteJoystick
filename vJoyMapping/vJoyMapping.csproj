@@ -14,20 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Reactive" Version="4.1.6" />
+    <PackageReference Include="System.Reactive" Version="4.2.0" />
     <PackageReference Include="Usb.GameControllers" Version="1.0.10" />
+    <PackageReference Include="vJoy.Wrapper" Version="1.0.0.5" />
+    <PackageReference Include="VoicemeeterRemote" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
-    <ProjectReference Include="..\Voicemeeter\Voicemeeter.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="vJoyInterfaceWrap">
-      <HintPath>..\3rdParty\vJoyInterfaceWrap.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
   </ItemGroup>
 
 </Project>

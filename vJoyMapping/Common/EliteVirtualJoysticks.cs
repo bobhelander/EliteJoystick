@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using vJoyInterfaceWrap;
+using vJoy.Wrapper;
 
 namespace vJoyMapping.Common
 {
@@ -12,144 +12,59 @@ namespace vJoyMapping.Common
     /// </summary>
     public class EliteVirtualJoysticks
     {
-        public vJoy Joystick { get; set; } = new vJoy();
+        //private vJoy Joystick { get; set; } = new vJoy();
 
-        public EliteVirtualJoystick[] Controllers { get; set; } = new EliteVirtualJoystick[4] {
-                        new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick(), new EliteVirtualJoystick() };
-
-        public vJoy.JoystickState[] States { get; set; } = new vJoy.JoystickState[4] {
-                        new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState(), new vJoy.JoystickState() };
+        private VirtualJoystick[] Joysticks { get; } = new VirtualJoystick[4] {
+                                                                new VirtualJoystick(1),
+                                                                new VirtualJoystick(2),
+                                                                new VirtualJoystick(3),
+                                                                new VirtualJoystick(4) };
 
         public void Initialize()
         {
-            uint vJoyId = 1;
-            foreach (var controller in Controllers)
+            foreach (var controller in Joysticks)
             {
-                controller.Joystick = Joystick;
-                controller.JoystickId = vJoyId;
                 controller.Aquire();
-                vJoyId++;
             }
         }
 
         public void Release()
         {
-            foreach (var controller in Controllers)
+            foreach (var controller in Joysticks)
                 controller.Release();
         }
 
         public void UpdateAll()
         {
-            uint vJoyId = 1;
-            foreach (var controller in Controllers)
+            foreach (var controller in Joysticks)
             {
-                Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
-                vJoyId++;
+                controller.Update();
             }
         }
 
         public void SetJoystickButton(bool down, uint vButton, uint vJoyId)
         {
-            // Offset by one
-            vButton = vButton - 1;
-
-            // Set the position or don't
-            var buttons = down ? (uint)0x1 << (int)vButton : 0;
-
-            // Build a mask for that position
-            var mask = (uint)0x1 << (int)vButton;
-
-            // Clear just that position
-            var holdValues = States[vJoyId - 1].Buttons & ~mask;
-
-            // Set the new value
-            States[vJoyId - 1].Buttons = holdValues | buttons;
-
-            // Update
-            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
+            Joysticks[vJoyId-1].SetJoystickButton(down, vButton);
         }
 
         public bool GetJoystickButton(uint vButton, uint vJoyId)
         {
-            // Offset by one
-            vButton = vButton - 1;
-
-            // Build a mask for that position
-            var mask = (uint)0x1 << (int)vButton;
-
-            var result = States[vJoyId - 1].Buttons & mask;
-            return (States[vJoyId - 1].Buttons & mask) == mask;
+            return Joysticks[vJoyId-1].GetJoystickButton(vButton);
         }
 
         public void SetJoystickButtons(UInt32 buttons, uint vJoyId, UInt32 mask = 0xFFFFFFFF)
         {
-            // Clear the buttons we are assigning
-            var holdValues = States[vJoyId - 1].Buttons & ~mask;
-            States[vJoyId - 1].Buttons = holdValues | buttons;
-            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
+            Joysticks[vJoyId-1].SetJoystickButtons(buttons, mask);
         }
 
-        public void SetJoystickAxis(int value, HID_USAGES usage, uint vJoyId)
+        public void SetJoystickAxis(int value, Axis usage, uint vJoyId)
         {
-            //Joystick.SetAxis(value, vJoyId, usage);
-
-            switch (usage)
-            {
-                case HID_USAGES.HID_USAGE_X:
-                    States[vJoyId - 1].AxisX = value;
-                    break;
-                case HID_USAGES.HID_USAGE_Y:
-                    States[vJoyId - 1].AxisY = value;
-                    break;
-                case HID_USAGES.HID_USAGE_Z:
-                    States[vJoyId - 1].AxisZ = value;
-                    break;
-                case HID_USAGES.HID_USAGE_RX:
-                    States[vJoyId - 1].AxisXRot = value;
-                    break;
-                case HID_USAGES.HID_USAGE_RY:
-                    States[vJoyId - 1].AxisYRot = value;
-                    break;
-                case HID_USAGES.HID_USAGE_RZ:
-                    States[vJoyId - 1].AxisZRot = value;
-                    break;
-                case HID_USAGES.HID_USAGE_SL0:
-                    States[vJoyId - 1].Slider = value;
-                    break;
-                case HID_USAGES.HID_USAGE_SL1:
-                    States[vJoyId - 1].Dial = value;
-                    break;
-                case HID_USAGES.HID_USAGE_WHL:
-                    States[vJoyId - 1].Wheel = value;
-                    break;
-                case HID_USAGES.HID_USAGE_POV:
-                    //States[vJoyId - 1]. = value;
-                    break;
-            }
-
-            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
+            Joysticks[vJoyId - 1].SetJoystickAxis(value, usage);
         }
 
         public void SetJoystickHat(int value, uint hatNumber, uint vJoyId)
         {
-            //Joystick.SetDiscPov(value, vJoyId, hatNumber);
-
-            switch (hatNumber)
-            {
-                case 1:
-                    States[vJoyId - 1].bHats = (byte)value;
-                    break;
-                case 2:
-                    States[vJoyId - 1].bHatsEx1 = (byte)value;
-                    break;
-                case 3:
-                    States[vJoyId - 1].bHatsEx2 = (byte)value;
-                    break;
-                case 4:
-                    States[vJoyId - 1].bHatsEx3 = (byte)value;
-                    break;
-            }
-            Joystick.UpdateVJD(vJoyId, ref States[vJoyId - 1]);
+            Joysticks[vJoyId - 1].SetJoystickHat(value, (Hats)hatNumber);
         }
     }
 }

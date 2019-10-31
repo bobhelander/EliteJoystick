@@ -35,8 +35,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteJoystick.Common", "Eli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteGameStatus", "EliteGameStatus\EliteGameStatus.csproj", "{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voicemeeter", "Voicemeeter\Voicemeeter.csproj", "{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,10 +89,6 @@ Global
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6487DC1A-605A-4FFB-8877-0F54A1A34DC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

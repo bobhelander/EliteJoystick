@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Usb.GameControllers.Common;
-using vJoyInterfaceWrap;
+using vJoy.Wrapper;
+//using vJoyInterfaceWrap;
 
 namespace vJoyMapping.Common
 {
@@ -34,7 +35,10 @@ namespace vJoyMapping.Common
         public void Dispose()
         {
             foreach (var disposable in Disposables)
-                disposable?.Dispose();
+            {
+                try { disposable?.Dispose(); }
+                catch(Exception) { ; }
+            }
         }
 
         #region  Virtual Joystick Actions
@@ -55,7 +59,7 @@ namespace vJoyMapping.Common
             VirtualJoysticks.SetJoystickButtons(buttons, Settings.vJoyMapper.GetJoystickId(vJoyType), mask);
         }
 
-        public void SetJoystickAxis(int value, HID_USAGES usage, string vJoyType)
+        public void SetJoystickAxis(int value, Axis usage, string vJoyType)
         {
             VirtualJoysticks.SetJoystickAxis(value, usage, Settings.vJoyMapper.GetJoystickId(vJoyType));
         }

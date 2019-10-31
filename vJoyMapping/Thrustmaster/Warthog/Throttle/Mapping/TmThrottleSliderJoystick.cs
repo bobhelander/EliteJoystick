@@ -20,7 +20,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             // 0-127 0 = up  127 = down
 
             int slider = current.Slider * 32;
-            controller.SetJoystickAxis(slider, HID_USAGES.HID_USAGE_SL0, vJoyTypes.Throttle);
+            controller.SetJoystickAxis(slider, vJoy.Wrapper.Axis.HID_USAGE_SL0, vJoyTypes.Throttle);
         }
     }
 }

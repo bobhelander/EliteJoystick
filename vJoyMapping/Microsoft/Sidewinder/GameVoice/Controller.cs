@@ -26,13 +26,13 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
             //MapLights(joystick);
 
             // Initialize Voicemeeter and Login
-            Disposables.Add(VoiceMeeter.Remote.Initialize().Result);
+            Disposables.Add(VoiceMeeter.Remote.Initialize(Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result);
 
             joystick.Initialize();
 
             //WatchChanges();
 
-            UpdateLights();
+            SwGameVoicemeeterHandler.UpdateLights(joystick);
         }
 
         public void MapControls(Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick swgv)
@@ -50,10 +50,10 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
         {
             Disposables.Add(timer.Subscribe(x =>
             {
-                if (VoiceMeeter.Remote.IsParametersDirty() == 1)
-                {
-                    UpdateLights();
-                }
+                //if (VoiceMeeter.Remote.IsParametersDirty() == 1)
+                //{
+                //    UpdateLights();
+                //}
             }));
         }
 
@@ -63,28 +63,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
             // Turn lights on and off
             SharedState.GearChanged.Subscribe(x =>
                 swgv.Lights = x ? (byte)(swgv.Lights | (byte)Button.Button1) : (byte)(swgv.Lights & ~(byte)Button.Button1));
-        }
-
-        public void UpdateLights()
-        {
-            float button1 = 0;
-            float button2 = 0;
-            float button3 = 0;
-            float button4 = 0;
-
-            VoiceMeeter.Remote.GetParameter("Strip[0].Mute", ref button1);
-            VoiceMeeter.Remote.GetParameter("Strip[1].Mute", ref button2);
-            VoiceMeeter.Remote.GetParameter("Bus[1].Mute", ref button3);
-            VoiceMeeter.Remote.GetParameter("Bus[2].Mute", ref button4);
-
-            byte lights = 0;
-
-            if (button1 == 0) lights = (byte)(lights | (byte)Button.Button1);
-            if (button2 == 0) lights = (byte)(lights | (byte)Button.Button2);
-            if (button3 == 0) lights = (byte)(lights | (byte)Button.Button3);
-            if (button4 == 0) lights = (byte)(lights | (byte)Button.Button4);
-
-            joystick.Lights = lights;
         }
 
         public void SetLights(byte lights)
