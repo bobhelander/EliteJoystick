@@ -13,14 +13,13 @@ namespace vJoyMapping.Common
 {
     public class Controller : IDisposable
     {
-        public static string GetDevicePath(int vendorId, int productId)
-        {
-            return Usb.Hid.Connection.Devices.RetrieveAllDevicePath(vendorId, productId).FirstOrDefault();
-        }
+        private static readonly log4net.ILog log = 
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static string GetDevicePath(int vendorId, int productId) =>
+            Usb.Hid.Connection.Devices.RetrieveAllDevicePath(vendorId, productId).FirstOrDefault();
 
         protected List<IDisposable> Disposables { get; set; }
-
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public String Name { get; set; }
 
@@ -32,79 +31,50 @@ namespace vJoyMapping.Common
 
         public EliteSharedState SharedState { get; set; }
 
-        public void Dispose()
-        {
-            foreach (var disposable in Disposables)
-            {
-                try { disposable?.Dispose(); }
-                catch(Exception) { ; }
-            }
-        }
+        public void Dispose() =>
+            Disposables.ForEach(disposable => { try { disposable?.Dispose(); } catch (Exception) {;} });
 
         #region  Virtual Joystick Actions
 
-        public bool GetJoystickButton(uint vButton, string vJoyType)
-        {
-            return VirtualJoysticks.GetJoystickButton(vButton, Settings.vJoyMapper.GetJoystickId(vJoyType));
-        }
+        public bool GetJoystickButton(uint vButton, string vJoyType) =>
+            VirtualJoysticks.GetJoystickButton(vButton, Settings.vJoyMapper.GetJoystickId(vJoyType));
 
-        public void SetJoystickButton(bool down, uint vButton, string vJoyType)
-        {
+        public void SetJoystickButton(bool down, uint vButton, string vJoyType) =>
             VirtualJoysticks.SetJoystickButton(down, vButton, Settings.vJoyMapper.GetJoystickId(vJoyType));
-            //log.Debug($"{vJoyType}: {vButton}: {down}");
-        }
 
-        public void SetJoystickButtons(uint buttons, string vJoyType, uint mask)
-        {
+        public void SetJoystickButtons(uint buttons, string vJoyType, uint mask) =>
             VirtualJoysticks.SetJoystickButtons(buttons, Settings.vJoyMapper.GetJoystickId(vJoyType), mask);
-        }
 
-        public void SetJoystickAxis(int value, Axis usage, string vJoyType)
-        {
+        public void SetJoystickAxis(int value, Axis usage, string vJoyType) =>
             VirtualJoysticks.SetJoystickAxis(value, usage, Settings.vJoyMapper.GetJoystickId(vJoyType));
-        }
 
-        public void SetJoystickHat(int value, string vJoyType, uint hatNumber)
-        {
+        public void SetJoystickHat(int value, string vJoyType, uint hatNumber) =>
             VirtualJoysticks.SetJoystickHat(value, hatNumber, Settings.vJoyMapper.GetJoystickId(vJoyType));
-        }
 
         #endregion
 
         #region  Arduino keyboard actions
 
-        public void DepressKey(byte key)
-        {
+        public void DepressKey(byte key) =>
             Arduino?.DepressKey(key);
-        }
 
-        public void ReleaseKey(byte key)
-        {
+        public void ReleaseKey(byte key) =>
             Arduino?.ReleaseKey(key);
-        }
 
-        public void ReleaseAllKeys()
-        {
+        public void ReleaseAllKeys() =>
             Arduino?.ReleaseAll();
-        }
 
-        public async Task TypeFullString(String text)
-        {
+        public async Task TypeFullString(String text) =>
             await Task.Run(async () => await Arduino.TypeFullString(text).ConfigureAwait(false))
              .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
-        }
 
-        public async Task TypeFromClipboard()
-        {
+        public async Task TypeFromClipboard() =>
             await Task.Run(async () => await Arduino.TypeFromClipboard().ConfigureAwait(false))
              .ContinueWith(t => log.Error($"TypeFromClipboard Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
-        }
 
-        public async Task SendKeyCombo(byte[] modifier, byte key)
-        {
-            await Task.Run(async () => await Arduino.KeyCombo(modifier, key)
-             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false)).ConfigureAwait(false);
-        }
+        public async Task SendKeyCombo(byte[] modifier, byte key) =>
+            await Task.Run(async () => await Arduino.KeyCombo(modifier, key).ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false))
+            .ConfigureAwait(false);
 
         #endregion
 
@@ -134,25 +104,17 @@ namespace vJoyMapping.Common
 
         #region Helper Functions
 
-        public bool TestButtonDown(UInt32 state, UInt32 button)
-        {
-            return (state & button) == button;
-        }
+        public bool TestButtonDown(UInt32 state, UInt32 button) =>
+            (state & button) == button;
 
-        public bool TestButtonPressed(UInt32 previousState, UInt32 state, UInt32 button)
-        {
-            return ((previousState & button) == 0 && (state & button) == button);
-        }
+        public bool TestButtonPressed(UInt32 previousState, UInt32 state, UInt32 button) =>
+            ((previousState & button) == 0) && ((state & button) == button);
 
-        public bool TestButtonReleased(UInt32 previousState, UInt32 state, UInt32 button)
-        {
-            return ((previousState & button) == button && (state & button) == 0);
-        }
+        public bool TestButtonReleased(UInt32 previousState, UInt32 state, UInt32 button) =>
+            ((previousState & button) == button) && ((state & button) == 0);
 
-        public bool TestButtonPressedOrReleased(UInt32 previousState, UInt32 state, UInt32 button)
-        {
-            return (TestButtonReleased(previousState, state, button) || TestButtonPressed(previousState, state, button));
-        }
+        public bool TestButtonPressedOrReleased(UInt32 previousState, UInt32 state, UInt32 button) =>
+            TestButtonReleased(previousState, state, button) || TestButtonPressed(previousState, state, button);
 
         /// <summary>
         /// Used with Tri-state switches.  This tests if the switch was moved to the middle state
@@ -161,10 +123,8 @@ namespace vJoyMapping.Common
         /// <param name="state"></param>
         /// <param name="switchValue"></param>
         /// <returns></returns>
-        public bool TestMultiSwitchStateOff(UInt32 previousState, UInt32 state, UInt32 switchValue)
-        {
-            return ((previousState & switchValue) != 0 && (state & switchValue) == 0);
-        }
+        public bool TestMultiSwitchStateOff(UInt32 previousState, UInt32 state, UInt32 switchValue) =>
+            ((previousState & switchValue) != 0) && ((state & switchValue) == 0);
 
         /// <summary>
         /// Used with Tri-state switches.  This tests if the switch was moved from the middle state
@@ -173,12 +133,9 @@ namespace vJoyMapping.Common
         /// <param name="state"></param>
         /// <param name="switchValue"></param>
         /// <returns></returns>
-        public bool TestMultiSwitchStateOn(UInt32 previousState, UInt32 state, UInt32 switchValue)
-        {
-            return ((previousState & switchValue) == 0 && (state & switchValue) != 0);
-        }
+        public bool TestMultiSwitchStateOn(UInt32 previousState, UInt32 state, UInt32 switchValue) =>
+            ((previousState & switchValue) == 0) && ((state & switchValue) != 0);
 
         #endregion
-
     }
 }

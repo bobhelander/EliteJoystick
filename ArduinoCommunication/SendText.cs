@@ -13,10 +13,8 @@ namespace ArduinoCommunication
         public bool Newline { get; set; }
         public Arduino Arduino { get; set; }
 
-        public Task Play()
-        {
-            return Task.Run(async () => await SendKeys(Arduino, Text, Delay, Newline).ConfigureAwait(false));
-        }
+        public Task Play() =>
+            Task.Run(async () => await SendKeys(Arduino, Text, Delay, Newline).ConfigureAwait(false));
 
         private async Task SendKeys(Arduino arduino, string text, int delay, bool newline)
         {

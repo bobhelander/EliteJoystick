@@ -19,7 +19,8 @@ namespace EliteJoystickService
 {
     public partial class JoystickService : ServiceBase
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = 
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private EliteVirtualJoysticks eliteVirtualJoysticks = null;
         private ArduinoCommunication.Arduino arduino = null;
@@ -181,7 +182,7 @@ namespace EliteJoystickService
 
                 // State Handlers
                 var subscription = SharedState.GearChanged.Subscribe(
-                    x => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
+                    _ => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
 
                 virtualControllerUpdater = StartUpdateData(eliteVirtualJoysticks, 300);
 

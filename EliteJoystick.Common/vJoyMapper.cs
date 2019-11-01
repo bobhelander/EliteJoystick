@@ -19,9 +19,7 @@ namespace EliteJoystick.Common
                 {vJoyTypes.Virtual, 4 }
             };
 
-        public uint GetJoystickId(string vJoyType)
-        {
-            return vJoyMap[vJoyType];
-        }
+        public uint GetJoystickId(string vJoyType) =>
+            vJoyMap[vJoyType];
     }
 }

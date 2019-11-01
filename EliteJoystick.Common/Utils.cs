@@ -43,25 +43,17 @@ namespace EliteJoystick.Common
             return String.Empty;
         }
 
-        public static void RefreshvJoySpecific(ushort Revision)
-        {
+        public static void RefreshvJoySpecific(ushort Revision) =>
             refresh_vjoy_specific(Revision);
-        }
 
-        public static short GetvJoyVersion()
-        {
-            return _GetvJoyVersion();
-        }
+        public static short GetvJoyVersion() =>
+            _GetvJoyVersion();
 
-        public static bool Disable(ushort Revision)
-        {
-            return disable(Revision);
-        }
+        public static bool Disable(ushort Revision) =>
+            disable(Revision);
 
-        public static Process Launch(string filename)
-        {
-            return Process.Start(filename);
-        }
+        public static Process Launch(string filename) =>
+            Process.Start(filename);
 
         public static async Task KillProcess(string name)
         {

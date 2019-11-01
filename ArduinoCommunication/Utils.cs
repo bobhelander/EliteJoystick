@@ -37,10 +37,8 @@ namespace ArduinoCommunication
             }.Play();
         }
 
-        static public async Task<string> CallClipboard()
-        {
-            return await StartSTATask<string>(() => System.Windows.Clipboard.GetText()).ConfigureAwait(false);
-        }
+        static public async Task<string> CallClipboard() =>
+            await StartSTATask<string>(() => System.Windows.Clipboard.GetText()).ConfigureAwait(false);
 
         public static Task<T> StartSTATask<T>(Func<T> func)
         {

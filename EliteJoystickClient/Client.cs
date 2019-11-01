@@ -10,7 +10,8 @@ namespace EliteJoystickClient
 {
     public class Client
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = 
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public string Name { get; set; }
         public CommonCommunication.Server Server { get; set; }
@@ -61,29 +62,21 @@ namespace EliteJoystickClient
             }
         }
 
-        public async Task ConnectJoysticks()
-        {
-            var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_joysticks" });
-            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
-        }
+        public async Task ConnectJoysticks() =>
+            await MessageHandler.Client.SendMessageAsync(
+                JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_joysticks" })).ConfigureAwait(false);
 
-        public async Task DisconnectJoysticks()
-        {
-            var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_joysticks" });
-            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
-        }
+        public async Task DisconnectJoysticks() =>
+            await MessageHandler.Client.SendMessageAsync(
+                JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_joysticks" })).ConfigureAwait(false);
 
-        public async Task ConnectArduino()
-        {
-            var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_arduino" });
-            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
-        }
+        public async Task ConnectArduino() =>
+            await MessageHandler.Client.SendMessageAsync(
+                JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "connect_arduino" })).ConfigureAwait(false);
 
-        public async Task DisconnectArduino()
-        {
-            var message = JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_arduino" });
-            await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
-        }
+        public async Task DisconnectArduino() =>
+            await MessageHandler.Client.SendMessageAsync(
+                JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_arduino" })).ConfigureAwait(false);
 
         public async Task PasteClipboard()
         {
@@ -100,10 +93,8 @@ namespace EliteJoystickClient
             }
         }
 
-        public void CopyToClipboard(string text)
-        {
+        public void CopyToClipboard(string text) =>
             Utils.SetClipboardText(text);
-        }
 
         public void Navigate(string url)
         {
@@ -123,15 +114,11 @@ namespace EliteJoystickClient
             }
         }
 
-        public void ChangeTab(int number)
-        {
+        public void ChangeTab(int number) =>
             Chrome.ChangeTab(number);
-        }
 
-        public string ChromeCommand(string command)
-        {
-            return Chrome.Eval(Chrome.CurrentSession, command);
-        }
+        public string ChromeCommand(string command) =>
+            Chrome.Eval(Chrome.CurrentSession, command);
 
         public void NewChromeTab(string url, int scrollDistance = 0)
         {

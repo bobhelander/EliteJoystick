@@ -19,10 +19,8 @@ namespace ArduinoCommunication
         private bool stepTwo = false;
         private bool stepThree = false;
 
-        public void Start()
-        {
+        public void Start() =>
             Timer = new Timer(Action, null, 0, Delay);
-        }
 
         public void Action(object o)
         {
