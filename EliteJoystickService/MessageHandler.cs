@@ -19,6 +19,7 @@ namespace EliteJoystickService
         public Action ConnectArduino { get; set; }
         public Action DisconnectArduino { get; set; }
         public Action ReconnectArduino { get; set; }
+        public Action<string> KeyPress { get; set; }
 
         public async Task HandleMessage(
             string rawMessage,
@@ -48,6 +49,9 @@ namespace EliteJoystickService
                     break;
                 case "reconnect_arduino":
                     await Task.Run(ReconnectArduino).ConfigureAwait(false);
+                    break;
+                case "keypress":
+                    await Task.Run(() => KeyPress(message.Data)).ConfigureAwait(false);
                     break;
                 case "keyboard_output":
                     log.Debug($"Arduino: testing");

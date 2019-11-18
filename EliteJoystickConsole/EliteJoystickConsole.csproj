@@ -94,13 +94,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChromeController\ChromeController.csproj">
-      <Project>{8deb715d-8adb-44dc-b985-033565dc4c3c}</Project>
-      <Name>ChromeController</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EliteJoystickClient\EliteJoystickClient.csproj">
       <Project>{0b771627-5640-403f-9985-9e93539ada6c}</Project>
       <Name>EliteJoystickClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GoogleChrome\GoogleChrome.csproj">
+      <Project>{06cc1e29-5828-40d3-b1c9-7aea29ac5640}</Project>
+      <Name>GoogleChrome</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

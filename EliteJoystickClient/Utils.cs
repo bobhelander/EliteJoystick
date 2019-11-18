@@ -1,5 +1,4 @@
-﻿using ChromeController;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -78,7 +77,7 @@ namespace EliteJoystickClient
         {
             try
             {
-                var chrome = new Chrome("http://localhost:9222");
+                var chrome = new GoogleChrome.Chrome("http://localhost:9222");
                 var sessions = chrome.GetAvailableSessions();
                 chrome.ActivateTab(sessions[0]);
                 chrome.NavigateTo(sessions[0], url);

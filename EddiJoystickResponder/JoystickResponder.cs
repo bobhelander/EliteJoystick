@@ -6,6 +6,7 @@ using System.AddIn;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -14,8 +15,6 @@ namespace EddiJoystickResponder
     [AddIn("EliteJoystickResponder", Version = "1.0.0.0")]
     public class JoystickResponder : EDDIResponder
     {
-        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private ConfigurationWindow configWindow;
 
         public EliteJoystickClient.Client Client { get; set; }
@@ -28,8 +27,6 @@ namespace EddiJoystickResponder
 
         public void Handle(Event theEvent)
         {
-            //log.Debug($"Received event {JsonConvert.SerializeObject(theEvent)}");
-
             if (theEvent is JoystickCommandEvent joystickCommandEvent)
             {
                 Client.HandleCommand(joystickCommandEvent.command, JoystickCommandEvent.VARIABLES).Wait();
@@ -80,13 +77,13 @@ namespace EddiJoystickResponder
         {
             Client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
             Client.Initialize().Wait();
+
             return true;
         }
 
         public void Stop()
         {
-            Client.DisconnectArduino().Wait();
-            Client.DisconnectJoysticks().Wait();
+            Client.Shutdown().Wait();
         }
     }
 }

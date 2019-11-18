@@ -76,6 +76,7 @@
     <Compile Include="JoystickService.Designer.cs">
       <DependentUpon>JoystickService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mappings\GameStatusMapping.cs" />
     <Compile Include="MessageHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -110,6 +111,10 @@
       <Project>{3dfb3fbb-5e24-4942-8e30-83e99fed2d33}</Project>
       <Name>EliteJoystick.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KeyboardMapping\KeyboardMapping.csproj">
+      <Project>{3e61669a-95ed-4564-883d-5b33c4dcce8b}</Project>
+      <Name>KeyboardMapping</Name>
+    </ProjectReference>
     <ProjectReference Include="..\vJoyMapping\vJoyMapping.csproj">
       <Project>{57d363bb-fbf9-4781-9ca8-2f3b8993ac74}</Project>
       <Name>vJoyMapping</Name>
@@ -137,7 +142,7 @@
       <Version>2.0.8</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Reactive">
       <Version>4.2.0</Version>

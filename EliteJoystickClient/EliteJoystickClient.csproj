@@ -55,13 +55,13 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChromeController\ChromeController.csproj">
-      <Project>{8deb715d-8adb-44dc-b985-033565dc4c3c}</Project>
-      <Name>ChromeController</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Communication\CommonCommunication.csproj">
       <Project>{eaa556af-5da8-4c20-8511-5d78d04786d0}</Project>
       <Name>CommonCommunication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GoogleChrome\GoogleChrome.csproj">
+      <Project>{06cc1e29-5828-40d3-b1c9-7aea29ac5640}</Project>
+      <Name>GoogleChrome</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

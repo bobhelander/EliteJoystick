@@ -1,4 +1,5 @@
-﻿using EliteJoystick.Common.EliteGame;
+﻿using EliteAPI;
+using EliteJoystick.Common.EliteGame;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,39 +9,34 @@ using System.Text;
 
 namespace EliteGameStatus
 {
-    public class Status : IObservable<GameStatus>
+    public class Status : IObservable<EliteAPI.Events.StatusEvent>
     {
-        private List<IObserver<GameStatus>> observers = new List<IObserver<GameStatus>>();
+        private List<IObserver<EliteAPI.Events.StatusEvent>> observers = new List<IObserver<EliteAPI.Events.StatusEvent>>();
 
-        private IDisposable Handler { get; set; }
+        public EliteDangerousAPI EliteAPI { get; }
 
         public Status()
         {
-            Handler = new StatusWatcher().Changed.Subscribe(x => Process(x, observers));
+            EliteAPI = new EliteDangerousAPI();
+            EliteAPI.Start();
+            EliteAPI.Events.AllEvent += Events_AllEvent;
         }
 
-        private static void Process(FileSystemEventArgs e, List<IObserver<GameStatus>> observers)
+        private static void Process(EliteAPI.Events.StatusEvent e, List<IObserver<EliteAPI.Events.StatusEvent>> observers)
         {
-            var fileContents = string.Empty;
+            foreach (var observer in observers)
+                observer.OnNext(e);
+        }
 
-            using (var stream = File.Open(e.FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        private void Events_AllEvent(object sender, dynamic e)
+        {
+            if (e is EliteAPI.Events.StatusEvent)
             {
-                using (var textReader = new StreamReader(stream))
-                {
-                    fileContents = textReader.ReadToEnd();
-                }
-            }
-
-            if (false == string.IsNullOrEmpty(fileContents))
-            {
-                var updatedStatus = JsonConvert.DeserializeObject<GameStatus>(fileContents);
-
-                foreach (var observer in observers)
-                    observer.OnNext(updatedStatus);
+                Process(e, observers);
             }
         }
 
-        public IDisposable Subscribe(IObserver<GameStatus> observer)
+        public IDisposable Subscribe(IObserver<EliteAPI.Events.StatusEvent> observer)
         {
             lock (observers)
             {
@@ -53,10 +49,10 @@ namespace EliteGameStatus
 
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<GameStatus>> _observers;
-            private IObserver<GameStatus> _observer;
+            private List<IObserver<EliteAPI.Events.StatusEvent>> _observers;
+            private IObserver<EliteAPI.Events.StatusEvent> _observer;
 
-            public Unsubscriber(List<IObserver<GameStatus>> observers, IObserver<GameStatus> observer)
+            public Unsubscriber(List<IObserver<EliteAPI.Events.StatusEvent>> observers, IObserver<EliteAPI.Events.StatusEvent> observer)
             {
                 this._observers = observers;
                 this._observer = observer;

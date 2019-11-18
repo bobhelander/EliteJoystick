@@ -14,25 +14,29 @@ using vJoyMapping.Common;
 using EliteJoystick.Common;
 using CommonCommunication;
 using System.Reactive.Linq;
+using Newtonsoft.Json;
 
 namespace EliteJoystickService
 {
     public partial class JoystickService : ServiceBase
     {
-        private static readonly log4net.ILog log = 
+        private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private EliteVirtualJoysticks eliteVirtualJoysticks = null;
         private ArduinoCommunication.Arduino arduino = null;
         private CommonCommunication.Server server = null;
+        private CommonCommunication.Server serverKeyboard = null;
         private CommonCommunication.Client client = null;
         private Settings settings;
         private MessageHandler messageHandler = null;
         private Task IpcProcessingTask;
+        private Task IpcProcessingTask2;
         private List<Controller> Controllers { get; set; } = new List<Controller>();
         private IDisposable virtualControllerUpdater = null;
         private GameService GameService { get; } = new GameService();
         private EliteSharedState SharedState { get; } = new EliteSharedState();
+        private KeyboardMapping.KeyboardController KeyboardController { get; } = new KeyboardMapping.KeyboardController();
 
         public JoystickService()
         {
@@ -180,6 +184,19 @@ namespace EliteJoystickService
 
                 Controllers.Add(bbi32);
 
+                var keyboard = new KeyboardMapping.Controller
+                {
+                    Arduino = arduino,
+                    Name = "Keypad",
+                    SharedState = SharedState,
+                    Settings = settings,
+                    VirtualJoysticks = eliteVirtualJoysticks
+                };
+
+                keyboard.Initialize(KeyboardController, GameService);
+
+                Controllers.Add(keyboard);
+
                 // State Handlers
                 var subscription = SharedState.GearChanged.Subscribe(
                     _ => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
@@ -239,6 +256,13 @@ namespace EliteJoystickService
             ConnectArduino();
         }
 
+        private void KeyPress(string data)
+        {
+            log.Debug($"Keypress: {data}");
+            var message = JsonConvert.DeserializeObject<EliteJoystick.Common.Messages.KeyboardMessage>(data);
+            KeyboardController.Notify(message);
+        }
+
         private void ClientActions_ClientAction(object sender, ClientActions.ClientEventArgs e)
         {
             Task.Run(() => client.SendMessageAsync(e.Message))
@@ -249,8 +273,13 @@ namespace EliteJoystickService
         {
             log.Debug("Starting IPC services");
             server = new CommonCommunication.Server { ContinueListening = true };
+            serverKeyboard = new CommonCommunication.Server { ContinueListening = true };
 
             IpcProcessingTask = Task.Factory.StartNew(() => server.StartListening("elite_joystick", this.ReceiveMessage),
+                CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+                .ContinueWith(t => log.Error($"IPC Service Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
+
+            IpcProcessingTask2 = Task.Factory.StartNew(() => serverKeyboard.StartListening("elite_keyboard", this.ReceiveMessage),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
                 .ContinueWith(t => log.Error($"IPC Service Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
         }
@@ -289,6 +318,7 @@ namespace EliteJoystickService
                     ConnectArduino = () => ConnectArduino(),
                     DisconnectArduino = () => DisconnectArduino(),
                     ReconnectArduino = () => ReconnectArduino(),
+                    KeyPress = (string data) => KeyPress(data),
                 };
 
                 StartIpcServer();
@@ -302,6 +332,7 @@ namespace EliteJoystickService
         private void StopService()
         {
             server.ContinueListening = false;
+            serverKeyboard.ContinueListening = false;
             settings.Save();
             eliteVirtualJoysticks?.Release();
             DisconnectArduino();

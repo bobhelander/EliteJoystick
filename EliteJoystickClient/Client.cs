@@ -16,7 +16,7 @@ namespace EliteJoystickClient
         public string Name { get; set; }
         public CommonCommunication.Server Server { get; set; }
         public MessageHandler MessageHandler { get; set; }
-        public ChromeController.Chrome Chrome { get; set; }
+        public GoogleChrome.Chrome Chrome { get; set; }
         private Task ServerListeningTask { get; set; }
 
         public async Task Initialize()
@@ -42,7 +42,18 @@ namespace EliteJoystickClient
 
             await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
 
-            Chrome = new ChromeController.Chrome("http://localhost:9222");
+            Chrome = new GoogleChrome.Chrome("http://localhost:9222");
+        }
+
+        public async Task Shutdown()
+        {
+            await DisconnectJoysticks();
+            await DisconnectArduino();
+
+            await Task.Delay(500);
+
+            if (null != Server)
+                Server.ContinueListening = false;
         }
 
         public async Task HandleCommand(string command, Dictionary<string, string> environmentVars)
@@ -77,6 +88,13 @@ namespace EliteJoystickClient
         public async Task DisconnectArduino() =>
             await MessageHandler.Client.SendMessageAsync(
                 JsonConvert.SerializeObject(new CommonCommunication.Message { Type = "disconnect_arduino" })).ConfigureAwait(false);
+
+        public async Task SendKeyPress(string data) =>
+            await MessageHandler.Client.SendMessageAsync(
+                JsonConvert.SerializeObject(new CommonCommunication.Message {
+                    Type = "keypress",
+                    Data = data
+                })).ConfigureAwait(false);
 
         public async Task PasteClipboard()
         {

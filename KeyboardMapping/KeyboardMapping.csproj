@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="TextCopy" Version="1.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BrowserMapping\BrowserMapping.csproj" />
+    <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
+    <ProjectReference Include="..\GoogleChrome\GoogleChrome.csproj" />
+    <ProjectReference Include="..\vJoyMapping\vJoyMapping.csproj" />
+  </ItemGroup>
+
+</Project>

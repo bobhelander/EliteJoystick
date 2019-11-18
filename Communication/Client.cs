@@ -32,6 +32,13 @@ namespace CommonCommunication
             }
         }
 
+        public bool IsConnected()
+        {
+            if (client != null)
+                return client.IsConnected;
+            return false;
+        }
+
         public async Task SendMessageAsync(string message)
         {
             try

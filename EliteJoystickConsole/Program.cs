@@ -1,5 +1,4 @@
-﻿using ChromeController;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ namespace EliteJoystickConsole
         {
             if (false)
             {
-                var chrome = new Chrome("http://localhost:9222");
+                var chrome = new GoogleChrome.Chrome("http://localhost:9222");
 
                 foreach (var session in chrome.GetAvailableSessions())
                 {
