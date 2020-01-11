@@ -22,19 +22,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             // Camera On/Off
             if (Reactive.ButtonPressedOrReleased(value, button22))
             {
-                if (controller.SharedState.CameraActive)
-                {
-                    // Quit Camera
-                    controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraDisabled, 150);
-                    log.Debug("Camera Disabled");
-                }
-                else
-                {
-                    // Start Camera
-                    controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
-                    log.Debug("Camera Enabled");
-                }
-                controller.SharedState.CameraActive = !controller.SharedState.CameraActive;
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraDisabled, 150);
             }
 
             // Momentary Camera On/Off

@@ -18,8 +18,15 @@ namespace EliteGameStatus
         public Status()
         {
             EliteAPI = new EliteDangerousAPI();
-            EliteAPI.Start();
-            EliteAPI.Events.AllEvent += Events_AllEvent;
+            try
+            {
+                EliteAPI.Start();
+                EliteAPI.Events.AllEvent += Events_AllEvent;
+            }
+            catch(Exception ex)
+            {
+                ;
+            }
         }
 
         private static void Process(EliteAPI.Events.StatusEvent e, List<IObserver<EliteAPI.Events.StatusEvent>> observers)

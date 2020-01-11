@@ -27,6 +27,14 @@ namespace EliteJoystick.Common
         public static uint CameraAdvanceModeToggle = 21;
         public static uint SilentRunningToggle = 22;
         public static uint AlternateReverseToggle = 23;
+        public static uint NextCamera = 24;
+        public static uint LockToVehicalToggle = 25;
+        public static uint LockToWorldToggle = 26;
+        public static uint LockRotationToggle = 27;
+        //public static uint ZoomDecrease = 28;
+        //public static uint ZoomIncrease = 29;
+        //public static uint BlurDecrease = 30;
+        //public static uint BlurIncrease = 31;
 
         // Combined Joystick (StickAndPedals)
         public static uint ForceFeedbackButtonMask = 0xFF;
@@ -104,7 +112,7 @@ namespace EliteJoystick.Common
         public static uint BBI32Button8 = 28;
         public static uint BBI32Button9 = 29;
         public static uint BBI32Button10 = 30;
-        public static uint BBI32Button11 = 31;
+        public static uint BBI32Button11 = 31;  // Nightvision
         public static uint BBI32Button12 = 32;
     }
 }

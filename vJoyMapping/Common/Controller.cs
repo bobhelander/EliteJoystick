@@ -72,8 +72,18 @@ namespace vJoyMapping.Common
             await Task.Run(async () => await Arduino.TypeFromClipboard().ConfigureAwait(false))
              .ContinueWith(t => log.Error($"TypeFromClipboard Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
 
+        /// <summary>
+        /// Press keyboard keys. Modifier array are the keys to press first and then the key is pressed.  
+        /// https://www.arduino.cc/en/Reference/KeyboardModifiers
+        /// </summary>
+        /// <param name="modifier"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public async Task SendKeyCombo(byte[] modifier, byte key) =>
-            await Task.Run(async () => await Arduino.KeyCombo(modifier, key).ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false))
+            await Task.Run(async () => 
+                await Arduino.KeyCombo(modifier, key)
+                    .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted)
+                .ConfigureAwait(false))
             .ConfigureAwait(false);
 
         #endregion
@@ -87,11 +97,11 @@ namespace vJoyMapping.Common
 
             Task.Run(async () =>
             {
-                VirtualJoysticks.SetJoystickButton(true, 27, modJoyId);
+                //VirtualJoysticks.SetJoystickButton(true, 27, modJoyId);
                 VirtualJoysticks.SetJoystickButton(true, vButton, joyId);
                 await Task.Delay(delay).ConfigureAwait(false);
                 VirtualJoysticks.SetJoystickButton(false, vButton, joyId);
-                VirtualJoysticks.SetJoystickButton(false, 27, modJoyId);
+                //VirtualJoysticks.SetJoystickButton(false, 27, modJoyId);
             }).ContinueWith(t =>
             {
                 if (t.IsCanceled) log.Error($"CallActivateButton Canceled");

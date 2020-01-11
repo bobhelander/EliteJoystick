@@ -16,6 +16,12 @@ namespace EliteJoystick.Common
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SetForegroundWindow(IntPtr hwnd);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, int wParam, IntPtr lParam);
+
         [DllImport("vJoyInstall.dll", EntryPoint = "refresh_vjoy_specific")]
         private static extern void refresh_vjoy_specific(ushort Revision);
 
@@ -62,6 +68,40 @@ namespace EliteJoystick.Common
                 foreach (var p in Process.GetProcesses().Where(x => x.ProcessName == name))
                 {
                     p.Kill();
+                }
+            }).ConfigureAwait(false);
+        }
+
+        public static bool ProcessRunning(string name)
+        {
+            var processes = Process.GetProcesses().ToList();
+            return processes.Any(x => x.ProcessName == name);
+        }
+
+        private const int WM_APPCOMMAND = 0x319;
+        private const int WM_KEYDOWN = 0x100;
+        private const int WM_KEYUP = 0x101;
+
+        public static void SendVKeyToProcess(string name, int vkey)
+        {
+            var processes = Process.GetProcesses().ToList();
+            foreach (var p in Process.GetProcesses().Where(x => x.ProcessName == name && x.MainWindowHandle.ToInt64() != 0))
+            {
+                SendMessage(p.MainWindowHandle, WM_APPCOMMAND, p.MainWindowHandle, (IntPtr)((int)vkey << 16));
+                return;
+            }
+        }
+
+        public static async Task SendKeyToProcess(string name, int key)
+        {
+            await Task.Run(() =>
+            {
+                foreach (var p in Process.GetProcesses().Where(x => x.ProcessName == name && x.MainWindowHandle.ToInt64() != 0))
+                {
+                    SendMessage(p.MainWindowHandle, WM_KEYDOWN, key, IntPtr.Zero);
+                    System.Threading.Thread.Sleep(50);
+                    SendMessage(p.MainWindowHandle, WM_KEYUP, key, IntPtr.Zero);
+                    return;
                 }
             }).ConfigureAwait(false);
         }

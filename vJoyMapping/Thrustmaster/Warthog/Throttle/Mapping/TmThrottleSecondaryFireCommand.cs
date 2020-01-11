@@ -23,11 +23,17 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 controller.SharedState.CurrentMode == EliteSharedState.Mode.Mining))
             {
                 controller.SharedState.SecondaryFireActive = true;
+                controller.DepressKey(0x82);  // Left Alt
+                controller.DepressKey(0x84);  // Right Ctrl
+                controller.DepressKey(0x4C);  // L
                 controller.SetJoystickButton(true, MappedButtons.SecondaryFire, vJoyTypes.Virtual);
             }
             else if (controller.SharedState.SecondaryFireActive)
             {
                 controller.SharedState.SecondaryFireActive = false;
+                controller.ReleaseKey(0x4C);  // L
+                controller.ReleaseKey(0x84);  // Right Ctrl
+                controller.ReleaseKey(0x82);  // Left Alt
                 controller.SetJoystickButton(false, MappedButtons.SecondaryFire, vJoyTypes.Virtual);
             }
         }

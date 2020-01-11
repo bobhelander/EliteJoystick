@@ -42,10 +42,15 @@ namespace EddiJoystickResponder
                 EliteEventHandlers.DockedEvent(Client, dockedEvent);
             }
 
-            if (theEvent is JumpedEvent jumpedEvent)
+            if (theEvent is FSDEngagedEvent fsdEvent)
             {
-                EliteEventHandlers.JumpedEvent(Client, jumpedEvent);
+                EliteEventHandlers.FsdEvent(Client, fsdEvent);
             }
+
+            //if (theEvent is JumpedEvent jumpedEvent)
+            //{
+            //    EliteEventHandlers.JumpedEvent(Client, jumpedEvent);
+            //}
         }
 
         public string LocalizedResponderName()

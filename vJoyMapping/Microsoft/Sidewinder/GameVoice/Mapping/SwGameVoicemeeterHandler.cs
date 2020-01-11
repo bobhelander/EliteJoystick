@@ -21,6 +21,9 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
             // Turn Off Command Button
             if ((value.Current.Buttons & (byte)Button.CommandButton) == (byte)Button.CommandButton)
             {
+                // Send "Shut Up" to Voice Attack  F7
+                System.Threading.Tasks.Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0xC8).ConfigureAwait(false));
+
                 // Turn it off.  Previous state is stored in the device
                 controller.SetLights((byte)0);
                 return;
