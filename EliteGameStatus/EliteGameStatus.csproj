@@ -5,13 +5,36 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EliteAPI" Version="2.2.14.870" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="EliteAPI" Version="2.2.6.862" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.CodeDom" Version="4.7.0" />
     <PackageReference Include="System.Reactive" Version="4.1.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BrowserMapping\BrowserMapping.csproj" />
+    <ProjectReference Include="..\EdsmConnector\EdsmConnector.csproj" />
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Exploration\Explore.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Explore.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Exploration\Explore.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Explore.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

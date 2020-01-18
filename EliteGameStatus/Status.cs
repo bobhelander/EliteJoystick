@@ -9,9 +9,12 @@ using System.Text;
 
 namespace EliteGameStatus
 {
-    public class Status : IObservable<EliteAPI.Events.StatusEvent>
+    public class Status : IObservable<EliteAPI.Events.IEvent>
     {
-        private List<IObserver<EliteAPI.Events.StatusEvent>> observers = new List<IObserver<EliteAPI.Events.StatusEvent>>();
+        private static readonly log4net.ILog log =
+           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private List<IObserver<EliteAPI.Events.IEvent>> observers = new List<IObserver<EliteAPI.Events.IEvent>>();
 
         public EliteDangerousAPI EliteAPI { get; }
 
@@ -22,6 +25,10 @@ namespace EliteGameStatus
             {
                 EliteAPI.Start();
                 EliteAPI.Events.AllEvent += Events_AllEvent;
+
+                EliteAPI.Events.StartJumpEvent += Events_StartJumpEvent;
+                EliteAPI.Events.FSSAllBodiesFoundEvent += Events_FSSAllBodiesFoundEvent;
+                EliteAPI.Events.ScanEvent += Events_ScanEvent;
             }
             catch(Exception ex)
             {
@@ -29,7 +36,31 @@ namespace EliteGameStatus
             }
         }
 
-        private static void Process(EliteAPI.Events.StatusEvent e, List<IObserver<EliteAPI.Events.StatusEvent>> observers)
+        private void Events_ScanEvent(object sender, EliteAPI.Events.ScanInfo e)
+        {
+            log.Debug($"ScanEvent Detected");
+
+            foreach (var observer in observers)
+                observer.OnNext(e);
+        }
+
+        private void Events_FSSAllBodiesFoundEvent(object sender, EliteAPI.Events.FSSAllBodiesFoundInfo e)
+        {
+            log.Debug($"AllBodiesFound Detected");
+
+            foreach (var observer in observers)
+                observer.OnNext(e);
+        }
+
+        private void Events_StartJumpEvent(object sender, EliteAPI.Events.StartJumpInfo e)
+        {
+            log.Debug($"JumpEvent Detected");
+
+            foreach (var observer in observers)
+                observer.OnNext(e);
+        }
+
+        private static void Process(EliteAPI.Events.IEvent e, List<IObserver<EliteAPI.Events.IEvent>> observers)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);
@@ -37,13 +68,10 @@ namespace EliteGameStatus
 
         private void Events_AllEvent(object sender, dynamic e)
         {
-            if (e is EliteAPI.Events.StatusEvent)
-            {
-                Process(e, observers);
-            }
+            Process(e, observers);
         }
 
-        public IDisposable Subscribe(IObserver<EliteAPI.Events.StatusEvent> observer)
+        public IDisposable Subscribe(IObserver<EliteAPI.Events.IEvent> observer)
         {
             lock (observers)
             {
@@ -56,10 +84,10 @@ namespace EliteGameStatus
 
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<EliteAPI.Events.StatusEvent>> _observers;
-            private IObserver<EliteAPI.Events.StatusEvent> _observer;
+            private List<IObserver<EliteAPI.Events.IEvent>> _observers;
+            private IObserver<EliteAPI.Events.IEvent> _observer;
 
-            public Unsubscriber(List<IObserver<EliteAPI.Events.StatusEvent>> observers, IObserver<EliteAPI.Events.StatusEvent> observer)
+            public Unsubscriber(List<IObserver<EliteAPI.Events.IEvent>> observers, IObserver<EliteAPI.Events.IEvent> observer)
             {
                 this._observers = observers;
                 this._observer = observer;

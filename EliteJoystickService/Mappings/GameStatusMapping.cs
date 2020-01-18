@@ -11,9 +11,9 @@ namespace EliteJoystickService.Mappings
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void Process(EliteAPI.Events.StatusEvent statusEvent)
+        public static void Process(EliteAPI.Events.IEvent statusEvent)
         {
-            log.Debug(statusEvent.Event);
+            log.Debug($"{statusEvent.GetType().ToString()}");
         }
     }
 }

@@ -22,27 +22,27 @@ namespace EddiJoystickResponder
         {
             if (actionEvent.target == "Hyperspace")
             {
-                // We have entered a new system
-                StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(actionEvent.system, true);
-                var page = Exploration.EliteActions.OutputValuableSystems(client, starSystem);
+                // We are going to a new system
+                //StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(actionEvent.system, true);
+                //var page = Exploration.EliteActions.OutputValuableSystems(client, starSystem);
 
-                const string local_files_base = "http://127.0.0.1:8080";
-                var httpPage = $"{local_files_base}/{Path.GetFileName(page)}";
+                //const string local_files_base = "http://127.0.0.1:8080";
+                //var httpPage = $"{local_files_base}/{Path.GetFileName(page)}";
 
-                client.Navigate(httpPage);
+                //client.Navigate(httpPage);
             }
         }
 
         public static void JumpedEvent(Client client, JumpedEvent actionEvent)
         {
             // We have entered a new system
-            StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(actionEvent.system, true);
-            var page = Exploration.EliteActions.OutputValuableSystems(client, starSystem);
+            //StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(actionEvent.system, true);
+            //var page = Exploration.EliteActions.OutputValuableSystems(client, starSystem);
 
-            const string local_files_base = "http://127.0.0.1:8080";
-            var httpPage = $"{local_files_base}/{Path.GetFileName(page)}";
+            //const string local_files_base = "http://127.0.0.1:8080";
+            //var httpPage = $"{local_files_base}/{Path.GetFileName(page)}";
 
-            client.Navigate(httpPage);
+            //client.Navigate(httpPage);
         }
 
         public static void EddiAction(Client client, JoystickActionEvent actionEvent, Dictionary<string, string> environmentVars)

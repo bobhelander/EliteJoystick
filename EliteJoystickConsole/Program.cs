@@ -15,6 +15,17 @@ namespace EliteJoystickConsole
 
         public static void Main(string[] args)
         {
+            var testing = log4net.LogManager.GetCurrentLoggers();
+            if (true)
+            {
+                //var test = EdsmConnector.Connector.GetSystem("Maia").Result;
+                //var test = EdsmConnector.Connector.GetSystem("Sol").Result;
+                var test = EdsmConnector.Connector.GetSystem("Hypoae Aewsy CG-F d11-4").Result;
+
+                EliteGameStatus.Exploration.EliteActions.OutputValuableSystems(test);
+
+                var test2 = test.name;
+            }
             if (false)
             {
                 var chrome = new GoogleChrome.Chrome("http://localhost:9222");
@@ -43,10 +54,10 @@ namespace EliteJoystickConsole
                 var uri = "http://localhost:8080/explore.html";
 
                 chrome.ActivateTab(sessions[0]);
-                chrome.NavigateTo(sessions[0], "http://eddb.io");
-                //chrome.NavigateTo(sessions[0], uri);
+                //chrome.NavigateTo(sessions[0], "http://eddb.io");
+                chrome.NavigateTo(sessions[0], uri);
             }
-            if (true)
+            if (false)
             {
                 var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
 

@@ -8,6 +8,11 @@ namespace BrowserMapping
 {
     static public class Actions
     {
+        public static void OpenPage(string url)
+        {
+            Controller.Navigate(url);
+        }
+
         public static void BestSellCommodity(string commodity = "350") // Void Opals
         {
             // https://eddb.io/commodity/350

@@ -15,6 +15,7 @@ using EliteJoystick.Common;
 using CommonCommunication;
 using System.Reactive.Linq;
 using Newtonsoft.Json;
+using EliteAPI;
 
 namespace EliteJoystickService
 {

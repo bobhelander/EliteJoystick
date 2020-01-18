@@ -22,6 +22,8 @@ namespace EliteJoystickService
         {
             Disposables = new List<IDisposable> {
                 GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x))
             };
         }
 

@@ -68,7 +68,7 @@ namespace GoogleChrome
                         where r.devtoolsFrontendUrl != null
                         select r).ToList();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ;
             }
