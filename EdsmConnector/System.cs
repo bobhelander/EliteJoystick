@@ -5,8 +5,8 @@ namespace EdsmConnector
 {
     public class System
     {
-        public int id { get; set; }
-        public long id64 { get; set; }
+        public int? id { get; set; }
+        public long? id64 { get; set; }
         public string name { get; set; }
         public string url { get; set; }
         public int? bodyCount { get; set; }
@@ -15,9 +15,9 @@ namespace EdsmConnector
 
     public class Body
     {
-        public int id { get; set; }
-        public long id64 { get; set; }
-        public int bodyId { get; set; }
+        public int? id { get; set; }
+        public long? id64 { get; set; }
+        public int? bodyId { get; set; }
         public string name { get; set; }
         public Discovery discovery { get; set; }
         [JsonProperty("type")]
@@ -129,8 +129,8 @@ namespace EdsmConnector
         public string name { get; set; }
         public string type { get; set; }
         public long? mass { get; set; }
-        public int? innerRadius { get; set; }
-        public int? outerRadius { get; set; }
+        public decimal? innerRadius { get; set; }
+        public decimal? outerRadius { get; set; }
     }
 
     public class Ring
@@ -138,7 +138,7 @@ namespace EdsmConnector
         public string name { get; set; }
         public string type { get; set; }
         public long? mass { get; set; }
-        public int? innerRadius { get; set; }
-        public int? outerRadius { get; set; }
+        public decimal? innerRadius { get; set; }
+        public decimal? outerRadius { get; set; }
     }
 }

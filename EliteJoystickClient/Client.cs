@@ -47,12 +47,12 @@ namespace EliteJoystickClient
 
         public async Task Shutdown()
         {
-            await DisconnectJoysticks();
-            await DisconnectArduino();
+            await DisconnectJoysticks().ConfigureAwait(false);
+            await DisconnectArduino().ConfigureAwait(false);
 
-            await Task.Delay(500);
+            await Task.Delay(500).ConfigureAwait(false);
 
-            if (null != Server)
+            if (Server != null)
                 Server.ContinueListening = false;
         }
 
@@ -126,7 +126,7 @@ namespace EliteJoystickClient
 
         public void Scroll(int distance)
         {
-            if (null != Chrome.CurrentSession)
+            if (Chrome.CurrentSession != null)
             {
                 Chrome.Scroll(Chrome.CurrentSession, distance);
             }

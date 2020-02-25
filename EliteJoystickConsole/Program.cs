@@ -16,7 +16,7 @@ namespace EliteJoystickConsole
         public static void Main(string[] args)
         {
             var testing = log4net.LogManager.GetCurrentLoggers();
-            if (true)
+            if (false)
             {
                 //var test = EdsmConnector.Connector.GetSystem("Maia").Result;
                 //var test = EdsmConnector.Connector.GetSystem("Sol").Result;
@@ -57,7 +57,7 @@ namespace EliteJoystickConsole
                 //chrome.NavigateTo(sessions[0], "http://eddb.io");
                 chrome.NavigateTo(sessions[0], uri);
             }
-            if (false)
+            if (true)
             {
                 var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
 

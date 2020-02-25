@@ -19,7 +19,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (controller.TestButtonDown(value.Current.Buttons, (uint)BBI32Button.Button1))
             {
                 // If in Fixed Camera Mode
-                ProcessFixed(value, controller);
+                ProcessFixedCamera(value, controller);
 
             }
             else if (controller.TestButtonDown(value.Current.Buttons, (uint)BBI32Button.Button2))
@@ -67,10 +67,15 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
         public static void ProcessNorm(States value, Controller controller)
         {
             // Camera Quit
-            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button1) ||
-                Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button2))
+            if (Reactive.ButtonReleased(value, (uint)BBI32Button.Button1))
             {
-                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraDisabled, 150);
+                // Quit Fixed Camera
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
+            }
+            if (Reactive.ButtonReleased(value, (uint)BBI32Button.Button2))
+            {
+                // Quit Free Camera
+                QuitFreeCamera(controller);
             }
 
             // Orbit Lines Toggle On/Off
@@ -106,10 +111,10 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             }
         }
 
-        public static void ProcessFixed(States value, Controller controller)
+        public static void ProcessFixedCamera(States value, Controller controller)
         {
             // Camera On
-            if (Reactive.ButtonPressedOrReleased(value, (uint)BBI32Button.Button1))
+            if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button1))
             {
                 // Start Camera
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
@@ -120,12 +125,13 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             {
                 // J Key
                 Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0x4A).ConfigureAwait(false));
-            }
+            }            
 
-            // Ship or Camera Control
+            // Vanity Camera Next
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button11))
             {
-                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LockToVehicalToggle, 150);
+                // Vanity Camera Next
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.NextCamera, 150);
             }
         }
 
@@ -151,8 +157,8 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             // Camera HUD Toggle On/Off
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button9))
             {
-                // H Key
-                Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0x48).ConfigureAwait(false));
+                // J Key
+                Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0x4A).ConfigureAwait(false));
             }
 
             // World Lock Toggle
@@ -161,11 +167,10 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LockToWorldToggle, 150);
             }
 
-            // Vanity Camera Next
+            // Ship or Camera Control
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button11))
             {
-                // Vanity Camera Next
-                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.NextCamera, 150);
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LockToVehicalToggle, 150);
             }
         }
 
@@ -182,6 +187,26 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
                 // Toggle Free Camera
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.FreeCameraToggle, 150);
 
+            }).ContinueWith(t =>
+            {
+                if (t.IsCanceled) log.Error($"StartFreeCamera Canceled");
+                else if (t.IsFaulted) log.Error($"StartFreeCamera Exception: {t.Exception}");
+                else log.Debug($"StartFreeCamera");
+            });
+        }
+
+        private static void QuitFreeCamera(Controller controller)
+        {
+            Task.Run(async () =>
+            {
+                // Quit Free Camera
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraDisabled, 150);
+
+                // Wait for it
+                await Task.Delay(800).ConfigureAwait(false);
+
+                // Toggle Camera
+                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
             }).ContinueWith(t =>
             {
                 if (t.IsCanceled) log.Error($"StartFreeCamera Canceled");
