@@ -18,9 +18,14 @@ namespace vJoyMapping.CHProducts.ProPedals.Mapping
             // z = -512 to 511
             // z = 0 to 255
 
+            // Z is off by about -13 to -15
+            var zRaw = current.R;
+            if (zRaw > 108 && zRaw < 128)
+                zRaw = 128;
+
             int y = current.Y * 128;
             int x = current.X * 128;
-            int z = current.R * 128;
+            int z = zRaw * 128;
 
             // Add X an Y together to use the toe brakes to go up and down
 

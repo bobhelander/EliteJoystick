@@ -12,7 +12,7 @@ namespace EliteJoystick.Common
     /// <summary>
     /// Holds the shared state values for all the controllers.   
     /// </summary>
-    public class EliteSharedState
+    public class EliteSharedState : IDisposable
     {
         #region Normal Properties
 
@@ -62,6 +62,11 @@ namespace EliteJoystick.Common
         public IObservable<bool> ProgramModeChanged { get { return this.programModeChanged.AsObservable(); } }
 
         public void ChangeProgramMode(bool on) { ProgramIdsMode = on; this.programModeChanged.OnNext(ProgramIdsMode); }
+
+        public void Dispose()
+        {
+            
+        }
 
         #endregion
 

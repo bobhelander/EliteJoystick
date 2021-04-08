@@ -38,6 +38,7 @@ namespace EliteJoystickService
         private GameService GameService { get; } = new GameService();
         private EliteSharedState SharedState { get; } = new EliteSharedState();
         private KeyboardMapping.KeyboardController KeyboardController { get; } = new KeyboardMapping.KeyboardController();
+        private IDisposable voiceMeeterDisposable;
 
         public JoystickService()
         {
@@ -92,6 +93,9 @@ namespace EliteJoystickService
             EliteVirtualJoysticks eliteVirtualJoysticks)
         {
             log.Debug("Connecting to Controllers");
+
+            // Connect to Voicemeeter
+            voiceMeeterDisposable = VoiceMeeter.Remote.Initialize(Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result;
 
             try
             {
@@ -155,20 +159,41 @@ namespace EliteJoystickService
 
                 Controllers.Add(warthog);
 
-                var pedals = new vJoyMapping.CHProducts.ProPedals.Controller
+                var altProductId = false;
+
+                retry:
+
+                try
                 {
-                    Arduino = arduino,
-                    Name = "Pro Pedals",
-                    SharedState = SharedState,
-                    Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
-                };
+                    var pedals = new vJoyMapping.CHProducts.ProPedals.Controller
+                    {
+                        Arduino = arduino,
+                        Name = "Pro Pedals",
+                        SharedState = SharedState,
+                        Settings = settings,
+                        VirtualJoysticks = eliteVirtualJoysticks
+                    };
 
-                pedals.Initialize(Controller.GetDevicePath(
-                    Usb.GameControllers.CHProducts.ProPedals.Joystick.VendorId,
-                    Usb.GameControllers.CHProducts.ProPedals.Joystick.ProductId));
+                    var productId = altProductId ? 
+                        Usb.GameControllers.CHProducts.ProPedals.Joystick.ProductId : 
+                        Usb.GameControllers.CHProducts.ProPedals.Joystick.AltProductId;
 
-                Controllers.Add(pedals);
+                    pedals.Initialize(Controller.GetDevicePath(
+                        Usb.GameControllers.CHProducts.ProPedals.Joystick.VendorId,
+                        productId));
+
+                    Controllers.Add(pedals);
+                }
+                catch(Exception _)
+                {
+                    if (altProductId == false)
+                    {
+                        altProductId = true;
+                        goto retry;
+                    }
+
+                    throw;
+                }
 
                 var bbi32 = new vJoyMapping.LeoBodnar.BBI32.Controller
                 {
@@ -185,6 +210,21 @@ namespace EliteJoystickService
 
                 Controllers.Add(bbi32);
 
+                var ddjsb2 = new vJoyMapping.Pioneer.ddjsb2.Controller
+                {
+                    Arduino = arduino,
+                    Name = "BBI32",
+                    SharedState = SharedState,
+                    Settings = settings,
+                    VirtualJoysticks = eliteVirtualJoysticks,
+                    GameService = GameService
+                };
+
+                ddjsb2.Initialize();
+
+                Controllers.Add(ddjsb2);
+
+                /*
                 var keyboard = new KeyboardMapping.Controller
                 {
                     Arduino = arduino,
@@ -197,6 +237,7 @@ namespace EliteJoystickService
                 keyboard.Initialize(KeyboardController, GameService);
 
                 Controllers.Add(keyboard);
+                */
 
                 // State Handlers
                 var subscription = SharedState.GearChanged.Subscribe(
@@ -229,6 +270,7 @@ namespace EliteJoystickService
             {
                 eliteVirtualJoysticks?.Release();
                 GameService?.Dispose();
+                voiceMeeterDisposable?.Dispose();
             }
             catch (Exception ex)
             {
@@ -236,6 +278,7 @@ namespace EliteJoystickService
             }
 
             eliteVirtualJoysticks = null;
+            voiceMeeterDisposable = null;
         }
 
         private void ConnectArduino()
@@ -335,6 +378,7 @@ namespace EliteJoystickService
             server.ContinueListening = false;
             serverKeyboard.ContinueListening = false;
             settings.Save();
+            StopControllers();
             eliteVirtualJoysticks?.Release();
             DisconnectArduino();
         }

@@ -68,7 +68,8 @@ namespace EliteGameStatus
 
         private void Events_AllEvent(object sender, dynamic e)
         {
-            Process(e, observers);
+            if (e is EliteAPI.Events.IEvent)
+                Process(e, observers);
         }
 
         public IDisposable Subscribe(IObserver<EliteAPI.Events.IEvent> observer)

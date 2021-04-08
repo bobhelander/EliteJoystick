@@ -63,7 +63,6 @@ namespace EliteJoystickConsole
 
                 client.Initialize().Wait();
 
-                Console.ReadKey();
                 client.ConnectArduino().Wait();
                 Console.WriteLine("connected");
                 //Console.ReadKey();
@@ -79,7 +78,11 @@ namespace EliteJoystickConsole
 //                var started = Voicemeeter.Remote.Initialize( Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result;
   //              VoiceMeeter.Remote.SetParameter("Bus[1].Mute", 1);
             }
-            Console.ReadKey();
+
+            while (true)
+            {
+                System.Threading.Thread.Sleep(100);
+            }
         }
     }
 }

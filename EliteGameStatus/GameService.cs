@@ -12,16 +12,13 @@ namespace EliteJoystickService
 {
     public class GameService : IDisposable, IEliteGameStatus
     {
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private List<IDisposable> Disposables { get; set; }
-        private Status GameStatusObservable { get; } = new Status();
+        public Status GameStatusObservable { get; } = new Status();
 
         public void Initialize()
         {
             Disposables = new List<IDisposable> {
-                GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
+                //GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
                 GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x)),
                 GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x))
             };
@@ -79,6 +76,5 @@ namespace EliteJoystickService
         public bool Scooping => GameStatusObservable.EliteAPI.Status.Scooping;
 
         #endregion
-
     }
 }

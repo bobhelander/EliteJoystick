@@ -25,6 +25,8 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
             MapLights(joystick);
 
             joystick.Initialize();
+
+            joystick.ReadInputReportAsync().Wait();
         }
 
         public void MapControls(Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick swsc)
