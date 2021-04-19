@@ -17,42 +17,42 @@ namespace KeyboardMapping.Mapping
             if (value.VirutalKey == 49 && value.Flags == 1)
             {
                 var systemName = Actions.GetEdsmSystemRow(1);
-                TextCopy.Clipboard.SetText(systemName);
+                new TextCopy.Clipboard().SetText(systemName);
                 log.Debug($"Selected system: {systemName}");
             }
 
             if (value.VirutalKey == 50 && value.Flags == 1)
             {
                 var systemName = Actions.GetEdsmSystemRow(2);
-                TextCopy.Clipboard.SetText(systemName);
+                new TextCopy.Clipboard().SetText(systemName);
                 log.Debug($"Selected system: {systemName}");
             }
 
             if (value.VirutalKey == 51 && value.Flags == 1)
             {
                 var systemName = Actions.GetEdsmSystemRow(3);
-                TextCopy.Clipboard.SetText(systemName);
+                new TextCopy.Clipboard().SetText(systemName);
                 log.Debug($"Selected system: {systemName}");
             }
 
             if (value.VirutalKey == 52 && value.Flags == 1)
             {
                 var systemName = Actions.GetEdsmSystemRow(4);
-                TextCopy.Clipboard.SetText(systemName);
+                new TextCopy.Clipboard().SetText(systemName);
                 log.Debug($"Selected system: {systemName}");
             }
 
             if (value.VirutalKey == 53 && value.Flags == 1)
             {
                 var systemName = Actions.GetEdsmSystemRow(5);
-                TextCopy.Clipboard.SetText(systemName);
+                new TextCopy.Clipboard().SetText(systemName);
                 log.Debug($"Selected system: {systemName}");
             }
 
             if (value.VirutalKey == 54 && value.Flags == 1)
             {
                 var systemName = Actions.GetEdsmSystemRow(6);
-                TextCopy.Clipboard.SetText(systemName);
+                new TextCopy.Clipboard().SetText(systemName);
                 log.Debug($"Selected system: {systemName}");
             }
         }
