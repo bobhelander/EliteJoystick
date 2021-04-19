@@ -15,16 +15,35 @@ namespace vJoyMapping.CHProducts.ProPedals
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public void Initialize(string devicePath)
+        public void Initialize(string devicePath, bool usingMsDriver)
         {
-            var joystick = new Usb.GameControllers.CHProducts.ProPedals.Joystick(devicePath);
+            if (usingMsDriver)
+            {
+                var joystick = new Usb.GameControllers.CHProducts.ProPedals.JoystickMSDriver(devicePath);
 
-            MapControls(joystick);
+                MapControls(joystick);
 
-            joystick.Initialize();
+                joystick.Initialize();
+            }
+            else
+            {
+                var joystick = new Usb.GameControllers.CHProducts.ProPedals.Joystick(devicePath);
+
+                MapControls(joystick);
+
+                joystick.Initialize();
+            }
         }
 
         public void MapControls(Usb.GameControllers.CHProducts.ProPedals.Joystick proPedals)
+        {
+            // Add in the mappings
+            Disposables = new List<IDisposable> {
+                proPedals.Subscribe(x => ChPedalsXYR.Process(x, this), ex => log.Error($"Exception : {ex}"))
+            };
+        }
+
+        public void MapControls(Usb.GameControllers.CHProducts.ProPedals.JoystickMSDriver proPedals)
         {
             // Add in the mappings
             Disposables = new List<IDisposable> {

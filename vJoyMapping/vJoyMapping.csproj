@@ -16,7 +16,7 @@
   <ItemGroup>
     <PackageReference Include="DDJSB2" Version="1.0.4" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Usb.GameControllers" Version="1.0.12" />
+    <PackageReference Include="Usb.GameControllers" Version="1.0.13" />
     <PackageReference Include="vJoy.Wrapper" Version="1.0.0.5" />
     <PackageReference Include="VoicemeeterRemote" Version="1.0.3" />
   </ItemGroup>

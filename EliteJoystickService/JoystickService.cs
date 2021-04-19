@@ -175,12 +175,12 @@ namespace EliteJoystickService
                     };
 
                     var productId = altProductId ? 
-                        Usb.GameControllers.CHProducts.ProPedals.Joystick.ProductId : 
-                        Usb.GameControllers.CHProducts.ProPedals.Joystick.AltProductId;
+                        Usb.GameControllers.CHProducts.ProPedals.JoystickMSDriver.ProductId :
+                        Usb.GameControllers.CHProducts.ProPedals.Joystick.ProductId;
 
                     pedals.Initialize(Controller.GetDevicePath(
                         Usb.GameControllers.CHProducts.ProPedals.Joystick.VendorId,
-                        productId));
+                        productId), altProductId);
 
                     Controllers.Add(pedals);
                 }
