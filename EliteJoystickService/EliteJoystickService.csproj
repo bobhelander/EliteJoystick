@@ -110,6 +110,10 @@
       <Project>{3dfb3fbb-5e24-4942-8e30-83e99fed2d33}</Project>
       <Name>EliteJoystick.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ForceFeedBackController\ForceFeedBackController.csproj">
+      <Project>{38778405-6003-4f8b-8bdf-74c725bf0fdd}</Project>
+      <Name>ForceFeedBackController</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KeyboardMapping\KeyboardMapping.csproj">
       <Project>{3e61669a-95ed-4564-883d-5b33c4dcce8b}</Project>
       <Name>KeyboardMapping</Name>

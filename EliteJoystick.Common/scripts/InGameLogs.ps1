@@ -1,0 +1,1 @@
+get-content C:\Users\Bob\appdata\Local\EliteJoystick\log\InGame.log -Wait

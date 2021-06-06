@@ -7,7 +7,9 @@ using System.IO;
 namespace EliteJoystick.Common
 {
     /// <summary>
-    /// Allow dynamic changing of the virtual joystick output identifiers 
+    /// Allow dynamic changing of the virtual joystick output identifiers.  With multiple vJoy devices
+    /// games get confused what device number is being fed by the vJoy actions.  This allows the service to map
+    /// the output to the different vJoy devices.
     /// </summary>
     public class vJoyMapper
     {

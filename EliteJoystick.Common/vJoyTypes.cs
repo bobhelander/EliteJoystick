@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace EliteJoystick.Common
 {
     /// <summary>
-    /// List of the different virtual joystick types in use
+    /// List of the different virtual joystick types in use for this service
     /// </summary>
     static public class vJoyTypes
     {

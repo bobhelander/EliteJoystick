@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick.Common
 {
+    /// <summary>
+    /// DLL Import Methods and various other methods
+    /// </summary>
     public static class Utils
     {
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -58,9 +61,19 @@ namespace EliteJoystick.Common
         public static bool Disable(ushort Revision) =>
             disable(Revision);
 
+        /// <summary>
+        /// Start an external process
+        /// </summary>
+        /// <param name="filename">Full path to executable</param>
+        /// <returns></returns>
         public static Process Launch(string filename) =>
             Process.Start(filename);
 
+        /// <summary>
+        /// Kill a runnig process
+        /// </summary>
+        /// <param name="name">Name of the process to kill</param>
+        /// <returns></returns>
         public static async Task KillProcess(string name)
         {
             await Task.Run(() =>
@@ -72,6 +85,11 @@ namespace EliteJoystick.Common
             }).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Return if a process is running
+        /// </summary>
+        /// <param name="name">Name of the process</param>
+        /// <returns></returns>
         public static bool ProcessRunning(string name)
         {
             var processes = Process.GetProcesses().ToList();
@@ -82,6 +100,11 @@ namespace EliteJoystick.Common
         private const int WM_KEYDOWN = 0x100;
         private const int WM_KEYUP = 0x101;
 
+        /// <summary>
+        /// Send a virtual keystroke to a process.
+        /// </summary>
+        /// <param name="name">Name of the process</param>
+        /// <param name="vkey">Key</param>
         public static void SendVKeyToProcess(string name, int vkey)
         {
             var processes = Process.GetProcesses().ToList();
@@ -92,6 +115,12 @@ namespace EliteJoystick.Common
             }
         }
 
+        /// <summary>
+        /// Send a key press and a release to a process. 50 millisecond delay on the release.
+        /// </summary>
+        /// <param name="name">Name of the process</param>
+        /// <param name="key">key</param>
+        /// <returns></returns>
         public static async Task SendKeyToProcess(string name, int key)
         {
             await Task.Run(() =>
@@ -103,6 +132,71 @@ namespace EliteJoystick.Common
                     SendMessage(p.MainWindowHandle, WM_KEYUP, key, IntPtr.Zero);
                     return;
                 }
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Run the script to turn off Oculus's Automatic Spacewarp feature.
+        /// </summary>
+        /// <returns></returns>
+        public static async Task OculusASWOff()
+        {
+            await Task.Run(() =>
+            {
+                var currentPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+
+                const string oculusDebugToolCLI = @"C:\Program Files\Oculus\Support\oculus-diagnostics\OculusDebugToolCLI.exe";
+                const string inputFile = @".\scripts\ASW_OFF.txt";
+
+                var processInfo = new ProcessStartInfo(oculusDebugToolCLI, "-f " + inputFile)
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    WorkingDirectory = currentPath
+                };
+
+                var process = Process.Start(processInfo);
+                process.WaitForExit();
+
+                Console.WriteLine($"ASW output: {process.StandardOutput.ReadToEnd()}");
+                Console.WriteLine($"ASW error: {process.StandardError.ReadToEnd()}");
+                Console.WriteLine($"ASW ExitCode: {process.ExitCode}");
+                process.Close();
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Opens the Explorer Log
+        /// </summary>
+        /// <returns></returns>
+        public static async Task ExplorerLog()
+        {
+            await Task.Run(() =>
+            {
+                var currentPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+
+                const string powershell = "powershell.exe";
+                const string inputFile = @".\scripts\InGameLogs.ps1";
+
+                var processInfo = new ProcessStartInfo(powershell, inputFile)
+                //var processInfo = new ProcessStartInfo(powershell)
+                {
+                    CreateNoWindow = false,
+                    UseShellExecute = false,
+                    RedirectStandardError = false,
+                    RedirectStandardOutput = false,
+                    WorkingDirectory = currentPath
+                };
+
+                var process = Process.Start(processInfo);
+                process.WaitForExit();
+
+                //Console.WriteLine($"PS output: {process.StandardOutput.ReadToEnd()}");
+                //Console.WriteLine($"PS error: {process.StandardError.ReadToEnd()}");
+                //Console.WriteLine($"PS ExitCode: {process.ExitCode}");
+                //process.Close();
             }).ConfigureAwait(false);
         }
     }

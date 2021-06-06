@@ -40,6 +40,12 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
             SetDetentValueVM(ddjsb2, parameter, adjusted);
         }
 
+        public static void EqDialNotifiedVM(PioneerDDJSB2 ddjsb2, string parameter, IState state)
+        {
+            var dial = state.Control as Dial;
+            SetEqValueVM(ddjsb2, parameter, dial.Controls[0].ControlValue);
+        }
+
         public static void SetDetentValueVM(PioneerDDJSB2 ddjsb2, string parameter, byte inputValue)
         {
             // Middle of dial/slider has detent.  
@@ -61,6 +67,28 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
             {
                 value = (((float)inputValue) * upperDivisor) - 11.8f;  // Doesn't quite get to +12
             }
+            if (inputValue == middle)
+            {
+                value = 0f;
+            }
+
+            VoiceMeeter.Remote.SetParameter(parameter, value);
+        }
+
+        public static void SetEqValueVM(PioneerDDJSB2 ddjsb2, string parameter, byte inputValue)
+        {
+            // Middle of dial/slider has detent.  
+
+            // VoiceMeter   DDJ-SB2
+            // -12 to +12   0 - 127
+
+            const byte middle = 0x40;   // Middle Dial Value
+
+            const float adjust = 12f;
+            const float divisor = 24.0f / 128.0f;
+
+            float value = (((float)inputValue) * divisor) - adjust;
+
             if (inputValue == middle)
             {
                 value = 0f;

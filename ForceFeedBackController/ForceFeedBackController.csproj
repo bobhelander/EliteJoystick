@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Forces\Cargo.ffe" />
+    <None Remove="Forces\CenterSpringXY.ffe" />
+    <None Remove="Forces\Damper.ffe" />
+    <None Remove="Forces\Dock.ffe" />
+    <None Remove="Forces\Gear.ffe" />
+    <None Remove="Forces\Hardpoints.ffe" />
+    <None Remove="Forces\Landed.ffe" />
+    <None Remove="Forces\SuperCruise.ffe" />
+    <None Remove="Forces\Vibrate.ffe" />
+    <None Remove="Forces\VibrateSide.ffe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Forces\Cargo.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\CenterSpringXY.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\Damper.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\Dock.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\Gear.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\Hardpoints.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\Landed.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\SuperCruise.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\Vibrate.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\VibrateSide.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\EDForceFeedback\ForceFeedbackSharpDx\ForceFeedbackSharpDx.csproj" />
+    <ProjectReference Include="..\EliteGameStatus\EliteGameStatus.csproj" />
+    <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
+  </ItemGroup>
+
+</Project>

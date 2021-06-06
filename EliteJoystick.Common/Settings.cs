@@ -23,7 +23,7 @@ namespace EliteJoystick.Common
 
             (new FileInfo(pathName)).Directory.Create();
 
-            var fileName = String.Format(@"{0}{1}", pathName, "settings.json");
+            var fileName = String.Format("{0}{1}", pathName, "settings.json");
 
             File.WriteAllText(fileName, JsonConvert.SerializeObject(this));
         }
@@ -35,7 +35,7 @@ namespace EliteJoystick.Common
                 var pathName = String.Format(@"{0}\EliteJoystick\",
                     Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData));
 
-                var fileName = String.Format(@"{0}{1}", pathName, "settings.json");
+                var fileName = String.Format("{0}{1}", pathName, "settings.json");
 
                 return JsonConvert.DeserializeObject<Settings>(File.ReadAllText(fileName));
             }

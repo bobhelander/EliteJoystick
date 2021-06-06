@@ -13,6 +13,8 @@ namespace EliteJoystick.Common
     public class MappedButtons
     {
         // Virtual Joystick (Virtual)
+        public static uint CycleNextSubsystem = 9;
+        // Trying to determine if 1-9 are used elsewhere.  Might have been the 
         public static uint CycleSubsystem = 10;
         public static uint SecondaryFire = 11;
         public static uint TextMessageEntry = 12;
@@ -31,8 +33,8 @@ namespace EliteJoystick.Common
         public static uint LockToVehicalToggle = 25;
         public static uint LockToWorldToggle = 26;
         public static uint LockRotationToggle = 27;
-        //public static uint ZoomDecrease = 28;
-        //public static uint ZoomIncrease = 29;
+        public static uint HeatSink = 28;
+        public static uint ShieldCell = 29;
         //public static uint BlurDecrease = 30;
         //public static uint BlurIncrease = 31;
 

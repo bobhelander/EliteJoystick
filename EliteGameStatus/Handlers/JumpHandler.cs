@@ -29,7 +29,7 @@ namespace EliteGameStatus.Handlers
 
                         Task.Run(async () =>
                         {
-                            var system = await EdsmConnector.Connector.GetSystem(startJumpEvent.StarSystem);
+                            var system = await EdsmConnector.Connector.GetSystem(startJumpEvent.StarSystem).ConfigureAwait(false);
 
                             log.Debug($"System Received {system?.name}");
 
@@ -37,9 +37,9 @@ namespace EliteGameStatus.Handlers
 
                         }).ContinueWith(t =>
                         {
-                            if (t.IsCanceled) log.Error($"JumpStarted Canceled");
+                            if (t.IsCanceled) log.Error("JumpStarted Canceled");
                             else if (t.IsFaulted) log.Error($"JumpStarted Exception: {t.Exception}");
-                            else log.Debug($"JumpStarted Event Complete");
+                            else log.Debug("JumpStarted Event Complete");
                         });
                     }
                 }

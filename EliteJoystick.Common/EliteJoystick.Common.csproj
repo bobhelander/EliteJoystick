@@ -9,6 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="scripts\aswoff.bat" />
+    <None Remove="scripts\ASW_OFF.txt" />
+    <None Remove="scripts\InGameLogs.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="scripts\aswoff.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\ASW_OFF.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\InGameLogs.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1-beta1" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
   </ItemGroup>

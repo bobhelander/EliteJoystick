@@ -1,0 +1,1 @@
+"C:\Program Files\Oculus\Support\oculus-diagnostics\OculusDebugToolCLI.exe" -f "E:\workspace\elite\EliteJoystick\EliteJoystickService\bin\Release\scripts\ASW_OFF.txt"

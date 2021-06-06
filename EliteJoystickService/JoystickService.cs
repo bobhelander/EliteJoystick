@@ -40,6 +40,8 @@ namespace EliteJoystickService
         private KeyboardMapping.KeyboardController KeyboardController { get; } = new KeyboardMapping.KeyboardController();
         private IDisposable voiceMeeterDisposable;
 
+        private ForceFeedBackController.Controller ForceFeedBackController { get; set; }
+
         public JoystickService()
         {
             InitializeComponent();
@@ -97,6 +99,10 @@ namespace EliteJoystickService
             // Connect to Voicemeeter
             voiceMeeterDisposable = VoiceMeeter.Remote.Initialize(Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result;
 
+            // Connect to the Force Feedback Joystick
+            ForceFeedBackController = new ForceFeedBackController.Controller();
+            ForceFeedBackController.Initialize(GameService);
+
             try
             {
                 var ffb2 = new vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Controller
@@ -114,6 +120,7 @@ namespace EliteJoystickService
 
                 Controllers.Add(ffb2);
 
+                /*
                 var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller
                 {
                     Arduino = arduino,
@@ -128,6 +135,7 @@ namespace EliteJoystickService
                     Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick.ProductId));
 
                 Controllers.Add(swgv);
+                */
 
                 var swsc = new vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Controller
                 {
@@ -220,7 +228,7 @@ namespace EliteJoystickService
                     GameService = GameService
                 };
 
-                ddjsb2.Initialize();
+                ddjsb2.Initialize(ForceFeedBackController);
 
                 Controllers.Add(ddjsb2);
 
@@ -270,6 +278,7 @@ namespace EliteJoystickService
             {
                 eliteVirtualJoysticks?.Release();
                 GameService?.Dispose();
+                ForceFeedBackController?.Dispose();
                 voiceMeeterDisposable?.Dispose();
             }
             catch (Exception ex)
@@ -278,6 +287,7 @@ namespace EliteJoystickService
             }
 
             eliteVirtualJoysticks = null;
+            ForceFeedBackController = null;
             voiceMeeterDisposable = null;
         }
 
