@@ -35,5 +35,6 @@ The connections to the specific devices can be found in the EliteJoystick\EliteJ
 - I use an [Arduino Due](https://store.arduino.cc/usa/due) to send the keyboard output.  I had problems with DirectInput picking up keystrokes from SendKey().
 - Midi devices are supported and I am working on the library to read in from other devices besides the [Pioneer DDJSB2](https://www.pioneerdj.com/en-us/product/controller/archive/ddj-sb2/black/overview/)
 - The repository contains a lot of projects for other functionality (like Force Feedback for the MSFFB2).  Some of these are deprecated but I didn't want to lose the knowledge of how to perform the actions they contain.  Sorry for the mess.
+- 
 
 
