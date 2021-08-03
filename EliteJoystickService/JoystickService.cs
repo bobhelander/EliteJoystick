@@ -120,6 +120,8 @@ namespace EliteJoystickService
 
                 Controllers.Add(ffb2);
 
+                log.Debug($"Added {ffb2.Name}");
+
                 /*
                 var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller
                 {
@@ -152,6 +154,8 @@ namespace EliteJoystickService
 
                 Controllers.Add(swsc);
 
+                log.Debug($"Added {swsc.Name}");
+
                 var warthog = new vJoyMapping.Thrustmaster.Warthog.Throttle.Controller
                 {
                     Arduino = arduino,
@@ -166,6 +170,8 @@ namespace EliteJoystickService
                     Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick.ProductId));
 
                 Controllers.Add(warthog);
+
+                log.Debug($"Added {warthog.Name}");
 
                 var altProductId = false;
 
@@ -191,6 +197,8 @@ namespace EliteJoystickService
                         productId), altProductId);
 
                     Controllers.Add(pedals);
+
+                    log.Debug($"Added {pedals.Name}");
                 }
                 catch(Exception _)
                 {
@@ -218,6 +226,8 @@ namespace EliteJoystickService
 
                 Controllers.Add(bbi32);
 
+                log.Debug($"Added {bbi32.Name}");
+
                 var ddjsb2 = new vJoyMapping.Pioneer.ddjsb2.Controller
                 {
                     Arduino = arduino,
@@ -231,6 +241,8 @@ namespace EliteJoystickService
                 ddjsb2.Initialize(ForceFeedBackController);
 
                 Controllers.Add(ddjsb2);
+
+                log.Debug($"Added {ddjsb2.Name}");
 
                 /*
                 var keyboard = new KeyboardMapping.Controller
