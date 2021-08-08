@@ -16,7 +16,7 @@ namespace EliteJoystickClient
         public string Name { get; set; }
         public CommonCommunication.Server Server { get; set; }
         public MessageHandler MessageHandler { get; set; }
-        public GoogleChrome.Chrome Chrome { get; set; }
+        //public GoogleChrome.Chrome Chrome { get; set; }
         private Task ServerListeningTask { get; set; }
 
         public async Task Initialize()
@@ -42,7 +42,7 @@ namespace EliteJoystickClient
 
             await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
 
-            Chrome = new GoogleChrome.Chrome("http://localhost:9222");
+            //Chrome = new GoogleChrome.Chrome("http://localhost:9222");
         }
 
         public async Task Shutdown()
@@ -114,6 +114,7 @@ namespace EliteJoystickClient
         public void CopyToClipboard(string text) =>
             Utils.SetClipboardText(text);
 
+        /*
         public void Navigate(string url)
         {
             var sessions = Chrome.GetAvailableSessions();
@@ -144,5 +145,6 @@ namespace EliteJoystickClient
             Thread.Sleep(1500);
             Chrome.Scroll(session, scrollDistance);
         }
+        */
     }
 }

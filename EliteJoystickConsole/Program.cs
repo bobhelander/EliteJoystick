@@ -11,23 +11,21 @@ namespace EliteJoystickConsole
 {
     public static class Program
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static void Main(string[] args)
         {
-            var testing = log4net.LogManager.GetCurrentLoggers();
             if (false)
             {
                 //var test = EdsmConnector.Connector.GetSystem("Maia").Result;
                 //var test = EdsmConnector.Connector.GetSystem("Sol").Result;
                 var test = EdsmConnector.Connector.GetSystem("Hypoae Aewsy CG-F d11-4").Result;
 
-                EliteGameStatus.Exploration.EliteActions.OutputValuableSystems(test);
+                //EliteGameStatus.Exploration.EliteActions.OutputValuableSystems(test);
 
                 var test2 = test.name;
             }
             if (false)
             {
+                /*
                 var chrome = new GoogleChrome.Chrome("http://localhost:9222");
 
                 foreach (var session in chrome.GetAvailableSessions())
@@ -56,6 +54,7 @@ namespace EliteJoystickConsole
                 chrome.ActivateTab(sessions[0]);
                 //chrome.NavigateTo(sessions[0], "http://eddb.io");
                 chrome.NavigateTo(sessions[0], uri);
+                */
             }
             if (true)
             {
@@ -69,9 +68,8 @@ namespace EliteJoystickConsole
                 //client.PasteClipboard().Wait();
 
                 var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
-                    .ContinueWith(t => log.Error($"ConnectJoysticks Exception: {t.Exception}"),
+                    .ContinueWith(t => Console.WriteLine($"ConnectJoysticks Exception: {t.Exception}"),
                     TaskContinuationOptions.OnlyOnFaulted);
-
             }
             if (false)
             {

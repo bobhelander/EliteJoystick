@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Reactive.Linq;
 using EliteJoystick.Common.Interfaces;
 using EliteJoystick.Common.EliteGame;
+using Microsoft.Extensions.Logging;
 
 namespace EliteJoystickService
 {
@@ -15,12 +16,15 @@ namespace EliteJoystickService
         private List<IDisposable> Disposables { get; set; }
         public Status GameStatusObservable { get; } = new Status();
 
+        public ILogger Logger { get; set; }
+        public ILogger InGameLogger { get; set; }
+
         public void Initialize()
         {
             Disposables = new List<IDisposable> {
                 //GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x))
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, Logger, InGameLogger)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, Logger, InGameLogger))
             };
         }
 

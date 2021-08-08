@@ -11,9 +11,6 @@ namespace EliteGameStatus
 {
     public class Status : IObservable<EliteAPI.Events.IEvent>
     {
-        private static readonly log4net.ILog log =
-           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private List<IObserver<EliteAPI.Events.IEvent>> observers = new List<IObserver<EliteAPI.Events.IEvent>>();
 
         public EliteDangerousAPI EliteAPI { get; }
@@ -38,24 +35,18 @@ namespace EliteGameStatus
 
         private void Events_ScanEvent(object sender, EliteAPI.Events.ScanInfo e)
         {
-            log.Debug($"ScanEvent Detected");
-
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
         private void Events_FSSAllBodiesFoundEvent(object sender, EliteAPI.Events.FSSAllBodiesFoundInfo e)
         {
-            log.Debug($"AllBodiesFound Detected");
-
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
         private void Events_StartJumpEvent(object sender, EliteAPI.Events.StartJumpInfo e)
         {
-            log.Debug($"JumpEvent Detected");
-
             foreach (var observer in observers)
                 observer.OnNext(e);
         }

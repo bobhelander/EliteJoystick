@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +14,8 @@ namespace ForceFeedBackController
         private List<SharpDX.DirectInput.Effect> centerSpringEffects;
         private List<SharpDX.DirectInput.Effect> damperEffects;
         private List<SharpDX.DirectInput.Effect> vibrationEffects;
+
+        public ILogger Logger { get; set; }
 
         public bool CenterSpring
         {
@@ -51,7 +54,7 @@ namespace ForceFeedBackController
             vibrationEffects = msffb2.GetEffectFromFile("Vibrate.ffe");
 
             Disposables.AddRange(new List<IDisposable> {
-                gameService.GameStatusObservable.Subscribe(x => ForceFeedBackController.Handlers.EffectHandler.Process(this, x)),
+                gameService.GameStatusObservable.Subscribe(x => ForceFeedBackController.Handlers.EffectHandler.Process(this, x, Logger)),
             });
         }
 

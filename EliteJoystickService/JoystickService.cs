@@ -16,13 +16,13 @@ using CommonCommunication;
 using System.Reactive.Linq;
 using Newtonsoft.Json;
 using EliteAPI;
+using Microsoft.Extensions.Logging;
 
 namespace EliteJoystickService
 {
     public partial class JoystickService : ServiceBase
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private ILogger Log { get; }
 
         private EliteVirtualJoysticks eliteVirtualJoysticks = null;
         private ArduinoCommunication.Arduino arduino = null;
@@ -37,15 +37,18 @@ namespace EliteJoystickService
         private IDisposable virtualControllerUpdater = null;
         private GameService GameService { get; } = new GameService();
         private EliteSharedState SharedState { get; } = new EliteSharedState();
-        private KeyboardMapping.KeyboardController KeyboardController { get; } = new KeyboardMapping.KeyboardController();
+        //private KeyboardMapping.KeyboardController KeyboardController { get; } = new KeyboardMapping.KeyboardController();
         private IDisposable voiceMeeterDisposable;
 
         private ForceFeedBackController.Controller ForceFeedBackController { get; set; }
 
-        public JoystickService()
+        public JoystickService(ILogger log, ILogger inGameLogger)
         {
             InitializeComponent();
             SharedState.EliteGameStatus = GameService;
+            this.Log = log;
+            GameService.Logger = log;
+            GameService.InGameLogger = inGameLogger;
         }
 
         internal void TestStartupAndStop(string[] args)
@@ -64,13 +67,13 @@ namespace EliteJoystickService
 
         protected override void OnStart(string[] args)
         {
-            log.Debug("Starting Service");
+            Log.LogDebug("Starting Service");
             StartService(args);
         }
 
         protected override void OnStop()
         {
-            log.Debug("Stopping Service");
+            Log.LogDebug("Stopping Service");
             StopService();
         }
 
@@ -84,7 +87,7 @@ namespace EliteJoystickService
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                Log.LogError(ex.Message);
             }
 
             return eliteVirtualJoysticks;
@@ -94,13 +97,13 @@ namespace EliteJoystickService
             Settings settings,
             EliteVirtualJoysticks eliteVirtualJoysticks)
         {
-            log.Debug("Connecting to Controllers");
+            Log.LogDebug("Connecting to Controllers");
 
             // Connect to Voicemeeter
             voiceMeeterDisposable = VoiceMeeter.Remote.Initialize(Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result;
 
             // Connect to the Force Feedback Joystick
-            ForceFeedBackController = new ForceFeedBackController.Controller();
+            ForceFeedBackController = new ForceFeedBackController.Controller() { Logger = Log };
             ForceFeedBackController.Initialize(GameService);
 
             try
@@ -120,7 +123,7 @@ namespace EliteJoystickService
 
                 Controllers.Add(ffb2);
 
-                log.Debug($"Added {ffb2.Name}");
+                Log.LogDebug($"Added {ffb2.Name}");
 
                 /*
                 var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller
@@ -154,7 +157,7 @@ namespace EliteJoystickService
 
                 Controllers.Add(swsc);
 
-                log.Debug($"Added {swsc.Name}");
+                Log.LogDebug($"Added {swsc.Name}");
 
                 var warthog = new vJoyMapping.Thrustmaster.Warthog.Throttle.Controller
                 {
@@ -171,7 +174,7 @@ namespace EliteJoystickService
 
                 Controllers.Add(warthog);
 
-                log.Debug($"Added {warthog.Name}");
+                Log.LogDebug($"Added {warthog.Name}");
 
                 var altProductId = false;
 
@@ -198,7 +201,7 @@ namespace EliteJoystickService
 
                     Controllers.Add(pedals);
 
-                    log.Debug($"Added {pedals.Name}");
+                    Log.LogDebug($"Added {pedals.Name}");
                 }
                 catch(Exception _)
                 {
@@ -226,7 +229,7 @@ namespace EliteJoystickService
 
                 Controllers.Add(bbi32);
 
-                log.Debug($"Added {bbi32.Name}");
+                Log.LogDebug($"Added {bbi32.Name}");
 
                 var ddjsb2 = new vJoyMapping.Pioneer.ddjsb2.Controller
                 {
@@ -242,7 +245,7 @@ namespace EliteJoystickService
 
                 Controllers.Add(ddjsb2);
 
-                log.Debug($"Added {ddjsb2.Name}");
+                Log.LogDebug($"Added {ddjsb2.Name}");
 
                 /*
                 var keyboard = new KeyboardMapping.Controller
@@ -266,15 +269,15 @@ namespace EliteJoystickService
                 virtualControllerUpdater = StartUpdateData(eliteVirtualJoysticks, 300);
 
                 ClientActions.ClientInformationAction(this, "Controllers Ready");
-                log.Debug("Controllers Ready");
+                Log.LogDebug("Controllers Ready");
 
-                log.Debug("Connecting to Elite Game");
+                Log.LogDebug("Connecting to Elite Game");
                 GameService.Initialize();
-                log.Debug("Connected to Elite Game");
+                Log.LogDebug("Connected to Elite Game");
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                Log.LogError(ex.Message);
                 ClientActions.ClientInformationAction(this, $"Controller Error: {ex.Message}");
             }
         }
@@ -295,7 +298,7 @@ namespace EliteJoystickService
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                Log.LogError(ex.Message);
             }
 
             eliteVirtualJoysticks = null;
@@ -322,32 +325,34 @@ namespace EliteJoystickService
             ConnectArduino();
         }
 
+        /*
         private void KeyPress(string data)
         {
-            log.Debug($"Keypress: {data}");
+            log.LogDebug($"Keypress: {data}");
             var message = JsonConvert.DeserializeObject<EliteJoystick.Common.Messages.KeyboardMessage>(data);
             KeyboardController.Notify(message);
         }
+        */
 
         private void ClientActions_ClientAction(object sender, ClientActions.ClientEventArgs e)
         {
             Task.Run(() => client.SendMessageAsync(e.Message))
-                .ContinueWith(t => log.Error($"Send Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
+                .ContinueWith(t => Log.LogError($"Send Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private void StartIpcServer()
         {
-            log.Debug("Starting IPC services");
+            Log.LogDebug("Starting IPC services");
             server = new CommonCommunication.Server { ContinueListening = true };
             serverKeyboard = new CommonCommunication.Server { ContinueListening = true };
 
             IpcProcessingTask = Task.Factory.StartNew(() => server.StartListening("elite_joystick", this.ReceiveMessage),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
-                .ContinueWith(t => log.Error($"IPC Service Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
+                .ContinueWith(t => Log.LogError($"IPC Service Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
 
             IpcProcessingTask2 = Task.Factory.StartNew(() => serverKeyboard.StartListening("elite_keyboard", this.ReceiveMessage),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
-                .ContinueWith(t => log.Error($"IPC Service Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
+                .ContinueWith(t => Log.LogError($"IPC Service Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private IDisposable StartUpdateData(EliteVirtualJoysticks eliteVirtualJoysticks, int updateFrequency = 100)
@@ -358,11 +363,11 @@ namespace EliteJoystickService
 
         private void ReceiveMessage(string message)
         {
-            log.Debug($"Message: {message}");
-            if (false == String.IsNullOrEmpty(message))
+            Log.LogDebug($"Message: {message}");
+            if (String.IsNullOrEmpty(message) == false)
             {
                 var task = Task.Run(async () => await messageHandler.HandleMessage(message, SharedState, arduino).ConfigureAwait(false))
-                    .ContinueWith(t => log.Error($"Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
+                    .ContinueWith(t => Log.LogError($"Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
             }
         }
 
@@ -384,14 +389,14 @@ namespace EliteJoystickService
                     ConnectArduino = () => ConnectArduino(),
                     DisconnectArduino = () => DisconnectArduino(),
                     ReconnectArduino = () => ReconnectArduino(),
-                    KeyPress = (string data) => KeyPress(data),
+                    //KeyPress = (string data) => KeyPress(data),
                 };
 
                 StartIpcServer();
             }
             catch (Exception ex)
             {
-                log.Error($"Error starting service: {ex.Message}");
+                Log.LogError($"Error starting service: {ex.Message}");
             }
         }
 

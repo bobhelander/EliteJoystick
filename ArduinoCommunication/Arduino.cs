@@ -39,7 +39,7 @@ namespace ArduinoCommunication
             await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, key, 0xFF }, 0, 4).ConfigureAwait(false);
 
         public async Task ReleaseAll() =>
-            await SerialPort?.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4);
+            await (SerialPort?.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4)).ConfigureAwait(false);
 
         public async Task PressKey(byte key, int duration = 30)
         {

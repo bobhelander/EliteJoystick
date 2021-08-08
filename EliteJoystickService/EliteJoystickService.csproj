@@ -9,7 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EliteJoystickService</RootNamespace>
     <AssemblyName>EliteJoystickService</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+	<LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -88,10 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="log4net.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="appsettings.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArduinoCommunication\ArduinoCommunication.csproj">
@@ -113,10 +111,6 @@
     <ProjectReference Include="..\ForceFeedBackController\ForceFeedBackController.csproj">
       <Project>{38778405-6003-4f8b-8bdf-74c725bf0fdd}</Project>
       <Name>ForceFeedBackController</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KeyboardMapping\KeyboardMapping.csproj">
-      <Project>{3e61669a-95ed-4564-883d-5b33c4dcce8b}</Project>
-      <Name>KeyboardMapping</Name>
     </ProjectReference>
     <ProjectReference Include="..\vJoyMapping\vJoyMapping.csproj">
       <Project>{57d363bb-fbf9-4781-9ca8-2f3b8993ac74}</Project>
@@ -141,8 +135,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net">
-      <Version>2.0.12</Version>
+    <PackageReference Include="Microsoft.Extensions.Logging">
+      <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Console">
+      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>

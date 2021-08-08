@@ -73,6 +73,7 @@ namespace EliteJoystickClient
             }).ConfigureAwait(false);
         }
 
+        /*
         public static void NavigateUrl(string url)
         {
             try
@@ -87,5 +88,6 @@ namespace EliteJoystickClient
                 log.Error(ex);
             }
         }
+        */
     }
 }

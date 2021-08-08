@@ -6,14 +6,13 @@
 
   <ItemGroup>
     <PackageReference Include="EliteAPI" Version="2.3.0" />
-    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.CodeDom" Version="4.7.0" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BrowserMapping\BrowserMapping.csproj" />
     <ProjectReference Include="..\EdsmConnector\EdsmConnector.csproj" />
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
   </ItemGroup>
