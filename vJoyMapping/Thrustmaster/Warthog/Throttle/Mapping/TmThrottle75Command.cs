@@ -11,7 +11,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottle75Command
     {
-        static UInt32 rdrAlt = (UInt32)Button.Button25;
+        private const UInt32 rdrAlt = (UInt32)Button.Button25;
 
         public static void Process(States value, Controller controller)
         {

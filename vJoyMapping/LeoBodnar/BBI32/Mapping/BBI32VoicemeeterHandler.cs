@@ -131,8 +131,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
         }
 
         public static void AuxiliaryProcess(States value, Controller controller)
-        {           
-
+        {
         }
 
         public static void PrimaryProcess(States value, Controller controller)

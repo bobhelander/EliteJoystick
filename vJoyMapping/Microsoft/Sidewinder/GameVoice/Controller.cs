@@ -15,7 +15,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
         private Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick joystick;
 
         //Observable.Interval: To create the heartbeat the the button will be pressed on
-        private static IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(2000)).Select(_ => 1);
+        private static readonly IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(2000)).Select(_ => 1);
 
         public void Initialize(string devicePath)
         {

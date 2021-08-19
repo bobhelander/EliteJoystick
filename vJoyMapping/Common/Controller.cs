@@ -71,7 +71,7 @@ namespace vJoyMapping.Common
             await Arduino.TypeFromClipboard().ContinueWith(t => Utils.LogTaskResult(t, "Controller:TypeFromClipboard", Logger)).ConfigureAwait(false);
 
         /// <summary>
-        /// Press keyboard keys. Modifier array are the keys to press first and then the key is pressed.  
+        /// Press keyboard keys. Modifier array are the keys to press first and then the key is pressed.
         /// https://www.arduino.cc/en/Reference/KeyboardModifiers
         /// </summary>
         /// <param name="modifier"></param>
@@ -98,7 +98,7 @@ namespace vJoyMapping.Common
                 //VirtualJoysticks.SetJoystickButton(false, 27, modJoyId);
             }).ContinueWith(t =>
             {
-                if (t.IsCanceled) Logger.LogError($"CallActivateButton Canceled");
+                if (t.IsCanceled) Logger.LogError("CallActivateButton Canceled");
                 else if (t.IsFaulted) Logger.LogError($"CallActivateButton Exception: {t.Exception}");
                 else Logger.LogDebug($"Press {vJoyType} Button {vButton}");
             });

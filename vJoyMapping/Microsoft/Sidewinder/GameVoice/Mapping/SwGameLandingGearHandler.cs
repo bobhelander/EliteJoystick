@@ -10,7 +10,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 {
     public static class SwGameLandingGearHandler
     {
-        static private byte button1 = (byte)Button.Button1;
+        private const byte button1 = (byte)Button.Button1;
 
         public static void Process(States value, Controller controller)
         {

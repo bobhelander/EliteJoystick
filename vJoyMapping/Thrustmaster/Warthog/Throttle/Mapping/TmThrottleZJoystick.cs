@@ -52,7 +52,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 }
                 else
                 {
-                    if (controller.GetJoystickButton(MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual) == true)
+                    if (controller.GetJoystickButton(MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual))
                     {
                         controller.Logger.LogDebug("Reverse Throttle Off");
                         controller.SetJoystickButton(false, MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual);

@@ -82,9 +82,9 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
             PioneerDDJSB2 ddjsb2,
             string patchParameter,
             IDisposable skippingSubscription,
-            Leds.Deck deck, 
-            Leds.PadGroup group, 
-            Led led, 
+            Leds.Deck deck,
+            Leds.PadGroup group,
+            Led led,
             IObservable<long> observable)
         {
             VoiceMeeter.Remote.SetParameter(patchParameter, 1f);

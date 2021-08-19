@@ -14,7 +14,7 @@ namespace ArduinoCommunication
         public bool Newline { get; set; }
         public Arduino Arduino { get; set; }
 
-        public async Task Play(ILogger logger) 
+        public async Task Play(ILogger logger)
         {
             await SendKeys(Arduino, Text, Delay, Newline, logger)
                 .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendText:Play", logger)).ConfigureAwait(false);

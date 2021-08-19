@@ -13,7 +13,7 @@ namespace EliteGameStatus
     public class Status : IObservable<EliteAPI.Events.IEvent>, IDisposable
     {
         private ILogger logger { get; }
-        private bool Initialized { get; set; } = false;
+        private bool Initialized { get; } = false;
         private readonly List<IObserver<EliteAPI.Events.IEvent>> observers = new List<IObserver<EliteAPI.Events.IEvent>>();
 
         public EliteDangerousAPI EliteAPI { get; set; }
@@ -90,8 +90,8 @@ namespace EliteGameStatus
 
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<EliteAPI.Events.IEvent>> _observers;
-            private IObserver<EliteAPI.Events.IEvent> _observer;
+            private readonly List<IObserver<EliteAPI.Events.IEvent>> _observers;
+            private readonly IObserver<EliteAPI.Events.IEvent> _observer;
 
             public Unsubscriber(List<IObserver<EliteAPI.Events.IEvent>> observers, IObserver<EliteAPI.Events.IEvent> observer)
             {

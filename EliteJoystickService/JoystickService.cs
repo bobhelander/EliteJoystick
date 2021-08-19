@@ -201,7 +201,7 @@ namespace EliteJoystickService
                         Logger = Log
                     };
 
-                    var productId = altProductId ? 
+                    var productId = altProductId ?
                         Usb.GameControllers.CHProducts.ProPedals.JoystickMSDriver.ProductId :
                         Usb.GameControllers.CHProducts.ProPedals.Joystick.ProductId;
 

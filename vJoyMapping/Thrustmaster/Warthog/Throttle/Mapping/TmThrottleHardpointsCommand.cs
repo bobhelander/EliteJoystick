@@ -24,7 +24,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 controller.SharedState.HardpointsDeployed = true;
             }
 
-            if (controller.SharedState.HardpointsDeployed == true &&
+            if (controller.SharedState.HardpointsDeployed &&
                 Reactive.ButtonReleased(value, EORDown))
             {
                 controller.Logger.LogDebug($"Hardpoints in {controller.SharedState.HardpointsDeployed}");

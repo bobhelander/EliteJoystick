@@ -9,7 +9,7 @@ namespace ForceFeedBackController
     {
         private ForceFeedbackSharpDx.ForceFeedbackController msffb2;
 
-        List<IDisposable> Disposables { get; set; } = new List<IDisposable>();
+        private List<IDisposable> Disposables { get; } = new List<IDisposable>();
 
         private List<SharpDX.DirectInput.Effect> centerSpringEffects;
         private List<SharpDX.DirectInput.Effect> damperEffects;
