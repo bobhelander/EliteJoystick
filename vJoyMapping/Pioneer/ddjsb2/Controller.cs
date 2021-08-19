@@ -6,14 +6,12 @@ using System.Linq;
 using vJoyMapping.Pioneer.ddjsb2.Mapping;
 using DDJSB2.Controls;
 using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 
 namespace vJoyMapping.Pioneer.ddjsb2
 {
     public class Controller : Common.Controller
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         // Voicemeeter Settings
         private const string WindowsDefault = "Strip[5].Gain";
         private const string EliteDangerous = "Strip[7].Gain";
@@ -61,113 +59,113 @@ namespace vJoyMapping.Pioneer.ddjsb2
             Disposables.AddRange(new List<IDisposable> {
                 // Deck 1 Channel Fader:  VoiceAttack Gain
                 (ddjsb2.ChannelControls[1].First(x => x.Name == "Channel Fader") as Slider)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderNotifiedVM(ddjsb2, VoiceAttack, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderNotifiedVM(ddjsb2, VoiceAttack, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Channel Fader:  Spotify Gain
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Channel Fader") as Slider)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderNotifiedVM(ddjsb2, Spotify, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderNotifiedVM(ddjsb2, Spotify, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Play/Pause:  Spotify Play/Pause/Launch
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Play") as Button)
-                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifyPlayPause(ddjsb2, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifyPlayPause(ddjsb2, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Cue:  Spotify Previous Track
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Cue") as Button)
-                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifyTrackChange(ddjsb2, DdjSb2SpotifyHandler.MediaPrevious, Leds.Deck.Deck2, Leds.CueLed, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifyTrackChange(ddjsb2, DdjSb2SpotifyHandler.MediaPrevious, Leds.Deck.Deck2, Leds.CueLed, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Sync:  Spotify Next Track
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Sync") as Button)
-                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifyTrackChange(ddjsb2, DdjSb2SpotifyHandler.MediaNext, Leds.Deck.Deck2, Leds.SyncLed, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifyTrackChange(ddjsb2, DdjSb2SpotifyHandler.MediaNext, Leds.Deck.Deck2, Leds.SyncLed, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Middle Headphones Mix: Headphones Gain
                 (ddjsb2.ChannelControls[7].First(x => x.Name == "Headphones Mix") as Dial)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.DialWithDetentNotifiedVM(ddjsb2, Headphones, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.DialWithDetentNotifiedVM(ddjsb2, Headphones, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 1 Tempo Slider: Windows Gain
                 (ddjsb2.ChannelControls[1].First(x => x.Name == "Tempo") as Slider)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderWithDetentNotifiedVM(ddjsb2, WindowsDefault, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderWithDetentNotifiedVM(ddjsb2, WindowsDefault, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Tempo Slider: EliteDangerous Gain
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Tempo") as Slider)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderWithDetentNotifiedVM(ddjsb2, EliteDangerous, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.SliderWithDetentNotifiedVM(ddjsb2, EliteDangerous, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Low Dial: EliteDangerous EqGain1
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Low") as Dial)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.EqDialNotifiedVM(ddjsb2, EliteDangerousEqGain1, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.EqDialNotifiedVM(ddjsb2, EliteDangerousEqGain1, x), ex => Logger.LogError($"Exception : {ex}")),
                 // Deck 2 Mid Dial: EliteDangerous EqGain2
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Mid") as Dial)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.EqDialNotifiedVM(ddjsb2, EliteDangerousEqGain2, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.EqDialNotifiedVM(ddjsb2, EliteDangerousEqGain2, x), ex => Logger.LogError($"Exception : {ex}")),
                 // Deck 2 Hi Dial: EliteDangerous EqGain3
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Hi") as Dial)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.EqDialNotifiedVM(ddjsb2, EliteDangerousEqGain3, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.EqDialNotifiedVM(ddjsb2, EliteDangerousEqGain3, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 //  Deck 2 1/2X (Hot Que): Focus Elite Dangerous
                 (ddjsb2.ChannelControls[9].First(x => x.Name == "1/2X (Hot Que)") as Button)
-                    .Subscribe(x => FocusWindowHandler(ddjsb2, "EliteDangerous64", Leds.Deck.Deck1, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => FocusWindowHandler(ddjsb2, "EliteDangerous64", Leds.Deck.Deck1, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Headphone Cue: A1 Patch (Main Speakers) Enable/Disable
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Headphone Cue") as Button)
-                    .Subscribe(x => DdjSb2VoicemeeterHandler.PatchControl(SpotifyA1Patch, x), ex => log.Error($"Exception : {ex}")),
+                    .Subscribe(x => DdjSb2VoicemeeterHandler.PatchControl(SpotifyA1Patch, x), ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 In (Hot Que): Spotify Skip Commerical (Headphones - A3)
                 (ddjsb2.ChannelControls[9].First(x => x.Name == "In (Hot Que)") as Button)
                     .Subscribe(x => DdjSb2SpotifyHandler.SpotifySkipCommerical(ddjsb2, SpotifyA3Patch, skippingSubscription, Leds.Deck.Deck2, Leds.PadGroup.hotCue, Leds.InLed, x, lastPause),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Out (Hot Que): Voicemeeter Restart Audio
                 (ddjsb2.ChannelControls[9].First(x => x.Name == "Out (Hot Que)") as Button)
                     .Subscribe(x => DdjSb2VoicemeeterHandler.RestartAudio(ddjsb2, Leds.Deck.Deck2, Leds.PadGroup.hotCue, Leds.OutLed, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 //// Deck 2 Exit (Hot Que): Explorer Log File  Note: Moved to keyboard media key
                 //(ddjsb2.ChannelControls[9].First(x => x.Name == "Exit (Hot Que)") as Button)
                 //    .Subscribe(x => DdjSb2UtilsHandler.ExplorerLog(ddjsb2, Leds.Deck.Deck2, Leds.PadGroup.hotCue, Leds.ExitLed, x),
-                //    ex => log.Error($"Exception : {ex}")),
+                //    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 1 In (Hot Que): Oculus Automatic Space Warp Off
                 (ddjsb2.ChannelControls[8].First(x => x.Name == "In (Hot Que)") as Button)
                     .Subscribe(x => DdjSb2UtilsHandler.OculusASWOff(ddjsb2, Leds.Deck.Deck1, Leds.PadGroup.hotCue, Leds.InLed, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 1 Out (Hot Que): Feedback Center Spring
                 (ddjsb2.ChannelControls[8].First(x => x.Name == "Out (Hot Que)") as Button)
                     .Subscribe(x => HandleForceEffects(ddjsb2, Leds.Deck.Deck1, Leds.PadGroup.hotCue, Leds.OutLed, msffb2, prop => prop.CenterSpring, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 1 Exit (Hot Que): Feedback Damper
                 (ddjsb2.ChannelControls[8].First(x => x.Name == "Exit (Hot Que)") as Button)
                     .Subscribe(x => HandleForceEffects(ddjsb2, Leds.Deck.Deck1, Leds.PadGroup.hotCue, Leds.ExitLed, msffb2, prop => prop.Damper, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 1 1/2X (Hot Que): Stop All Effects
                 (ddjsb2.ChannelControls[8].First(x => x.Name == "1/2X (Hot Que)") as Button)
                     .Subscribe(x => StopAllEffects(ddjsb2, Leds.Deck.Deck1, Leds.PadGroup.hotCue, Leds.Pad2xLed, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 1 Touch Jog Wheel: Shut up Voice Attack
                 (ddjsb2.ChannelControls[1].First(x => x.Name == "Jog Dial") as DDJSB2.Controls.Encoder)
                     .Subscribe(x => DdjSb2UtilsHandler.ShutUpVoiceAttack(this, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Jog Wheel: Target subsystem
                 (ddjsb2.ChannelControls[2].First(x => x.Name == "Jog Dial") as DDJSB2.Controls.Encoder)
                     .Subscribe(x => DdjSb2UtilsHandler.TargetSubsystem(this, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Center Browse: Menu Selection
                 (ddjsb2.ChannelControls[7].First(x => x.Name == "Browse") as DDJSB2.Controls.Encoder)
                     .Subscribe(x => DdjSb2UtilsHandler.MenuSelection(this, x),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Center Left Load: Panel Selection
                 (ddjsb2.ChannelControls[7].First(x => x.Name == "Left Load") as DDJSB2.Controls.Button)
                     .Subscribe(x => DdjSb2UtilsHandler.PanelSelection(this, x, MappedButtons.ForceFeedback2Button3),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
 
                 // Center Right Load: Panel Selection
                 (ddjsb2.ChannelControls[7].First(x => x.Name == "Right Load") as DDJSB2.Controls.Button)
                     .Subscribe(x => DdjSb2UtilsHandler.PanelSelection(this, x, MappedButtons.ForceFeedback2Button4),
-                    ex => log.Error($"Exception : {ex}")),
+                    ex => Logger.LogError($"Exception : {ex}")),
             });
         }
 
@@ -242,9 +240,9 @@ namespace vJoyMapping.Pioneer.ddjsb2
                 VoiceMeeter.Remote.GetParameter(SpotifyA1Patch) > 0);
         }
 
-        private static void FocusWindowHandler(PioneerDDJSB2 ddjsb2, string process, Leds.Deck deck, IState state)
+        private void FocusWindowHandler(PioneerDDJSB2 ddjsb2, string process, Leds.Deck deck, IState state)
         {
-            log.Debug($"FocusWindowHandler: {state.Control.Name}");
+            Logger.LogDebug($"FocusWindowHandler: {state.Control.Name}");
 
             var button = state.Control as Button;
             var on = button.NoteValue > 0;
@@ -260,7 +258,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
         private void Process(DDJSB2.PioneerDDJSB2 ddjsb2, EliteAPI.Events.IEvent statusEvent)
         {
-            log.Debug($"{statusEvent.GetType().ToString()}");
+            Logger.LogDebug($"{statusEvent.GetType().ToString()}");
 
             ddjsb2.LedControl(Leds.Deck.Deck1, Leds.PlayLed, false, GameService.GameStatusObservable.EliteAPI.Status.IsRunning);
         }

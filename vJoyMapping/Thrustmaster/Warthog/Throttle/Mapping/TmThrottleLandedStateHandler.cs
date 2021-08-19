@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,6 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleLandedStateHandler
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static UInt32 leftThrottleParked = (UInt32)Button.Button30;
 
         public static void Process(States value, Controller controller)
@@ -21,14 +20,14 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 // Set the left throttle to the middle so we don't move forward or backward when the throttle is parked
                 controller.SharedState.LeftThrottleEnabled = false;
                 controller.SetJoystickAxis(16 * 1024, vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.Throttle);
-                log.Debug($"Left Throttle Parked");
+                controller.Logger.LogDebug($"Left Throttle Parked");
             }
             else if (Reactive.ButtonReleased(value, leftThrottleParked))
             {
                 // Left throttle is set to move forward and backward from the center 
                 controller.SharedState.LeftThrottleEnabled = true;
                 controller.SetJoystickAxis(32 * 1024, vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.Throttle);
-                log.Debug($"Left Throttle Activated");
+                controller.Logger.LogDebug($"Left Throttle Activated");
             }
         }
     }

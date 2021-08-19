@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
@@ -11,8 +12,6 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleShieldCellCommand
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         //Observable.Interval: To create the heartbeat the the button will be pressed on
         private static IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(1000)).Select(_ => 1);
         private static int counter = 0;
@@ -44,12 +43,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                     {
                         if (counter % 12 == 0)  // 0, 12000, 240000
                         {
-                            log.Debug($"Fire shield cells");
+                            controller.Logger.LogDebug($"Fire shield cells");
                             controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.ShieldCell, 200);
                         }
                         if (counter == 6 || counter == 21)  // 6000, 21000
                         {
-                            log.Debug($"Fire heat sink");
+                            controller.Logger.LogDebug($"Fire heat sink");
                             controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HeatSink, 200);
                         }
                         counter++;
@@ -62,7 +61,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 {
                     fireShieldCells.Dispose();
                     fireShieldCells = null;
-                    log.Debug($"Fire shield cells: Stopped");
+                    controller.Logger.LogDebug($"Fire shield cells: Stopped");
                 }
             }
         }

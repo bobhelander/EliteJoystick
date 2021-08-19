@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +14,28 @@ namespace ArduinoCommunication
         public bool Newline { get; set; }
         public Arduino Arduino { get; set; }
 
-        public Task Play() =>
-            Task.Run(async () => await SendKeys(Arduino, Text, Delay, Newline).ConfigureAwait(false));
-
-        private async Task SendKeys(Arduino arduino, string text, int delay, bool newline)
+        public async Task Play(ILogger logger) 
         {
+            await SendKeys(Arduino, Text, Delay, Newline, logger)
+                .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendText:Play", logger)).ConfigureAwait(false);
+        }
+
+        private async Task SendKeys(Arduino arduino, string text, int delay, bool newline, ILogger logger)
+        {
+            if (arduino == null)
+                return;
+
             foreach (var character in text)
-                await arduino?.PressKey((byte)character, delay);
+            {
+                await arduino.PressKey((byte)character, delay)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendKeys:Character", logger)).ConfigureAwait(false);
+            }
 
             if (newline)
-                await arduino?.PressKey(0xB0, delay);
+            {
+                await arduino.PressKey(0xB0, delay)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendKeys:Newline", logger)).ConfigureAwait(false);
+            }
         }
     }
 }

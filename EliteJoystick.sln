@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "Communication\CommonCommunication.csproj", "{EAA556AF-5DA8-4C20-8511-5D78D04786D0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CED90B10-CE11-4EFD-87CD-16DF8E2AC282}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -37,20 +33,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForceFeedbackSharpDx", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForceFeedBackController", "ForceFeedBackController\ForceFeedBackController.csproj", "{38778405-6003-4F8B-8BDF-74C725BF0FDD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{672A790F-62AD-4EE0-85E5-A1E55A136FB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "CommonCommunication\CommonCommunication.csproj", "{84A05C88-F406-4740-9ACC-0FF120B0BB15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,6 +87,14 @@ Global
 		{38778405-6003-4F8B-8BDF-74C725BF0FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38778405-6003-4F8B-8BDF-74C725BF0FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38778405-6003-4F8B-8BDF-74C725BF0FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

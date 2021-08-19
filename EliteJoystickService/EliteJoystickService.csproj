@@ -10,7 +10,7 @@
     <RootNamespace>EliteJoystickService</RootNamespace>
     <AssemblyName>EliteJoystickService</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-	<LangVersion>8.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -89,15 +89,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="appsettings.json" />
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArduinoCommunication\ArduinoCommunication.csproj">
-      <Project>{ab5e6b01-b9ae-4615-9b0d-7c5ec9cc9ffe}</Project>
+      <Project>{672a790f-62ad-4ee0-85e5-a1e55a136fb6}</Project>
       <Name>ArduinoCommunication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Communication\CommonCommunication.csproj">
-      <Project>{eaa556af-5da8-4c20-8511-5d78d04786d0}</Project>
+    <ProjectReference Include="..\CommonCommunication\CommonCommunication.csproj">
+      <Project>{84a05c88-f406-4740-9acc-0ff120b0bb15}</Project>
       <Name>CommonCommunication</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteGameStatus\EliteGameStatus.csproj">
@@ -135,6 +137,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json">
+      <Version>5.0.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging">
       <Version>5.0.0</Version>
     </PackageReference>
@@ -143,6 +148,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Extensions.Logging.File">
+      <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Security">
       <Version>4.3.2</Version>

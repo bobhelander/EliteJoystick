@@ -14,17 +14,19 @@ namespace EliteJoystickService
     public class GameService : IDisposable, IEliteGameStatus
     {
         private List<IDisposable> Disposables { get; set; }
-        public Status GameStatusObservable { get; } = new Status();
+        public Status GameStatusObservable { get; set; }
 
         public ILogger Logger { get; set; }
         public ILogger InGameLogger { get; set; }
 
         public void Initialize()
         {
+            GameStatusObservable = new Status(Logger);
             Disposables = new List<IDisposable> {
                 //GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
                 GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, Logger, InGameLogger)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, Logger, InGameLogger))
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, Logger, InGameLogger)),
+                GameStatusObservable
             };
         }
 

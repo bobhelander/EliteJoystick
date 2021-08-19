@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -58,18 +59,26 @@ namespace EliteJoystickConsole
             }
             if (true)
             {
-                var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
+                using (ILoggerFactory loggerFactory =
+                LoggerFactory.Create(builder => builder.AddSimpleConsole(options =>
+                    { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; }).SetMinimumLevel(LogLevel.Debug)))
+                {
 
-                client.Initialize().Wait();
+                    ILogger<EliteJoystickClient.Client> logger = loggerFactory.CreateLogger<EliteJoystickClient.Client>();
 
-                client.ConnectArduino().Wait();
-                Console.WriteLine("connected");
-                //Console.ReadKey();
-                //client.PasteClipboard().Wait();
+                    var client = new EliteJoystickClient.Client { Name = "elite_joystick_client", Logger = logger };
 
-                var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
-                    .ContinueWith(t => Console.WriteLine($"ConnectJoysticks Exception: {t.Exception}"),
-                    TaskContinuationOptions.OnlyOnFaulted);
+                    client.Initialize().Wait();
+
+                    client.ConnectArduino().Wait();
+                    Console.WriteLine("connected");
+                    //Console.ReadKey();
+                    //client.PasteClipboard().Wait();
+
+                    var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
+                        .ContinueWith(t => Console.WriteLine($"ConnectJoysticks Exception: {t.Exception}"),
+                        TaskContinuationOptions.OnlyOnFaulted);
+                }
             }
             if (false)
             {

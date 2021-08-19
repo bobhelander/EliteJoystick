@@ -10,8 +10,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 {
     public static class SwGameButtonStateHandler
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static void Process(States value, Controller controller)
         {
             if ((value.Current.Buttons & (byte)Button.ButtonAll) == (byte)Button.ButtonAll)

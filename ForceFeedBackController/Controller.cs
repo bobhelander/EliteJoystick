@@ -40,7 +40,7 @@ namespace ForceFeedBackController
 
         public void Initialize(EliteJoystickService.GameService gameService)
         {
-            msffb2 = new ForceFeedbackSharpDx.ForceFeedbackController();
+            msffb2 = new ForceFeedbackSharpDx.ForceFeedbackController() { Logger = Logger };
             msffb2.Initialize(
                 "001b045e-0000-0000-0000-504944564944",
                 "SideWinder Force Feedback 2 Joystick",

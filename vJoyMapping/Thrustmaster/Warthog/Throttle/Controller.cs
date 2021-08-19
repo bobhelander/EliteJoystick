@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,9 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
 {
     public class Controller : Common.Controller
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public void Initialize(string devicePath)
         {
-            var joystick = new Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick(devicePath);
+            var joystick = new Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick(devicePath, Logger);
             MapControls(joystick);
             MapLights(joystick);
             joystick.Initialize();
@@ -27,25 +25,25 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
         {
             // Add in the mappings
             Disposables = new List<IDisposable> {
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottle75Command.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleCameraCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleClearMessages.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleCycleCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleHardpointsCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Subscribe(x => TmThrottleHat.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleLandedStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleLandingGearCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleLightsCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleHeatSinkCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleShieldCellCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleSecondaryFireCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                //warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleSilentCommand.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Subscribe(x => TmThrottleSliderJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleStateModifier.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                //warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleVoiceCommandHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Subscribe(x => TmThrottleXYJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                warthog.Subscribe(x => TmThrottleZJoystick.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottle75Command.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleButtonStateHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleCameraCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleClearMessages.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleCycleCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleHardpointsCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Subscribe(x => TmThrottleHat.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleLandedStateHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleLandingGearCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleLightsCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleHeatSinkCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleShieldCellCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleSecondaryFireCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                //warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleSilentCommand.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Subscribe(x => TmThrottleSliderJoystick.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleStateModifier.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                //warthog.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => TmThrottleVoiceCommandHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Subscribe(x => TmThrottleXYJoystick.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                warthog.Subscribe(x => TmThrottleZJoystick.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
             };
         }
 

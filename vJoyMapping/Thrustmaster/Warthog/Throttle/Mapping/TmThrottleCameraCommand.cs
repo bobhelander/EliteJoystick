@@ -10,9 +10,6 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleCameraCommand
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         // Flaps Up : Debug Camera
         static UInt32 button22 = (UInt32)Button.Button22;
         static UInt32 button15 = (UInt32)Button.Button15;

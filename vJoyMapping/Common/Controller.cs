@@ -1,5 +1,6 @@
 ﻿using EliteJoystick.Common;
 using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,12 @@ namespace vJoyMapping.Common
 {
     public class Controller : IDisposable
     {
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static string GetDevicePath(int vendorId, int productId) =>
             Usb.Hid.Connection.Devices.RetrieveAllDevicePath(vendorId, productId).FirstOrDefault();
 
         protected List<IDisposable> Disposables { get; set; }
+
+        public ILogger Logger { get; set; }
 
         public String Name { get; set; }
 
@@ -56,21 +56,19 @@ namespace vJoyMapping.Common
         #region  Arduino keyboard actions
 
         public void DepressKey(byte key) =>
-            Arduino?.DepressKey(key);
+            Arduino?.DepressKey(key).Wait();
 
         public void ReleaseKey(byte key) =>
-            Arduino?.ReleaseKey(key);
+            Arduino?.ReleaseKey(key).Wait();
 
         public void ReleaseAllKeys() =>
-            Arduino?.ReleaseAll();
+            Arduino?.ReleaseAll().Wait();
 
         public async Task TypeFullString(String text) =>
-            await Task.Run(async () => await Arduino.TypeFullString(text).ConfigureAwait(false))
-             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
+            await Arduino.TypeFullString(text).ContinueWith(t => Utils.LogTaskResult(t, "Controller:TypeFullString", Logger)).ConfigureAwait(false);
 
         public async Task TypeFromClipboard() =>
-            await Task.Run(async () => await Arduino.TypeFromClipboard().ConfigureAwait(false))
-             .ContinueWith(t => log.Error($"TypeFromClipboard Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
+            await Arduino.TypeFromClipboard().ContinueWith(t => Utils.LogTaskResult(t, "Controller:TypeFromClipboard", Logger)).ConfigureAwait(false);
 
         /// <summary>
         /// Press keyboard keys. Modifier array are the keys to press first and then the key is pressed.  
@@ -80,11 +78,7 @@ namespace vJoyMapping.Common
         /// <param name="key"></param>
         /// <returns></returns>
         public async Task SendKeyCombo(byte[] modifier, byte key) =>
-            await Task.Run(async () => 
-                await Arduino.KeyCombo(modifier, key)
-                    .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted)
-                .ConfigureAwait(false))
-            .ConfigureAwait(false);
+            await Arduino.KeyCombo(modifier, key).ContinueWith(t => Utils.LogTaskResult(t, "Controller:SendKeyCombo", Logger)).ConfigureAwait(false);
 
         #endregion
 
@@ -104,9 +98,9 @@ namespace vJoyMapping.Common
                 //VirtualJoysticks.SetJoystickButton(false, 27, modJoyId);
             }).ContinueWith(t =>
             {
-                if (t.IsCanceled) log.Error($"CallActivateButton Canceled");
-                else if (t.IsFaulted) log.Error($"CallActivateButton Exception: {t.Exception}");
-                else log.Debug($"Press {vJoyType} Button {vButton}");
+                if (t.IsCanceled) Logger.LogError($"CallActivateButton Canceled");
+                else if (t.IsFaulted) Logger.LogError($"CallActivateButton Exception: {t.Exception}");
+                else Logger.LogDebug($"Press {vJoyType} Button {vButton}");
             });
         }
 

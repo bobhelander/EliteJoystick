@@ -35,7 +35,7 @@ namespace EliteJoystickService
         private Task IpcProcessingTask2;
         private List<Controller> Controllers { get; set; } = new List<Controller>();
         private IDisposable virtualControllerUpdater = null;
-        private GameService GameService { get; } = new GameService();
+        private GameService GameService { get; set; }
         private EliteSharedState SharedState { get; } = new EliteSharedState();
         //private KeyboardMapping.KeyboardController KeyboardController { get; } = new KeyboardMapping.KeyboardController();
         private IDisposable voiceMeeterDisposable;
@@ -45,6 +45,7 @@ namespace EliteJoystickService
         public JoystickService(ILogger log, ILogger inGameLogger)
         {
             InitializeComponent();
+            GameService = new GameService { Logger = log };
             SharedState.EliteGameStatus = GameService;
             this.Log = log;
             GameService.Logger = log;
@@ -97,6 +98,10 @@ namespace EliteJoystickService
             Settings settings,
             EliteVirtualJoysticks eliteVirtualJoysticks)
         {
+            Log.LogDebug("Connecting to Elite Game");
+            GameService.Initialize();
+            Log.LogDebug("Connected to Elite Game");
+
             Log.LogDebug("Connecting to Controllers");
 
             // Connect to Voicemeeter
@@ -114,7 +119,8 @@ namespace EliteJoystickService
                     Name = "Force Feedback 2",
                     SharedState = SharedState,
                     Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
+                    VirtualJoysticks = eliteVirtualJoysticks,
+                    Logger = Log
                 };
 
                 ffb2.Initialize(Controller.GetDevicePath(
@@ -132,7 +138,8 @@ namespace EliteJoystickService
                     Name = "Game Voice",
                     SharedState = SharedState,
                     Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
+                    VirtualJoysticks = eliteVirtualJoysticks,
+                    Logger = Log
                 };
 
                 swgv.Initialize(Controller.GetDevicePath(
@@ -148,7 +155,8 @@ namespace EliteJoystickService
                     Name = "Strategic Commander",
                     SharedState = SharedState,
                     Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
+                    VirtualJoysticks = eliteVirtualJoysticks,
+                    Logger = Log
                 };
 
                 swsc.Initialize(Controller.GetDevicePath(
@@ -165,7 +173,8 @@ namespace EliteJoystickService
                     Name = "Warthog Throttle",
                     SharedState = SharedState,
                     Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
+                    VirtualJoysticks = eliteVirtualJoysticks,
+                    Logger = Log
                 };
 
                 warthog.Initialize(Controller.GetDevicePath(
@@ -188,7 +197,8 @@ namespace EliteJoystickService
                         Name = "Pro Pedals",
                         SharedState = SharedState,
                         Settings = settings,
-                        VirtualJoysticks = eliteVirtualJoysticks
+                        VirtualJoysticks = eliteVirtualJoysticks,
+                        Logger = Log
                     };
 
                     var productId = altProductId ? 
@@ -220,7 +230,8 @@ namespace EliteJoystickService
                     Name = "BBI32",
                     SharedState = SharedState,
                     Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
+                    VirtualJoysticks = eliteVirtualJoysticks,
+                    Logger = Log
                 };
 
                 bbi32.Initialize(Controller.GetDevicePath(
@@ -238,7 +249,8 @@ namespace EliteJoystickService
                     SharedState = SharedState,
                     Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks,
-                    GameService = GameService
+                    GameService = GameService,
+                    Logger = Log
                 };
 
                 ddjsb2.Initialize(ForceFeedBackController);
@@ -254,7 +266,8 @@ namespace EliteJoystickService
                     Name = "Keypad",
                     SharedState = SharedState,
                     Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
+                    VirtualJoysticks = eliteVirtualJoysticks,
+                    Logger = Log
                 };
 
                 keyboard.Initialize(KeyboardController, GameService);
@@ -270,10 +283,6 @@ namespace EliteJoystickService
 
                 ClientActions.ClientInformationAction(this, "Controllers Ready");
                 Log.LogDebug("Controllers Ready");
-
-                Log.LogDebug("Connecting to Elite Game");
-                GameService.Initialize();
-                Log.LogDebug("Connected to Elite Game");
             }
             catch (Exception ex)
             {
@@ -308,7 +317,7 @@ namespace EliteJoystickService
 
         private void ConnectArduino()
         {
-            arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort);
+            arduino = new ArduinoCommunication.Arduino(settings.ArduinoCommPort, Log);
             ClientActions.ClientInformationAction(this, "Arduino Ready");
         }
 
@@ -343,7 +352,7 @@ namespace EliteJoystickService
         private void StartIpcServer()
         {
             Log.LogDebug("Starting IPC services");
-            server = new CommonCommunication.Server { ContinueListening = true };
+            server = new CommonCommunication.Server { ContinueListening = true, Logger = Log };
             serverKeyboard = new CommonCommunication.Server { ContinueListening = true };
 
             IpcProcessingTask = Task.Factory.StartNew(() => server.StartListening("elite_joystick", this.ReceiveMessage),
@@ -377,7 +386,7 @@ namespace EliteJoystickService
             {
                 settings = Settings.Load();
                 ClientActions.ClientAction += ClientActions_ClientAction;
-                client = new CommonCommunication.Client();
+                client = new CommonCommunication.Client() { Logger = Log };
                 messageHandler = new MessageHandler
                 {
                     Client = client,
@@ -389,6 +398,7 @@ namespace EliteJoystickService
                     ConnectArduino = () => ConnectArduino(),
                     DisconnectArduino = () => DisconnectArduino(),
                     ReconnectArduino = () => ReconnectArduino(),
+                    Logger = Log,
                     //KeyPress = (string data) => KeyPress(data),
                 };
 

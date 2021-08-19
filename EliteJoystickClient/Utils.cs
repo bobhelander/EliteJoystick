@@ -11,9 +11,6 @@ namespace EliteJoystickClient
 {
     public static class Utils
     {
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
 

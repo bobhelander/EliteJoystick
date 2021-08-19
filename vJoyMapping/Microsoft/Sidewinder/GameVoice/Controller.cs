@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -11,9 +12,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 {
     public class Controller : Common.Controller
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick joystick;
 
         //Observable.Interval: To create the heartbeat the the button will be pressed on
@@ -21,7 +19,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 
         public void Initialize(string devicePath)
         {
-            joystick = new Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick(devicePath);
+            joystick = new Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick(devicePath, Logger);
             MapControls(joystick);
             //MapLights(joystick);
 
@@ -41,7 +39,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
             Disposables = new List<IDisposable> {
                 //swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
                 //swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameLandingGearHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameVoicemeeterHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameVoicemeeterHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
                 //swgv.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => SwGameMuteHandler.Process(x, this), ex => log.Error($"Exception : {ex}"))
             };
         }

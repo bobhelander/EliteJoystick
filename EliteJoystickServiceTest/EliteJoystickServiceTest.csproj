@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArduinoCommunication\ArduinoCommunication.csproj">
-      <Project>{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}</Project>
+      <Project>{672a790f-62ad-4ee0-85e5-a1e55a136fb6}</Project>
       <Name>ArduinoCommunication</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj">
