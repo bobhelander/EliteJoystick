@@ -11,8 +11,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 {
     public static class SwGameMuteHandler
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private const byte muteButton = (byte)Button.MuteButton;
 
         public static void Process(States value, Controller controller)

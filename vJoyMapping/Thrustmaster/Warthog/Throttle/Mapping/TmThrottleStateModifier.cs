@@ -11,16 +11,16 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
     public static class TmThrottleStateModifier
     {
         // APAH is between 27 and 28.  It is enabled when both repote false.
-        static readonly UInt32 apahButton = (UInt32)SwitchNeutral.APAH;
+        private const UInt32 apahButton = (UInt32)SwitchNeutral.APAH;
 
-        static readonly UInt32 Button27 = (UInt32)Button.Button27;
-        static readonly UInt32 Button28 = (UInt32)Button.Button28;
-        static readonly UInt32 Button01 = (UInt32)Button.Button01;
-        static readonly UInt32 Button15 = (UInt32)Button.Button15;
+        private const UInt32 Button27 = (UInt32)Button.Button27;
+        private const UInt32 Button28 = (UInt32)Button.Button28;
+        private const UInt32 Button01 = (UInt32)Button.Button01;
+        private const UInt32 Button15 = (UInt32)Button.Button15;
 
         public static void Process(States value, Controller controller)
         {
-            if (null != controller.SharedState)
+            if (controller.SharedState != null)
             {
                 // If either state of the Autopilot switch is released 
                 if (Reactive.MultiSwitchStateOff(value, apahButton))

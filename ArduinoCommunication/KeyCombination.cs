@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,22 +15,25 @@ namespace ArduinoCommunication
         public Arduino Arduino { get; set; }
 
         // Press down modifier then key.  Release key then release modifier
-        public Task Play() =>
-            Task.Run(         async () => await PressKeys(Arduino, Modifier, true).ConfigureAwait(false))
+        public Task Play(ILogger logger) =>
+            Task.Run(         async () => await PressKeys(Arduino, Modifier, true, logger).ConfigureAwait(false))
                 .ContinueWith(async (_) => await Task.Delay(Delay).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (_) => await PressKeys(Arduino, new byte[] { Key }, true).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async (_) => await PressKeys(Arduino, new byte[] { Key }, true, logger).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
                 .ContinueWith(async (_) => await Task.Delay(Delay).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (_) => await PressKeys(Arduino, new byte[] { Key }, false).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(async (_) => await PressKeys(Arduino, new byte[] { Key }, false, logger).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
                 .ContinueWith(async (_) => await Task.Delay(Delay).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith(async (_) => await PressKeys(Arduino, Modifier, false).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion);
-        private static async Task PressKeys(Arduino arduino, byte[] keys, bool pressKeys)
+                .ContinueWith(async (_) => await PressKeys(Arduino, Modifier, false, logger).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion);
+        private static async Task PressKeys(Arduino arduino, byte[] keys, bool pressKeys, ILogger logger)
         {
+            if (arduino == null)
+                return;
+
             foreach (var key in keys)
             {
                 if (pressKeys)
-                    await arduino?.DepressKey(key);
+                    await arduino.DepressKey(key).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKeys:DepressKey", logger)).ConfigureAwait(false);
                 else
-                    await arduino?.ReleaseKey(key);
+                    await arduino.ReleaseKey(key).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKeys:ReleaseKey", logger)).ConfigureAwait(false);
             }
         }
     }

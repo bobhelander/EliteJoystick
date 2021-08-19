@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "Communication\CommonCommunication.csproj", "{EAA556AF-5DA8-4C20-8511-5D78D04786D0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CED90B10-CE11-4EFD-87CD-16DF8E2AC282}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -21,10 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickConsole", "Eli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickClient", "EliteJoystickClient\EliteJoystickClient.csproj", "{0B771627-5640-403F-9985-9E93539ADA6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiJoystickResponder", "EddiJoystickResponder\EddiJoystickResponder.csproj", "{3E288CDA-C263-4669-9669-DD176E932985}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiJoystickResponderTest", "EliteJoystickTest\EddiJoystickResponderTest.csproj", "{1857F423-72C5-448B-9E6C-E1E588BCB883}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteJoystickServiceTest", "EliteJoystickServiceTest\EliteJoystickServiceTest.csproj", "{D954D70D-4308-4426-BCB8-039B185A1292}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vJoyMapping", "vJoyMapping\vJoyMapping.csproj", "{57D363BB-FBF9-4781-9CA8-2F3B8993AC74}"
@@ -33,21 +25,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteJoystick.Common", "Eli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EliteGameStatus", "EliteGameStatus\EliteGameStatus.csproj", "{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardInput", "KeyboardInput\KeyboardInput.csproj", "{D2692A08-E25C-429A-92B3-7ABB3E176AD4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardMapping", "KeyboardMapping\KeyboardMapping.csproj", "{3E61669A-95ED-4564-883D-5B33C4DCCE8B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrowserMapping", "BrowserMapping\BrowserMapping.csproj", "{C1BC2BB3-A6AA-4BF4-9FC8-8617F32AF6FB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleChrome", "GoogleChrome\GoogleChrome.csproj", "{06CC1E29-5828-40D3-B1C9-7AEA29AC5640}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdsmConnector", "EdsmConnector\EdsmConnector.csproj", "{B3336B3C-B94A-48CC-8C6A-BC3FD32C78DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteRemoteJoystick", "EliteRemoteJoystick\EliteRemoteJoystick.csproj", "{EB9ED620-047E-4CD6-8939-67BAD3412225}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForceFeedbackSharpDx", "..\EDForceFeedback\ForceFeedbackSharpDx\ForceFeedbackSharpDx.csproj", "{DB270371-D203-4AE8-9337-A0A28B4E4720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForceFeedBackController", "ForceFeedBackController\ForceFeedBackController.csproj", "{38778405-6003-4F8B-8BDF-74C725BF0FDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForceFeedBackController", "ForceFeedBackController\ForceFeedBackController.csproj", "{38778405-6003-4F8B-8BDF-74C725BF0FDD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{672A790F-62AD-4EE0-85E5-A1E55A136FB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "CommonCommunication\CommonCommunication.csproj", "{84A05C88-F406-4740-9ACC-0FF120B0BB15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,14 +43,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB5E6B01-B9AE-4615-9B0D-7C5EC9CC9FFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAA556AF-5DA8-4C20-8511-5D78D04786D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{782CC3EB-12C5-403D-ACD0-3E009EF83FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,14 +55,6 @@ Global
 		{0B771627-5640-403F-9985-9E93539ADA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B771627-5640-403F-9985-9E93539ADA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B771627-5640-403F-9985-9E93539ADA6C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E288CDA-C263-4669-9669-DD176E932985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E288CDA-C263-4669-9669-DD176E932985}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E288CDA-C263-4669-9669-DD176E932985}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E288CDA-C263-4669-9669-DD176E932985}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1857F423-72C5-448B-9E6C-E1E588BCB883}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D954D70D-4308-4426-BCB8-039B185A1292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D954D70D-4308-4426-BCB8-039B185A1292}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D954D70D-4308-4426-BCB8-039B185A1292}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -99,22 +71,6 @@ Global
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14CE2DF-9F7C-4A6B-B0B5-A7744A575759}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2692A08-E25C-429A-92B3-7ABB3E176AD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2692A08-E25C-429A-92B3-7ABB3E176AD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2692A08-E25C-429A-92B3-7ABB3E176AD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2692A08-E25C-429A-92B3-7ABB3E176AD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E61669A-95ED-4564-883D-5B33C4DCCE8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E61669A-95ED-4564-883D-5B33C4DCCE8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E61669A-95ED-4564-883D-5B33C4DCCE8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E61669A-95ED-4564-883D-5B33C4DCCE8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1BC2BB3-A6AA-4BF4-9FC8-8617F32AF6FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1BC2BB3-A6AA-4BF4-9FC8-8617F32AF6FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1BC2BB3-A6AA-4BF4-9FC8-8617F32AF6FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1BC2BB3-A6AA-4BF4-9FC8-8617F32AF6FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06CC1E29-5828-40D3-B1C9-7AEA29AC5640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06CC1E29-5828-40D3-B1C9-7AEA29AC5640}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06CC1E29-5828-40D3-B1C9-7AEA29AC5640}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06CC1E29-5828-40D3-B1C9-7AEA29AC5640}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B3336B3C-B94A-48CC-8C6A-BC3FD32C78DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3336B3C-B94A-48CC-8C6A-BC3FD32C78DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3336B3C-B94A-48CC-8C6A-BC3FD32C78DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -131,6 +87,14 @@ Global
 		{38778405-6003-4F8B-8BDF-74C725BF0FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38778405-6003-4F8B-8BDF-74C725BF0FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38778405-6003-4F8B-8BDF-74C725BF0FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672A790F-62AD-4EE0-85E5-A1E55A136FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

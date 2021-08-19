@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -198,6 +199,30 @@ namespace EliteJoystick.Common
                 //Console.WriteLine($"PS ExitCode: {process.ExitCode}");
                 //process.Close();
             }).ConfigureAwait(false);
+        }
+
+        public static void LogTaskResult(Task t, string methodName, ILogger logger)
+        {
+            if (t.IsCanceled)
+            {
+                logger.LogWarning($"{methodName} Canceled");
+            }
+            else if (t.IsFaulted)
+            {
+                // Logging and Auditing 
+
+                // Pull the innermost exception
+                Exception ex = t.Exception;
+                while (ex is AggregateException && ex.InnerException != null)
+                    ex = ex.InnerException;
+
+                logger.LogError($"{methodName} Exception: {ex}");
+            }
+            else if (t.IsCompleted)
+            {
+                // Enable when debugging TaskCanceledExceptions
+                //logger.LogDebug($"{methodName} Completed");
+            }
         }
     }
 }

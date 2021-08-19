@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,9 +10,6 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleZJoystick
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static void Process(States value, Controller controller)
         {
             var current = value.Current as State;
@@ -48,7 +46,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 {
                     if (controller.GetJoystickButton(MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual) == false)
                     {
-                        log.Debug("Reverse Throttle On");
+                        controller.Logger.LogDebug("Reverse Throttle On");
                         controller.SetJoystickButton(true, MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual);
                     }
                 }
@@ -56,7 +54,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 {
                     if (controller.GetJoystickButton(MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual) == true)
                     {
-                        log.Debug("Reverse Throttle Off");
+                        controller.Logger.LogDebug("Reverse Throttle Off");
                         controller.SetJoystickButton(false, MappedButtons.AlternateReverseToggle, vJoyTypes.Virtual);
                     }
                 }

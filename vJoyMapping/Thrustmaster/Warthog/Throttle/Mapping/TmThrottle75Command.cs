@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +11,6 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottle75Command
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static UInt32 rdrAlt = (UInt32)Button.Button25;
 
         public static void Process(States value, Controller controller)
@@ -20,7 +18,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             if (Reactive.ButtonReleased(value, rdrAlt))
             {
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.Throttle75, 200);
-                log.Debug("75% throttle");
+                controller.Logger.LogDebug("75% throttle");
             }
         }
     }

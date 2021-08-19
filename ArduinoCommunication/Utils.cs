@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace ArduinoCommunication
 {
     public static class Utils
     {
-        public static async Task TypeFromClipboard(Arduino arduino)
+        public static async Task TypeFromClipboard(Arduino arduino, ILogger logger)
         {
             var text = await Utils.CallClipboard().ConfigureAwait(false);
-            await TypeFullString(arduino, text).ConfigureAwait(false);
+            await TypeFullString(arduino, text, logger).ConfigureAwait(false);
         }
 
-        public static Task TypeFullString(Arduino arduino, String text)
+        public static Task TypeFullString(Arduino arduino, String text, ILogger logger)
         {
             return new SendText
             {
@@ -23,10 +24,10 @@ namespace ArduinoCommunication
                 Text = text,
                 Arduino = arduino,
                 Newline = true,
-            }.Play();
+            }.Play(logger);
         }
 
-        public static Task KeyCombo(Arduino arduino, byte[] modifier, byte key)
+        public static Task KeyCombo(Arduino arduino, byte[] modifier, byte key, ILogger logger)
         {
             return new KeyCombination
             {
@@ -34,11 +35,14 @@ namespace ArduinoCommunication
                 Modifier = modifier,
                 Key = key,
                 Arduino = arduino
-            }.Play();
+            }.Play(logger);
         }
 
+        //static public async Task<string> CallClipboard() =>
+        //    await StartSTATask<string>(() => System.Windows.Clipboard.GetText()).ConfigureAwait(false);
+
         static public async Task<string> CallClipboard() =>
-            await StartSTATask<string>(() => System.Windows.Clipboard.GetText()).ConfigureAwait(false);
+            await StartSTATask<string>(() => CommonCommunication.Clipboard.GetText()).ConfigureAwait(false);
 
         public static Task<T> StartSTATask<T>(Func<T> func)
         {
@@ -58,5 +62,7 @@ namespace ArduinoCommunication
             thread.Start();
             return tcs.Task;
         }
+
+        
     }
 }

@@ -10,13 +10,10 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleVoiceCommandHandler
     {
-        static UInt32 MIC = (UInt32)Button.Button02;
+        private const UInt32 MIC = (UInt32)Button.Button02;
 
         public static void Process(States value, Controller controller)
         {
-            var current = value.Current as State;
-            var previous = value.Previous as State;
-
             if (Reactive.ButtonPressed(value, MIC))
             {
                 controller.SharedState.Mute = true;

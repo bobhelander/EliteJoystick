@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,6 @@ namespace EliteJoystickService
 {
     public class MessageHandler
     {
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public CommonCommunication.Client Client { get; set; }
         public Action ConnectJoysticks { get; set; }
         public Action DisconnectJoysticks { get; set; }
@@ -20,6 +18,7 @@ namespace EliteJoystickService
         public Action DisconnectArduino { get; set; }
         public Action ReconnectArduino { get; set; }
         public Action<string> KeyPress { get; set; }
+        public ILogger Logger { get; set; }
 
         public async Task HandleMessage(
             string rawMessage,
@@ -28,7 +27,7 @@ namespace EliteJoystickService
         {
             var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);
 
-            log.Debug($"Message Type received: {message.Type}");
+            Logger?.LogDebug($"Message Type received: {message.Type}");
 
             switch (message?.Type)
             {
@@ -50,12 +49,11 @@ namespace EliteJoystickService
                 case "reconnect_arduino":
                     await Task.Run(ReconnectArduino).ConfigureAwait(false);
                     break;
-                case "keypress":
-                    await Task.Run(() => KeyPress(message.Data)).ConfigureAwait(false);
-                    break;
+                //case "keypress":
+                //    await Task.Run(() => KeyPress(message.Data)).ConfigureAwait(false);
+                //    break;
                 case "keyboard_output":
-                    log.Debug($"Arduino: testing");
-                    await Task.Run(async () => await ArduinoCommunication.Utils.TypeFullString(arduino, message.Data).ConfigureAwait(false)).ConfigureAwait(false);
+                    await ArduinoCommunication.Utils.TypeFullString(arduino, message.Data, Logger).ConfigureAwait(false);
                     break;
                 default:
                     //Unknown message

@@ -7,13 +7,12 @@ using Usb.GameControllers.Thrustmaster.Warthog.Throttle.Models;
 using vJoyMapping.Common;
 using System.Reactive.Linq;
 using Usb.GameControllers.Common;
+using Microsoft.Extensions.Logging;
 
 namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleCycleCommand
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         //Observable.Interval: To create the heartbeat the the button will be pressed on
         private static IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(500)).Select(_ => 1);
 
@@ -32,9 +31,9 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                     cycleSubsystems = timer.Subscribe(x =>
                     {
                         controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 200);
-                        log.Debug($"Cycle Subsystem: Next");
+                        controller.Logger.LogDebug($"Cycle Subsystem: Next");
                     });
-                    log.Debug($"Cycle Subsystem: Running");
+                    controller.Logger.LogDebug($"Cycle Subsystem: Running");
                 }
             }
             else
@@ -43,7 +42,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 {
                     cycleSubsystems.Dispose();
                     cycleSubsystems = null;
-                    log.Debug($"Cycle Subsystem: Stopped");
+                    controller.Logger.LogDebug($"Cycle Subsystem: Stopped");
                 }
             }
         }

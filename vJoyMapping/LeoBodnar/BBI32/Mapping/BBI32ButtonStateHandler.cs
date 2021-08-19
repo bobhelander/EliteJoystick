@@ -10,8 +10,6 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
 {
     public static class BBI32ButtonStateHandler
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static void Process(States value, Controller controller)
         {
             // Buttons 21 - 32 On the Commander controller

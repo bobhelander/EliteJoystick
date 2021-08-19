@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,10 +8,7 @@ namespace ForceFeedBackController.Handlers
 {
     public static class EffectHandler
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        public static void Process(Controller controller, EliteAPI.Events.IEvent apiEvent)
+        public static void Process(Controller controller, EliteAPI.Events.IEvent apiEvent, ILogger logger)
         {
             try
             {
@@ -51,7 +49,7 @@ namespace ForceFeedBackController.Handlers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message);
+                logger.LogError(ex.Message);
             }
         }
     }

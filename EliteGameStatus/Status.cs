@@ -1,5 +1,6 @@
 ﻿using EliteAPI;
 using EliteJoystick.Common.EliteGame;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,21 +10,22 @@ using System.Text;
 
 namespace EliteGameStatus
 {
-    public class Status : IObservable<EliteAPI.Events.IEvent>
+    public class Status : IObservable<EliteAPI.Events.IEvent>, IDisposable
     {
-        private static readonly log4net.ILog log =
-           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private ILogger logger { get; }
+        private bool Initialized { get; set; } = false;
+        private readonly List<IObserver<EliteAPI.Events.IEvent>> observers = new List<IObserver<EliteAPI.Events.IEvent>>();
 
-        private List<IObserver<EliteAPI.Events.IEvent>> observers = new List<IObserver<EliteAPI.Events.IEvent>>();
+        public EliteDangerousAPI EliteAPI { get; set; }
 
-        public EliteDangerousAPI EliteAPI { get; }
-
-        public Status()
+        public Status(ILogger logger)
         {
+            this.logger = logger;
             EliteAPI = new EliteDangerousAPI();
             try
             {
                 EliteAPI.Start();
+                Initialized = true;
                 EliteAPI.Events.AllEvent += Events_AllEvent;
 
                 EliteAPI.Events.StartJumpEvent += Events_StartJumpEvent;
@@ -32,30 +34,24 @@ namespace EliteGameStatus
             }
             catch(Exception ex)
             {
-                ;
+                logger?.LogError(ex.Message);
             }
         }
 
         private void Events_ScanEvent(object sender, EliteAPI.Events.ScanInfo e)
         {
-            log.Debug($"ScanEvent Detected");
-
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
         private void Events_FSSAllBodiesFoundEvent(object sender, EliteAPI.Events.FSSAllBodiesFoundInfo e)
         {
-            log.Debug($"AllBodiesFound Detected");
-
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
         private void Events_StartJumpEvent(object sender, EliteAPI.Events.StartJumpInfo e)
         {
-            log.Debug($"JumpEvent Detected");
-
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
@@ -81,6 +77,15 @@ namespace EliteGameStatus
             }
 
             return new Unsubscriber(observers, observer);
+        }
+
+        public void Dispose()
+        {
+            if (Initialized)
+            {
+                EliteAPI?.Stop();
+                EliteAPI = null;
+            }
         }
 
         private class Unsubscriber : IDisposable

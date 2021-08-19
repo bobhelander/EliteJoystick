@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,7 @@ namespace EliteJoystickClient
 {
     public class MessageHandler
     {
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        public ILogger Logger { get; set; }
         public CommonCommunication.Client Client { get; set; }
 
         public void HandleMessage(string rawMessage)
@@ -20,7 +19,7 @@ namespace EliteJoystickClient
             {
                 var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);
 
-                log.Debug($"Message Type: {message.Type}");
+                Logger?.LogDebug($"Message Type: {message.Type}");
 
                 switch (message?.Type)
                 {
@@ -32,7 +31,7 @@ namespace EliteJoystickClient
                             var outputMessage = JsonConvert.SerializeObject(
                                 new CommonCommunication.Message { Type = "keyboard_output", Data = data });
 
-                            log.Debug($"Sending Clipboard Contents: {data}");
+                            Logger?.LogDebug($"Sending Clipboard Contents: {data}");
 
                             Client.SendMessageAsync(outputMessage).Wait();
                         }
@@ -46,12 +45,12 @@ namespace EliteJoystickClient
                         Utils.KillProcess("EliteDangerous64").Wait();
                         break;
 
-                    case "navigate_url":
-                        Utils.NavigateUrl(message.Data);
-                        break;
+                    //case "navigate_url":
+                    //    Utils.NavigateUrl(message.Data);
+                    //    break;
 
                     case "client_information":
-                        log.Info(message.Data);
+                        Logger?.LogInformation(message.Data);
                         break;
 
                     default:
@@ -61,7 +60,7 @@ namespace EliteJoystickClient
             }
             catch (Exception ex)
             {
-                log.Debug($"Error: {ex}");
+                Logger?.LogDebug($"Error: {ex}");
             }
         }
     }

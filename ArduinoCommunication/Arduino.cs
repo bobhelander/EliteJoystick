@@ -1,21 +1,24 @@
 ﻿using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ArduinoCommunication
 {
     public class Arduino : IArduino
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private System.IO.Ports.SerialPort SerialPort { get; set; }
+        private ILogger Logger { get; }
 
-        public Arduino(String commPort) =>
+        public Arduino(String commPort, ILogger logger)
+        {
+            this.Logger = logger;
             Open(commPort);
+        }
 
         public bool IsOpen() =>
             SerialPort?.IsOpen ?? false;
@@ -32,32 +35,77 @@ namespace ArduinoCommunication
             SerialPort = null;
         }
 
-        public async Task ReleaseKey(byte key) =>
-            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, key, 0x00, 0xFF }, 0, 4).ConfigureAwait(false);
+        public async Task ReleaseKey(byte key)
+        {
+            CancellationToken cancellationToken = new CancellationToken(false);
+            try
+            {
+                await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, key, 0x00, 0xFF }, 0, 4, cancellationToken)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "ReleaseKey:WriteAsync", Logger)).ConfigureAwait(false);
 
-        public async Task DepressKey(byte key) =>
-            await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, key, 0xFF }, 0, 4).ConfigureAwait(false);
+                await SerialPort.BaseStream.FlushAsync(cancellationToken)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "ReleaseKey:FlushAsync", Logger)).ConfigureAwait(false);
+            }
+            catch(TaskCanceledException ex)
+            {
+                Logger.LogError(ex.Message);
+            }
+        }
 
-        public async Task ReleaseAll() =>
-            await SerialPort?.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4);
+        public async Task DepressKey(byte key)
+        {
+            CancellationToken cancellationToken = new CancellationToken(false);
+            try
+            {
+                await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, key, 0xFF }, 0, 4, cancellationToken)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "DepressKey:WriteAsync", Logger)).ConfigureAwait(false);
+
+                await SerialPort.BaseStream.FlushAsync(cancellationToken)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "DepressKey:FlushAsync", Logger)).ConfigureAwait(false);
+            }
+            catch (TaskCanceledException ex)
+            {
+                Logger.LogError(ex.Message);
+            }
+        }
+
+        public async Task ReleaseAll()
+        {
+            if (IsOpen() == false)
+                return;
+
+            CancellationToken cancellationToken = new CancellationToken(false);
+
+            try
+            {
+                await SerialPort.BaseStream.WriteAsync(new byte[] { 0x00, 0x00, 0x00, 0xFF }, 0, 4, cancellationToken)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "ReleaseAll:WriteAsync", Logger)).ConfigureAwait(false);
+
+                await SerialPort.BaseStream.FlushAsync(cancellationToken)
+                    .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "ReleaseAll:FlushAsync", Logger)).ConfigureAwait(false);
+            }
+            catch (TaskCanceledException)
+            {
+            }
+        }
 
         public async Task PressKey(byte key, int duration = 30)
         {
-            await DepressKey(key).ConfigureAwait(false);
-            await Task.Delay(duration).ConfigureAwait(false);
-            await ReleaseKey(key).ConfigureAwait(false);
+            if (IsOpen() == false)
+                return;
+
+            await DepressKey(key).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:DepressKey", Logger)).ConfigureAwait(false);
+            await Task.Delay(duration).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:Delay", Logger)).ConfigureAwait(false);
+            await ReleaseKey(key).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:ReleaseKey", Logger)).ConfigureAwait(false);
         }
 
         public async Task TypeFullString(String text) =>
-            await Task.Run(async () => await Utils.TypeFullString(this, text).ConfigureAwait(false))
-             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
+            await Utils.TypeFullString(this, text, Logger).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "TypeFullString", Logger)).ConfigureAwait(false);
 
         public async Task TypeFromClipboard() =>
-            await Task.Run(async () => await Utils.TypeFromClipboard(this).ConfigureAwait(false))
-             .ContinueWith(t => log.Error($"TypeFromClipboard Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
+            await Utils.TypeFromClipboard(this, Logger).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "TypeFromClipboard", Logger)).ConfigureAwait(false);
 
         public async Task KeyCombo(byte[] modifier, byte key) =>
-            await Task.Run(async () => await Utils.KeyCombo(this, modifier, key).ConfigureAwait(false))
-             .ContinueWith(t => log.Error($"SendKeyCombo Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
+            await Utils.KeyCombo(this, modifier, key, Logger).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "KeyCombo", Logger)).ConfigureAwait(false);
     }
 }

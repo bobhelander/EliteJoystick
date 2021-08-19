@@ -4,18 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EliteAPI.Events;
+using Microsoft.Extensions.Logging;
 
 namespace EliteGameStatus.Exploration
 {
     public static class EliteActions
     {
-        private static readonly log4net.ILog inGameLog =
-            log4net.LogManager.GetLogger("log4net-default-repository", "InGame");
-
-        public static void OutputValuableSystems(EdsmConnector.System starSystem)
+        public static void OutputValuableSystems(EdsmConnector.System starSystem, ILogger logger) // "InGame" Logger
         {
-            inGameLog.Info($"-----------------------------------------------------------------------------------------------------------------");
-            inGameLog.Info($"System: {starSystem.name}");
+            logger.LogInformation($"-----------------------------------------------------------------------------------------------------------------");
+            logger.LogInformation($"System: {starSystem.name}");
 
             foreach (var body in starSystem.bodies)
             {
@@ -32,11 +30,11 @@ namespace EliteGameStatus.Exploration
                     body.terraformingState, 
                     starScan.value);
 
-                inGameLog.Info(bodyText);
+                logger.LogInformation(bodyText);
             }
         }
 
-        internal static void OutputValuableBody(ScanInfo scanInfoEvent)
+        internal static void OutputValuableBody(ScanInfo scanInfoEvent, ILogger logger) // "InGame" Logger
         {
             if (null != scanInfoEvent)
             {
@@ -44,7 +42,7 @@ namespace EliteGameStatus.Exploration
                 if (false == string.IsNullOrEmpty(scanInfoEvent.TerraformState))
                 {
                     output = $"Body {scanInfoEvent.BodyName} is {scanInfoEvent.TerraformState}";
-                    inGameLog.Info(output);
+                    logger.LogInformation(output);
                 }
             }
         }

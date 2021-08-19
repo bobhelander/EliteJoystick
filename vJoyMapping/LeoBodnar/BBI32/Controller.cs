@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -10,12 +11,9 @@ namespace vJoyMapping.LeoBodnar.BBI32
 {
     public class Controller : Common.Controller
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public void Initialize(string devicePath)
         {
-            var joystick = new Usb.GameControllers.LeoBodnar.BBI32.Joystick(devicePath);
+            var joystick = new Usb.GameControllers.LeoBodnar.BBI32.Joystick(devicePath, Logger);
             
             MapControls(joystick);
             joystick.Initialize();
@@ -25,8 +23,8 @@ namespace vJoyMapping.LeoBodnar.BBI32
         {
             // Add in the mappings
             Disposables = new List<IDisposable> {
-                bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32ButtonStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-                bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
+                bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32ButtonStateHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
+                bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
                 //bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32VoicemeeterHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
             };            
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -8,10 +9,7 @@ namespace EliteGameStatus.Handlers
 {
     public static class ScanEventHandler
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        public static void Process(EliteAPI.Events.IEvent apiEvent)
+        public static void Process(EliteAPI.Events.IEvent apiEvent, ILogger logger, ILogger inGameLogger)
         {
             try
             {
@@ -19,12 +17,12 @@ namespace EliteGameStatus.Handlers
 
                 if (null != scanInfoEvent)
                 {
-                    Exploration.EliteActions.OutputValuableBody(scanInfoEvent);
+                    Exploration.EliteActions.OutputValuableBody(scanInfoEvent, inGameLogger);
                 }
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message);
+                logger.LogError(ex.Message);
             }
         }
     }

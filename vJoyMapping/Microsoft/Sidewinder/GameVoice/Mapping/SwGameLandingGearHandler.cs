@@ -10,8 +10,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
 {
     public static class SwGameLandingGearHandler
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static private byte button1 = (byte)Button.Button1;
 
         public static void Process(States value, Controller controller)

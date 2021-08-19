@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,6 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
 {
     public static class SwCommanderProgramIds
     {
-        private static readonly log4net.ILog log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static void Process(States value, Controller controller)
         {
             if (false == controller.SharedState.ProgramIdsMode)
@@ -53,10 +51,10 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
             // Get items above the current id
             uint vJoyId = controller.Settings.vJoyMapper.GetJoystickId(joystickType);
             var controllersAbove = availableTypes.Where(x => controller.Settings.vJoyMapper.GetJoystickId(x) > vJoyId);
-            if (0 == controllersAbove.Count())
-                SwapLowest(controller, joystickType, availableTypes);
-            else
+            if (controllersAbove.Any())
                 SwapLowestId(controller, joystickType, controllersAbove);
+            else
+                SwapLowest(controller, joystickType, availableTypes);
         }
 
         private static void SwapLowestId(Controller controller, string joystickType, IEnumerable<string> availableTypes)
@@ -70,7 +68,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Mapping
 
         private static void Swap(Controller controller, string joystickType, string withjoystickType)
         {
-            log.Debug($"Swaping {joystickType}:{controller.Settings.vJoyMapper.vJoyMap[joystickType]} with {withjoystickType}:{controller.Settings.vJoyMapper.vJoyMap[withjoystickType]}");
+            controller.Logger.LogDebug($"Swaping {joystickType}:{controller.Settings.vJoyMapper.vJoyMap[joystickType]} with {withjoystickType}:{controller.Settings.vJoyMapper.vJoyMap[withjoystickType]}");
             uint tempId = controller.Settings.vJoyMapper.vJoyMap[joystickType];
             controller.Settings.vJoyMapper.vJoyMap[joystickType] = controller.Settings.vJoyMapper.vJoyMap[withjoystickType];
             controller.Settings.vJoyMapper.vJoyMap[withjoystickType] = tempId;

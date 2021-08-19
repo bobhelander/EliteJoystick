@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +11,27 @@ namespace EliteJoystickClient
 {
     public class Client
     {
-        private static readonly log4net.ILog log = 
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        public ILogger Logger { get; set; }
         public string Name { get; set; }
         public CommonCommunication.Server Server { get; set; }
         public MessageHandler MessageHandler { get; set; }
-        public GoogleChrome.Chrome Chrome { get; set; }
+        //public GoogleChrome.Chrome Chrome { get; set; }
         private Task ServerListeningTask { get; set; }
 
         public async Task Initialize()
         {
             // Add the standard message handler
-            MessageHandler = new MessageHandler();
+            MessageHandler = new MessageHandler() { Logger = Logger };
 
             // Create the client server pipe
             Server = new CommonCommunication.Server { ContinueListening = true };
 
             ServerListeningTask = Task.Factory.StartNew(() => Server.StartListening(Name, MessageHandler.HandleMessage),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
-                .ContinueWith(t => { log.Error($"Server Listening Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+                .ContinueWith(t => { Logger?.LogError($"Server Listening Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
 
             // Contact the Service Pipe
-            MessageHandler.Client = new CommonCommunication.Client();
+            MessageHandler.Client = new CommonCommunication.Client() { Logger = Logger };
 
             await MessageHandler.Client.CreateConnection("elite_joystick").ConfigureAwait(false);
 
@@ -42,7 +41,7 @@ namespace EliteJoystickClient
 
             await MessageHandler.Client.SendMessageAsync(message).ConfigureAwait(false);
 
-            Chrome = new GoogleChrome.Chrome("http://localhost:9222");
+            //Chrome = new GoogleChrome.Chrome("http://localhost:9222");
         }
 
         public async Task Shutdown()
@@ -58,7 +57,7 @@ namespace EliteJoystickClient
 
         public async Task HandleCommand(string command, Dictionary<string, string> environmentVars)
         {
-            log.Debug($"Receieved command: {command}");
+            Logger?.LogDebug($"Receieved command: {command}");
             switch (command)
             {
                 case "connect_joysticks":
@@ -105,7 +104,7 @@ namespace EliteJoystickClient
                 var outputMessage = JsonConvert.SerializeObject(
                     new CommonCommunication.Message { Type = "keyboard_output", Data = data });
 
-                log.Debug($"Sending Clipboard Contents: {data}");
+                Logger?.LogDebug($"Sending Clipboard Contents: {data}");
 
                 await MessageHandler.Client.SendMessageAsync(outputMessage).ConfigureAwait(false);
             }
@@ -114,6 +113,7 @@ namespace EliteJoystickClient
         public void CopyToClipboard(string text) =>
             Utils.SetClipboardText(text);
 
+        /*
         public void Navigate(string url)
         {
             var sessions = Chrome.GetAvailableSessions();
@@ -144,5 +144,6 @@ namespace EliteJoystickClient
             Thread.Sleep(1500);
             Chrome.Scroll(session, scrollDistance);
         }
+        */
     }
 }

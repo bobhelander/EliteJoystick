@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,21 @@ namespace EliteJoystickConsole
 {
     public static class Program
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static void Main(string[] args)
         {
-            var testing = log4net.LogManager.GetCurrentLoggers();
             if (false)
             {
                 //var test = EdsmConnector.Connector.GetSystem("Maia").Result;
                 //var test = EdsmConnector.Connector.GetSystem("Sol").Result;
                 var test = EdsmConnector.Connector.GetSystem("Hypoae Aewsy CG-F d11-4").Result;
 
-                EliteGameStatus.Exploration.EliteActions.OutputValuableSystems(test);
+                //EliteGameStatus.Exploration.EliteActions.OutputValuableSystems(test);
 
                 var test2 = test.name;
             }
             if (false)
             {
+                /*
                 var chrome = new GoogleChrome.Chrome("http://localhost:9222");
 
                 foreach (var session in chrome.GetAvailableSessions())
@@ -56,22 +55,30 @@ namespace EliteJoystickConsole
                 chrome.ActivateTab(sessions[0]);
                 //chrome.NavigateTo(sessions[0], "http://eddb.io");
                 chrome.NavigateTo(sessions[0], uri);
+                */
             }
             if (true)
             {
-                var client = new EliteJoystickClient.Client { Name = "elite_joystick_client" };
+                using (ILoggerFactory loggerFactory =
+                LoggerFactory.Create(builder => builder.AddSimpleConsole(options =>
+                    { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; }).SetMinimumLevel(LogLevel.Debug)))
+                {
 
-                client.Initialize().Wait();
+                    ILogger<EliteJoystickClient.Client> logger = loggerFactory.CreateLogger<EliteJoystickClient.Client>();
 
-                client.ConnectArduino().Wait();
-                Console.WriteLine("connected");
-                //Console.ReadKey();
-                //client.PasteClipboard().Wait();
+                    var client = new EliteJoystickClient.Client { Name = "elite_joystick_client", Logger = logger };
 
-                var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
-                    .ContinueWith(t => log.Error($"ConnectJoysticks Exception: {t.Exception}"),
-                    TaskContinuationOptions.OnlyOnFaulted);
+                    client.Initialize().Wait();
 
+                    client.ConnectArduino().Wait();
+                    Console.WriteLine("connected");
+                    //Console.ReadKey();
+                    //client.PasteClipboard().Wait();
+
+                    var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
+                        .ContinueWith(t => Console.WriteLine($"ConnectJoysticks Exception: {t.Exception}"),
+                        TaskContinuationOptions.OnlyOnFaulted);
+                }
             }
             if (false)
             {

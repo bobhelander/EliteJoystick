@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,8 +12,6 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
 {
     public static class BBI32UtilCommandsStateHandler
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public static void Process(States value, Controller controller)
         {
 
@@ -52,7 +51,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             // Kill process
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button5))
             {
-                log.Debug($"Kill process");
+                controller.Logger.LogDebug($"Kill process");
                 Utils.KillProcess("EliteDangerous64").Wait();
             }
 
@@ -60,7 +59,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             {
                 // Take Picture  ALT-F10
                 Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB).ConfigureAwait(false));
-                log.Debug($"Take Picture");
+                controller.Logger.LogDebug($"Take Picture");
             }
         }
 
@@ -85,7 +84,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.OrbitLinesToggle, 150);
 
                 controller.SharedState.OrbitLines = !controller.SharedState.OrbitLines;
-                log.Debug($"OrbitLines: {controller.SharedState.OrbitLines}");
+                controller.Logger.LogDebug($"OrbitLines: {controller.SharedState.OrbitLines}");
             }
 
             // FFS Scan 180 / Rotation Lock
@@ -101,7 +100,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
                 // CRTL+ALT+G
                 Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47).ConfigureAwait(false));
 
-                log.Debug($"Toggle HeadsUpDisplay");
+                controller.Logger.LogDebug($"Toggle HeadsUpDisplay");
             }
 
             // UI Panel Focus  <UIFocus>
@@ -189,9 +188,9 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
 
             }).ContinueWith(t =>
             {
-                if (t.IsCanceled) log.Error($"StartFreeCamera Canceled");
-                else if (t.IsFaulted) log.Error($"StartFreeCamera Exception: {t.Exception}");
-                else log.Debug($"StartFreeCamera");
+                if (t.IsCanceled) controller.Logger.LogError($"StartFreeCamera Canceled");
+                else if (t.IsFaulted) controller.Logger.LogError($"StartFreeCamera Exception: {t.Exception}");
+                else controller.Logger.LogDebug($"StartFreeCamera");
             });
         }
 
@@ -209,9 +208,9 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
             }).ContinueWith(t =>
             {
-                if (t.IsCanceled) log.Error($"StartFreeCamera Canceled");
-                else if (t.IsFaulted) log.Error($"StartFreeCamera Exception: {t.Exception}");
-                else log.Debug($"StartFreeCamera");
+                if (t.IsCanceled) controller.Logger.LogError($"StartFreeCamera Canceled");
+                else if (t.IsFaulted) controller.Logger.LogError($"StartFreeCamera Exception: {t.Exception}");
+                else controller.Logger.LogDebug($"StartFreeCamera");
             });
         }
     }
