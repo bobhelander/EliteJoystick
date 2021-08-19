@@ -11,7 +11,7 @@ namespace EliteJoystickService.Mappings
     {
         public static void Process(EliteAPI.Events.IEvent statusEvent, ILogger logger)
         {
-            logger?.LogDebug($"{statusEvent.GetType().ToString()}");
+            logger?.LogDebug($"{statusEvent.GetType()}");
         }
     }
 }

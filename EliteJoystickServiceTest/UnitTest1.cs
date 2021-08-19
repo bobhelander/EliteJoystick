@@ -94,8 +94,6 @@ namespace EliteJoystickServiceTest
                 var subscription = SharedState.GearChanged.Subscribe(
                     x => ffb2.CallActivateButton(vJoyTypes.Virtual, MappedButtons.LandingGearToggle, 200));
 
-
-
                 while (true)
                     Thread.Sleep(1000);
             }

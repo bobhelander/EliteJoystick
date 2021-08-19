@@ -14,12 +14,10 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
     {
         public static void Process(States value, Controller controller)
         {
-
             if (controller.TestButtonDown(value.Current.Buttons, (uint)BBI32Button.Button1))
             {
                 // If in Fixed Camera Mode
                 ProcessFixedCamera(value, controller);
-
             }
             else if (controller.TestButtonDown(value.Current.Buttons, (uint)BBI32Button.Button2))
             {
@@ -51,7 +49,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             // Kill process
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button5))
             {
-                controller.Logger.LogDebug($"Kill process");
+                controller.Logger.LogDebug("Kill process");
                 Utils.KillProcess("EliteDangerous64").Wait();
             }
 
@@ -59,7 +57,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             {
                 // Take Picture  ALT-F10
                 Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB).ConfigureAwait(false));
-                controller.Logger.LogDebug($"Take Picture");
+                controller.Logger.LogDebug("Take Picture");
             }
         }
 
@@ -100,7 +98,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
                 // CRTL+ALT+G
                 Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47).ConfigureAwait(false));
 
-                controller.Logger.LogDebug($"Toggle HeadsUpDisplay");
+                controller.Logger.LogDebug("Toggle HeadsUpDisplay");
             }
 
             // UI Panel Focus  <UIFocus>
@@ -124,7 +122,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             {
                 // J Key
                 Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0x4A).ConfigureAwait(false));
-            }            
+            }
 
             // Vanity Camera Next
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button11))
@@ -185,12 +183,11 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
 
                 // Toggle Free Camera
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.FreeCameraToggle, 150);
-
             }).ContinueWith(t =>
             {
-                if (t.IsCanceled) controller.Logger.LogError($"StartFreeCamera Canceled");
+                if (t.IsCanceled) controller.Logger.LogError("StartFreeCamera Canceled");
                 else if (t.IsFaulted) controller.Logger.LogError($"StartFreeCamera Exception: {t.Exception}");
-                else controller.Logger.LogDebug($"StartFreeCamera");
+                else controller.Logger.LogDebug("StartFreeCamera");
             });
         }
 
@@ -208,9 +205,9 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
                 controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CameraEnabled, 150);
             }).ContinueWith(t =>
             {
-                if (t.IsCanceled) controller.Logger.LogError($"StartFreeCamera Canceled");
+                if (t.IsCanceled) controller.Logger.LogError("StartFreeCamera Canceled");
                 else if (t.IsFaulted) controller.Logger.LogError($"StartFreeCamera Exception: {t.Exception}");
-                else controller.Logger.LogDebug($"StartFreeCamera");
+                else controller.Logger.LogDebug("StartFreeCamera");
             });
         }
     }

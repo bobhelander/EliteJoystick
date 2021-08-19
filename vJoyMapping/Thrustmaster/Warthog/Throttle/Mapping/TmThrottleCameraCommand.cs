@@ -11,8 +11,8 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
     public static class TmThrottleCameraCommand
     {
         // Flaps Up : Debug Camera
-        static UInt32 button22 = (UInt32)Button.Button22;
-        static UInt32 button15 = (UInt32)Button.Button15;
+        private const UInt32 button22 = (UInt32)Button.Button22;
+        private const UInt32 button15 = (UInt32)Button.Button15;
 
         public static void Process(States value, Controller controller)
         {

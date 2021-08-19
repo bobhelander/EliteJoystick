@@ -20,9 +20,8 @@ namespace EliteJoystickClient
         static public string CallClipboard()
         {
             object returnValue = null;
-            var t = new Thread((ThreadStart)(() => {
-                returnValue = System.Windows.Clipboard.GetText();
-            }));
+            var t = new Thread((ThreadStart)(() =>
+                returnValue = System.Windows.Clipboard.GetText()));
 
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
@@ -35,9 +34,8 @@ namespace EliteJoystickClient
             if (string.IsNullOrEmpty(text))
                 return;
 
-            var t = new Thread((ThreadStart)(() => {
-                System.Windows.Clipboard.SetText(text);
-            }));
+            var t = new Thread((ThreadStart)(() =>
+                System.Windows.Clipboard.SetText(text)));
 
             t.SetApartmentState(ApartmentState.STA);
             t.Start();

@@ -13,13 +13,13 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
     public static class TmThrottleShieldCellCommand
     {
         //Observable.Interval: To create the heartbeat the the button will be pressed on
-        private static IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(1000)).Select(_ => 1);
+        private static readonly IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(1000)).Select(_ => 1);
         private static int counter = 0;
 
         // This will be non null while the action is running
         private static IDisposable fireShieldCells = null;
 
-        static readonly UInt32 BoatForward = (UInt32)Button.Button09;
+        private const UInt32 BoatForward = (UInt32)Button.Button09;
 
         /*
         public static void Process(States value, Controller controller)
@@ -43,16 +43,16 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                     {
                         if (counter % 12 == 0)  // 0, 12000, 240000
                         {
-                            controller.Logger.LogDebug($"Fire shield cells");
+                            controller.Logger.LogDebug("Fire shield cells");
                             controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.ShieldCell, 200);
                         }
                         if (counter == 6 || counter == 21)  // 6000, 21000
                         {
-                            controller.Logger.LogDebug($"Fire heat sink");
+                            controller.Logger.LogDebug("Fire heat sink");
                             controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.HeatSink, 200);
                         }
                         counter++;
-                    });                    
+                    });
                 }
             }
             else
@@ -61,7 +61,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 {
                     fireShieldCells.Dispose();
                     fireShieldCells = null;
-                    controller.Logger.LogDebug($"Fire shield cells: Stopped");
+                    controller.Logger.LogDebug("Fire shield cells: Stopped");
                 }
             }
         }

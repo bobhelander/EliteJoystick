@@ -63,7 +63,6 @@ namespace EliteJoystickConsole
                 LoggerFactory.Create(builder => builder.AddSimpleConsole(options =>
                     { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; }).SetMinimumLevel(LogLevel.Debug)))
                 {
-
                     ILogger<EliteJoystickClient.Client> logger = loggerFactory.CreateLogger<EliteJoystickClient.Client>();
 
                     var client = new EliteJoystickClient.Client { Name = "elite_joystick_client", Logger = logger };

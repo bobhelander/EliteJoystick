@@ -171,7 +171,6 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
         public void MapLights(DDJSB2.PioneerDDJSB2 ddjsb2)
         {
-
             var channels = new Voicemeeter.Levels.Channel[] {
                     new Voicemeeter.Levels.Channel {    // Check if Spotify is outputting audio
                         LevelType = Voicemeeter.LevelType.PreFaderInput,
@@ -258,7 +257,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
         private void Process(DDJSB2.PioneerDDJSB2 ddjsb2, EliteAPI.Events.IEvent statusEvent)
         {
-            Logger.LogDebug($"{statusEvent.GetType().ToString()}");
+            Logger.LogDebug($"{statusEvent.GetType()}");
 
             ddjsb2.LedControl(Leds.Deck.Deck1, Leds.PlayLed, false, GameService.GameStatusObservable.EliteAPI.Status.IsRunning);
         }

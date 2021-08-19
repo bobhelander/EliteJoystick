@@ -10,7 +10,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleSecondaryFireCommand
     {
-        static readonly UInt32 SpeedbrakeForward = (UInt32)Button.Button07;
+        private const UInt32 SpeedbrakeForward = (UInt32)Button.Button07;
 
         public static void Process(States value, Controller controller)
         {

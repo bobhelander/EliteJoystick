@@ -28,7 +28,7 @@ namespace EliteJoystickClient
 
             ServerListeningTask = Task.Factory.StartNew(() => Server.StartListening(Name, MessageHandler.HandleMessage),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default)
-                .ContinueWith(t => { Logger?.LogError($"Server Listening Exception: {t.Exception}"); }, TaskContinuationOptions.OnlyOnFaulted);
+                .ContinueWith(t => Logger?.LogError($"Server Listening Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
 
             // Contact the Service Pipe
             MessageHandler.Client = new CommonCommunication.Client() { Logger = Logger };

@@ -14,7 +14,7 @@ namespace vJoyMapping.LeoBodnar.BBI32
         public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.LeoBodnar.BBI32.Joystick(devicePath, Logger);
-            
+
             MapControls(joystick);
             joystick.Initialize();
         }
@@ -26,7 +26,7 @@ namespace vJoyMapping.LeoBodnar.BBI32
                 bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32ButtonStateHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
                 bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32UtilCommandsStateHandler.Process(x, this), ex => Logger.LogError($"Exception : {ex}")),
                 //bbi32.Where(x => Reactive.ButtonsChanged(x)).Subscribe(x => BBI32VoicemeeterHandler.Process(x, this), ex => log.Error($"Exception : {ex}")),
-            };            
+            };
         }
     }
 }

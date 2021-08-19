@@ -14,12 +14,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
     public static class TmThrottleCycleCommand
     {
         //Observable.Interval: To create the heartbeat the the button will be pressed on
-        private static IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(500)).Select(_ => 1);
+        private static readonly IObservable<int> timer = Observable.Interval(TimeSpan.FromMilliseconds(500)).Select(_ => 1);
 
         // This will be non null while the action is running
         private static IDisposable cycleSubsystems = null;
 
-        private static readonly UInt32 SpeedbrakeForward = (UInt32)Button.Button07;
+        private const UInt32 SpeedbrakeForward = (UInt32)Button.Button07;
 
         public static void Process(States value, Controller controller)
         {
@@ -31,9 +31,9 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                     cycleSubsystems = timer.Subscribe(x =>
                     {
                         controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 200);
-                        controller.Logger.LogDebug($"Cycle Subsystem: Next");
+                        controller.Logger.LogDebug("Cycle Subsystem: Next");
                     });
-                    controller.Logger.LogDebug($"Cycle Subsystem: Running");
+                    controller.Logger.LogDebug("Cycle Subsystem: Running");
                 }
             }
             else
@@ -42,7 +42,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 {
                     cycleSubsystems.Dispose();
                     cycleSubsystems = null;
-                    controller.Logger.LogDebug($"Cycle Subsystem: Stopped");
+                    controller.Logger.LogDebug("Cycle Subsystem: Stopped");
                 }
             }
         }

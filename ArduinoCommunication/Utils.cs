@@ -62,7 +62,5 @@ namespace ArduinoCommunication
             thread.Start();
             return tcs.Task;
         }
-
-        
     }
 }
