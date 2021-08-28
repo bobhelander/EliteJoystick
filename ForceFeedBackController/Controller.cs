@@ -41,6 +41,9 @@ namespace ForceFeedBackController
         public void Initialize(EliteJoystickService.GameService gameService)
         {
             msffb2 = new ForceFeedbackSharpDx.ForceFeedbackController() { Logger = Logger };
+
+            Disposables.Add(msffb2);
+
             msffb2.Initialize(
                 "001b045e-0000-0000-0000-504944564944",
                 "SideWinder Force Feedback 2 Joystick",
@@ -83,15 +86,30 @@ namespace ForceFeedBackController
 
         public void Dispose()
         {
-            foreach (var effect in centerSpringEffects)
-                effect.Dispose();
-            foreach (var effect in damperEffects)
-                effect.Dispose();
-            foreach (var effect in vibrationEffects)
-                effect.Dispose();
+            if (Disposables != null)
+            {
+                foreach (var item in Disposables)
+                    item?.Dispose();
+            }
+            if (centerSpringEffects != null)
+            {
+                foreach (var effect in centerSpringEffects)
+                    effect.Dispose();
+            }
 
-            foreach (var item in Disposables)
-                item?.Dispose();
+            if (damperEffects != null)
+            {
+                foreach (var effect in damperEffects)
+                    effect.Dispose();
+            }
+
+            if (vibrationEffects != null)
+            {
+                foreach (var effect in vibrationEffects)
+                    effect.Dispose();
+            }
+
+            
         }
     }
 }

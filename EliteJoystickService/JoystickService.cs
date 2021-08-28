@@ -56,8 +56,6 @@ namespace EliteJoystickService
         {
             this.OnStart(args);
             Console.ReadLine();
-            ClientActions.Action(this, ClientActions.ClipboardAction());
-            Console.ReadLine();
             this.OnStop();
         }
 

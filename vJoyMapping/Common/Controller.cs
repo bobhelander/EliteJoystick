@@ -32,7 +32,7 @@ namespace vJoyMapping.Common
         public EliteSharedState SharedState { get; set; }
 
         public void Dispose() =>
-            Disposables.ForEach(disposable => { try { disposable?.Dispose(); } catch (Exception) {;} });
+            Disposables.ForEach(disposable => { try { disposable?.Dispose(); disposable = null; } catch (Exception) {;} });
 
         #region  Virtual Joystick Actions
 
