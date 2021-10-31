@@ -56,8 +56,6 @@ namespace EliteJoystickService
         {
             this.OnStart(args);
             Console.ReadLine();
-            ClientActions.Action(this, ClientActions.ClipboardAction());
-            Console.ReadLine();
             this.OnStop();
         }
 
@@ -245,7 +243,7 @@ namespace EliteJoystickService
                 var ddjsb2 = new vJoyMapping.Pioneer.ddjsb2.Controller
                 {
                     Arduino = arduino,
-                    Name = "BBI32",
+                    Name = "DDJSB2",
                     SharedState = SharedState,
                     Settings = settings,
                     VirtualJoysticks = eliteVirtualJoysticks,

@@ -17,6 +17,12 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
             uint neutralButtons = 0;
 
+            // The Netral buttons are depressed when the switch does not have either switch set
+            // Neutral Mask     = 0011
+            // Buttons Pressed  = 0010  == Neutral button off
+            // Buttons Pressed  = 0001  == Neutral button off
+            // Buttons Pressed  = 0000  == Neutral button on
+
             uint buttonIndex = MappedButtons.ThrottleMSNone;
             foreach (UInt32 nbutton in Enum.GetValues(typeof(SwitchNeutral)))
             {
@@ -24,7 +30,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
                 // Set the position if down
                 if (buttonPressed)
-                    neutralButtons = neutralButtons | (uint)0x1 << (int)(buttonIndex - 1);
+                    neutralButtons |= (uint)0x1 << (int)(buttonIndex - 1);
                 buttonIndex++;
             }
 

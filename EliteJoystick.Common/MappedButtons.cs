@@ -10,7 +10,7 @@ namespace EliteJoystick.Common
     /// Defined output buttons for the vJoyType.Virtual controller
     /// This defines what button number outputs are reserved
     /// </summary>
-    public class MappedButtons
+    public static class MappedButtons
     {
         // Virtual Joystick (Virtual)
         public static uint CycleNextSubsystem = 9;
@@ -75,7 +75,7 @@ namespace EliteJoystick.Common
         // Command button.  Used to signal that a user button is being pressed.  Set in combination with other buttons
         public static uint CommandButton = 27;
         // 26 - 30 Unassigned
-        public static uint BBI32ButtonMask2 = 0xFFFFFFFC;
+        public static uint BBI32ButtonMask2 = 0xC0000000;
         public static uint BBI32Button13 = 31;
         public static uint BBI32Button14 = 32;
 
