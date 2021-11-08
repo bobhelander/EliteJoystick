@@ -21,11 +21,11 @@ namespace vJoyMapping.Common
 
         public ILogger Logger { get; set; }
 
-        public String Name { get; set; }
+        public virtual String Name { get; }
 
-        public EliteVirtualJoysticks VirtualJoysticks { get; set; }
+        public IVirtualJoysticks VirtualJoysticks { get; set; }
 
-        public Settings Settings { get; set; }
+        public ISettings Settings { get; set; }
 
         public IArduino Arduino { get; set; }
 
@@ -45,7 +45,7 @@ namespace vJoyMapping.Common
         public void SetJoystickButtons(uint buttons, string vJoyType, uint mask) =>
             VirtualJoysticks.SetJoystickButtons(buttons, Settings.vJoyMapper.GetJoystickId(vJoyType), mask);
 
-        public void SetJoystickAxis(int value, Axis usage, string vJoyType) =>
+        public void SetJoystickAxis(int value, int usage, string vJoyType) =>
             VirtualJoysticks.SetJoystickAxis(value, usage, Settings.vJoyMapper.GetJoystickId(vJoyType));
 
         public void SetJoystickHat(int value, string vJoyType, uint hatNumber) =>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ArduinoCommunication
         public int Delay { get; set; }
         public byte[] Modifier { get; set; } = new byte[0];
         public byte Key { get; set; }
-        public Arduino Arduino { get; set; }
+        public IArduino Arduino { get; set; }
 
         // Press down modifier then key.  Release key then release modifier
         public Task Play(ILogger logger) =>
@@ -23,7 +24,7 @@ namespace ArduinoCommunication
                 .ContinueWith(async (_) => await PressKeys(Arduino, new byte[] { Key }, false, logger).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
                 .ContinueWith(async (_) => await Task.Delay(Delay).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion)
                 .ContinueWith(async (_) => await PressKeys(Arduino, Modifier, false, logger).ConfigureAwait(false), TaskContinuationOptions.OnlyOnRanToCompletion);
-        private static async Task PressKeys(Arduino arduino, byte[] keys, bool pressKeys, ILogger logger)
+        private static async Task PressKeys(IArduino arduino, byte[] keys, bool pressKeys, ILogger logger)
         {
             if (arduino == null)
                 return;

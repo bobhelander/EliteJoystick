@@ -13,5 +13,9 @@ namespace EliteJoystick.Common.Interfaces
         Task TypeFullString(string text);
         Task TypeFromClipboard();
         Task KeyCombo(byte[] modifier, byte key);
+
+        Task PressKey(byte key, int duration = 30);
+
+        void Close();
     }
 }

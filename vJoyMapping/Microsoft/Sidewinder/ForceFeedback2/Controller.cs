@@ -3,18 +3,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using Usb.GameControllers.Interfaces;
-using Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Models;
-using vJoyMapping.Common;
 using vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping;
 using Usb.GameControllers.Common;
 using Microsoft.Extensions.Logging;
+using EliteJoystick.Common.Interfaces;
 
 namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
 {
     public class Controller : Common.Controller
     {
+        public override String Name { get; } = "Force Feedback 2";
+
+        public Controller(
+            IArduino arduino,
+            EliteSharedState eliteSharedState,
+            ISettings settings,
+            IVirtualJoysticks virtualJoysticks,
+            ILogger<Controller> log)
+        {
+            Arduino = arduino;
+            SharedState = eliteSharedState;
+            Settings = settings;
+            VirtualJoysticks = virtualJoysticks;
+            Logger = log;
+
+            Initialize(Controller.GetDevicePath(
+                Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Joystick.VendorId,
+                Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Joystick.ProductId));
+
+            Logger?.LogDebug($"Added {Name}");
+        }
+
         public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Microsoft.Sidewinder.ForceFeedback2.Joystick(devicePath, Logger);

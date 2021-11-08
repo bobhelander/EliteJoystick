@@ -1,4 +1,5 @@
-﻿using EliteJoystick.Common.Interfaces;
+﻿using CommonCommunication;
+using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,20 @@ using System.Threading.Tasks;
 
 namespace ArduinoCommunication
 {
-    public class Arduino : IArduino
+    public class Arduino : IArduino, IDisposable
     {
         private System.IO.Ports.SerialPort SerialPort { get; set; }
         private ILogger Logger { get; }
 
-        public Arduino(String commPort, ILogger logger)
+        public Arduino(
+            ISettings settings,
+            ILogger<Arduino> log)
         {
-            this.Logger = logger;
-            Open(commPort);
+            Logger = log;
+
+            Open(settings.ArduinoCommPort);
+
+            ClientActions.ClientInformationAction(this, "Arduino Ready");
         }
 
         public bool IsOpen() =>
@@ -33,6 +39,8 @@ namespace ArduinoCommunication
         {
             SerialPort?.Close();
             SerialPort = null;
+
+            ClientActions.ClientInformationAction(this, "Arduino Disconnected");
         }
 
         public async Task ReleaseKey(byte key)
@@ -48,7 +56,7 @@ namespace ArduinoCommunication
             }
             catch(TaskCanceledException ex)
             {
-                Logger.LogError(ex.Message);
+                Logger?.LogError(ex.Message);
             }
         }
 
@@ -65,7 +73,7 @@ namespace ArduinoCommunication
             }
             catch (TaskCanceledException ex)
             {
-                Logger.LogError(ex.Message);
+                Logger?.LogError(ex.Message);
             }
         }
 
@@ -107,5 +115,10 @@ namespace ArduinoCommunication
 
         public async Task KeyCombo(byte[] modifier, byte key) =>
             await Utils.KeyCombo(this, modifier, key, Logger).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "KeyCombo", Logger)).ConfigureAwait(false);
+
+        public void Dispose()
+        {
+            Close();
+        }
     }
 }

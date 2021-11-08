@@ -12,8 +12,14 @@ namespace EliteJoystick.Common
     /// <summary>
     /// Holds the shared state values for all the controllers.   
     /// </summary>
-    public class EliteSharedState : IDisposable
+    public class EliteSharedState : IJoystickServiceBase
     {
+        public EliteSharedState()
+        {
+        }
+
+        public void Initialize() { }
+
         #region Normal Properties
 
         public bool ThrottleShift1 { get; set; }
@@ -31,7 +37,7 @@ namespace EliteJoystick.Common
 
         public bool Mute { get; set; }
 
-        public IEliteGameStatus EliteGameStatus { get; set; }
+        //public IEliteGameStatus EliteGameStatus { get; set; }
 
         #endregion
 

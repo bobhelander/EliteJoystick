@@ -32,8 +32,8 @@ namespace vJoyMapping.CHProducts.ProPedals.Mapping
             int combined = ((128 * 255) / 2) + (current.Y * 64 - current.X * 64);
             combined = Curves.Calculate(combined - (16 * 1024), (16 * 1024), .2) + 16 * 1024;
 
-            controller.SetJoystickAxis(combined, vJoy.Wrapper.Axis.HID_USAGE_RX, vJoyTypes.StickAndPedals);
-            controller.SetJoystickAxis(z, vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(combined, (int)vJoy.Wrapper.Axis.HID_USAGE_RX, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(z, (int)vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.StickAndPedals);
         }
 
         public static void Process(AltStates value, Controller controller)
@@ -59,8 +59,8 @@ namespace vJoyMapping.CHProducts.ProPedals.Mapping
             int combined = ((128 * 255) / 2) + (current.Y * 64 - current.X * 64);
             combined = Curves.Calculate(combined - (16 * 1024), (16 * 1024), .2) + 16 * 1024;
 
-            controller.SetJoystickAxis(combined, vJoy.Wrapper.Axis.HID_USAGE_RX, vJoyTypes.StickAndPedals);
-            controller.SetJoystickAxis(z, vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(combined, (int)vJoy.Wrapper.Axis.HID_USAGE_RX, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(z, (int)vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.StickAndPedals);
         }
     }
 }

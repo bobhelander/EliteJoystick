@@ -11,21 +11,29 @@ using Microsoft.Extensions.Logging;
 
 namespace EliteJoystickService
 {
-    public class GameService : IDisposable, IEliteGameStatus
+    public class GameService : IGameService, IEliteGameStatus
     {
         private List<IDisposable> Disposables { get; set; }
         public Status GameStatusObservable { get; set; }
 
-        public ILogger Logger { get; set; }
-        public ILogger InGameLogger { get; set; }
+        private ILogger log { get; set; }
+        private ILogger inGameLogger { get; set; }
+
+        public GameService(
+            ILogger<GameService> log,
+            ILoggerFactory loggerFactory)
+        {
+            this.log = log;
+            this.inGameLogger = loggerFactory.CreateLogger("InGame");
+        }
 
         public void Initialize()
         {
-            GameStatusObservable = new Status(Logger);
+            GameStatusObservable = new Status(log);
             Disposables = new List<IDisposable> {
                 //GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, Logger, InGameLogger)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, Logger, InGameLogger)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, log, inGameLogger)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, log, inGameLogger)),
                 GameStatusObservable
             };
         }

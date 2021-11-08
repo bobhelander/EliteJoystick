@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -21,9 +22,7 @@ namespace EliteJoystickService
         public ILogger Logger { get; set; }
 
         public async Task HandleMessage(
-            string rawMessage,
-            EliteSharedState sharedState,
-            ArduinoCommunication.Arduino arduino)
+            string rawMessage)
         {
             var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);
 
@@ -52,9 +51,9 @@ namespace EliteJoystickService
                 //case "keypress":
                 //    await Task.Run(() => KeyPress(message.Data)).ConfigureAwait(false);
                 //    break;
-                case "keyboard_output":
-                    await ArduinoCommunication.Utils.TypeFullString(arduino, message.Data, Logger).ConfigureAwait(false);
-                    break;
+                //case "keyboard_output":
+                //    await ArduinoCommunication.Utils.TypeFullString(arduino, message.Data, Logger).ConfigureAwait(false);
+                //    break;
                 default:
                     //Unknown message
                     break;

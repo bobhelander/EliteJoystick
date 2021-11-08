@@ -7,11 +7,15 @@ using vJoyMapping.Pioneer.ddjsb2.Mapping;
 using DDJSB2.Controls;
 using EliteJoystick.Common;
 using Microsoft.Extensions.Logging;
+using EliteJoystick.Common.Interfaces;
+using EliteJoystickService;
 
 namespace vJoyMapping.Pioneer.ddjsb2
 {
     public class Controller : Common.Controller
     {
+        public override String Name { get; } = "DDJSB2";
+
         // Voicemeeter Settings
         private const string WindowsDefault = "Strip[5].Gain";
         private const string EliteDangerous = "Strip[7].Gain";
@@ -31,7 +35,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
         private const string EliteDangerousEqGain2 = "Strip[7].EQGain2";
         private const string EliteDangerousEqGain3 = "Strip[7].EQGain3";
 
-        private ForceFeedBackController.Controller msffb2;
+        private IForceFeedbackController msffb2;
 
         private IDisposable skippingSubscription = null;
         private DateTime lastPause = DateTime.UtcNow;
@@ -39,7 +43,29 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
         public EliteJoystickService.GameService GameService { get; set; }
 
-        public void Initialize(ForceFeedBackController.Controller msffb2)
+        public Controller(
+            IArduino arduino,
+            GameService gameService,
+            EliteSharedState eliteSharedState,
+            ISettings settings,
+            IVirtualJoysticks virtualJoysticks,
+            IForceFeedbackController ForceFeedBackController,
+            ILogger<Controller> log)
+        {
+            Arduino = arduino;
+            SharedState = eliteSharedState;
+            Settings = settings;
+            VirtualJoysticks = virtualJoysticks;
+            GameService = gameService;
+            Logger = log;
+
+            Initialize(ForceFeedBackController);
+
+            Logger?.LogDebug($"Added {Name}");
+        }
+
+
+        public void Initialize(IForceFeedbackController msffb2)
         {
             this.msffb2 = msffb2;
 

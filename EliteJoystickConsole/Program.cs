@@ -77,6 +77,13 @@ namespace EliteJoystickConsole
                     var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
                         .ContinueWith(t => Console.WriteLine($"ConnectJoysticks Exception: {t.Exception}"),
                         TaskContinuationOptions.OnlyOnFaulted);
+
+                    Console.ReadKey();
+
+                    var task2 = Task.Run(async () => await client.DisconnectJoysticks().ConfigureAwait(false))
+                        .ContinueWith(t => Console.WriteLine($"DisconnectJoysticks Exception: {t.Exception}"),
+                        TaskContinuationOptions.OnlyOnFaulted);
+
                 }
             }
             if (false)

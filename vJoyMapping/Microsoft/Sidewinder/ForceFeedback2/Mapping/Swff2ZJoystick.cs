@@ -19,7 +19,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
 
             z = Curves.Calculate(z - (16 * 1024), (16 * 1024), .4) + 16 * 1024;
 
-            controller.SetJoystickAxis(z, vJoy.Wrapper.Axis.HID_USAGE_Z, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(z, (int)vJoy.Wrapper.Axis.HID_USAGE_Z, vJoyTypes.StickAndPedals);
         }
     }
 }

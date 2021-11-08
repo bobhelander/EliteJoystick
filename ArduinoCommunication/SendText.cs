@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ArduinoCommunication
         public int Delay { get; set; }
         public String Text { get; set; }
         public bool Newline { get; set; }
-        public Arduino Arduino { get; set; }
+        public IArduino Arduino { get; set; }
 
         public async Task Play(ILogger logger)
         {
@@ -20,7 +21,7 @@ namespace ArduinoCommunication
                 .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendText:Play", logger)).ConfigureAwait(false);
         }
 
-        private async Task SendKeys(Arduino arduino, string text, int delay, bool newline, ILogger logger)
+        private async Task SendKeys(IArduino arduino, string text, int delay, bool newline, ILogger logger)
         {
             if (arduino == null)
                 return;

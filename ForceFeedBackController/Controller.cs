@@ -1,12 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ForceFeedBackController
 {
-    public class Controller : IDisposable
+    public class Controller : IForceFeedbackController
     {
+        private EliteJoystickService.GameService gameService;
         private ForceFeedbackSharpDx.ForceFeedbackController msffb2;
 
         private List<IDisposable> Disposables { get; } = new List<IDisposable>();
@@ -16,6 +18,18 @@ namespace ForceFeedBackController
         private List<SharpDX.DirectInput.Effect> vibrationEffects;
 
         public ILogger Logger { get; set; }
+
+        public Controller(
+            EliteJoystickService.GameService gameService,
+            ILogger<Controller> log)
+        {
+            this.gameService = gameService;
+            Logger = log;
+
+            Initialize();
+        }
+
+        public Controller() { }
 
         public bool CenterSpring
         {
@@ -37,6 +51,8 @@ namespace ForceFeedBackController
 
         public void StopAllEffects() => msffb2.StopAllEffects();
         public void PlayFileEffect(string fileName, int duration) => msffb2.PlayFileEffect(fileName, duration);
+
+        public void Initialize() => Initialize(gameService);
 
         public void Initialize(EliteJoystickService.GameService gameService)
         {

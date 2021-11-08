@@ -24,69 +24,33 @@ namespace EliteJoystickServiceTest
 
                 Settings settings = Settings.Load();
 
-                var ffb2 = new vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Controller
-                {
-                    Arduino = arduino,
-                    Name = "Force Feedback 2",
-                    SharedState = SharedState,
-                    Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
-                };
+                var ffb2 = new vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Controller(
+                    arduino, SharedState, settings, eliteVirtualJoysticks, null);
 
                 Controllers.Add(ffb2);
 
-                var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller
-                {
-                    Arduino = arduino,
-                    Name = "Game Voice",
-                    SharedState = SharedState,
-                    Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
-                };
+                var swgv = new vJoyMapping.Microsoft.Sidewinder.GameVoice.Controller(
+                    arduino, SharedState, settings, eliteVirtualJoysticks, null);
 
                 Controllers.Add(swgv);
 
-                var swsc = new vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Controller
-                {
-                    Arduino = arduino,
-                    Name = "Strategic Commander",
-                    SharedState = SharedState,
-                    Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
-                };
+                var swsc = new vJoyMapping.Microsoft.Sidewinder.StrategicCommander.Controller(
+                    arduino, SharedState, settings, eliteVirtualJoysticks, null);
 
                 Controllers.Add(swsc);
 
-                var warthog = new vJoyMapping.Thrustmaster.Warthog.Throttle.Controller
-                {
-                    Arduino = arduino,
-                    Name = "Warthog Throttle",
-                    SharedState = SharedState,
-                    Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
-                };
+                var warthog = new vJoyMapping.Thrustmaster.Warthog.Throttle.Controller(
+                    arduino, SharedState, settings, eliteVirtualJoysticks, null);
 
                 Controllers.Add(warthog);
 
-                var pedals = new vJoyMapping.CHProducts.ProPedals.Controller
-                {
-                    Arduino = arduino,
-                    Name = "Pro Pedals",
-                    SharedState = SharedState,
-                    Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
-                };
+                var pedals = new vJoyMapping.CHProducts.ProPedals.Controller(
+                    arduino, SharedState, settings, eliteVirtualJoysticks, null);
 
                 Controllers.Add(pedals);
 
-                var bbi32 = new vJoyMapping.LeoBodnar.BBI32.Controller
-                {
-                    Arduino = arduino,
-                    Name = "BBI32",
-                    SharedState = SharedState,
-                    Settings = settings,
-                    VirtualJoysticks = eliteVirtualJoysticks
-                };
+                var bbi32 = new vJoyMapping.LeoBodnar.BBI32.Controller(
+                    arduino, SharedState, settings, eliteVirtualJoysticks, null);
 
                 Controllers.Add(bbi32);
 

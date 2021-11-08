@@ -20,8 +20,8 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             int y = current.Y * 32;
             int x = current.X * 32;
 
-            controller.SetJoystickAxis(x, vJoy.Wrapper.Axis.HID_USAGE_X, vJoyTypes.Throttle);
-            controller.SetJoystickAxis(y, vJoy.Wrapper.Axis.HID_USAGE_Y, vJoyTypes.Throttle);
+            controller.SetJoystickAxis(x, (int)vJoy.Wrapper.Axis.HID_USAGE_X, vJoyTypes.Throttle);
+            controller.SetJoystickAxis(y, (int)vJoy.Wrapper.Axis.HID_USAGE_Y, vJoyTypes.Throttle);
         }
     }
 }

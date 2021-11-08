@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,27 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
 {
     public class Controller : Common.Controller
     {
+        public override String Name { get; } = "Warthog Throttle";
+        public Controller(
+            IArduino arduino,
+            EliteSharedState eliteSharedState,
+            ISettings settings,
+            IVirtualJoysticks virtualJoysticks,
+            ILogger<Controller> log)
+        {
+            Arduino = arduino;
+            SharedState = eliteSharedState;
+            Settings = settings;
+            VirtualJoysticks = virtualJoysticks;
+            Logger = log;
+
+            Initialize(Controller.GetDevicePath(
+                Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick.VendorId,
+                Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick.ProductId));
+
+            Logger?.LogDebug($"Added {Name}");
+        }
+
         public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Thrustmaster.Warthog.Throttle.Joystick(devicePath, Logger);
