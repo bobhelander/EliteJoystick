@@ -1,6 +1,7 @@
 ﻿using DDJSB2;
 using DDJSB2.Controls;
 using EliteJoystick.Common;
+using EliteJoystick.Common.Logic;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
 
             if (on)
             {
-                Utils.OculusASWOff().Wait();
+                EliteJoystick.Common.Utils.OculusASWOff().Wait();
             }
         }
 
@@ -33,7 +34,7 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
 
             if (on)
             {
-                Utils.ExplorerLog().Wait();
+                EliteJoystick.Common.Utils.ExplorerLog().Wait();
             }
         }
 
@@ -45,7 +46,8 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
             if (encoder.NoteNumber == state.Number && on)
             {
                 // Send "Shut Up" to Voice Attack  F7
-                System.Threading.Tasks.Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0xC8).ConfigureAwait(false));
+                //System.Threading.Tasks.Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0xC8).ConfigureAwait(false));
+                System.Threading.Tasks.Task.Run(async () => await controller.PressKey(0x00, KeyMap.KeyNameMap["KEY_F7"].Code).ConfigureAwait(false));
             }
         }
 

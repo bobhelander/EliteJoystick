@@ -19,7 +19,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
         public override String Name { get; } = "Strategic Commander";
 
         public Controller(
-            IArduino arduino,
+            IKeyboard arduino,
             EliteSharedState eliteSharedState,
             ISettings settings,
             IVirtualJoysticks virtualJoysticks,

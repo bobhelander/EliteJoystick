@@ -16,7 +16,7 @@ namespace vJoyMapping.LeoBodnar.BBI32
         public override String Name { get; } = "BBI32";
 
         public Controller(
-            IArduino arduino,
+            IKeyboard arduino,
             EliteSharedState eliteSharedState,
             ISettings settings,
             IVirtualJoysticks virtualJoysticks,

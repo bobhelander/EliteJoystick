@@ -22,6 +22,12 @@ namespace EliteJoystickService.Extensions
                         builder
                             .AddSimpleConsole(options => { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; })
                             .AddFile(
+                                minimumLevel: LogLevel.Debug,
+                                pathFormat: "%LOCALAPPDATA%/EliteJoystick/log/EliteJoystick.log",
+                                levelOverrides: new Dictionary<string, LogLevel> {
+                                    { "InGame", LogLevel.None },
+                                })
+                            .AddFile(
                                 minimumLevel: LogLevel.None,
                                 pathFormat: "%LOCALAPPDATA%/EliteJoystick/log/InGame.log",
                                 outputTemplate: "{Message}{NewLine}",

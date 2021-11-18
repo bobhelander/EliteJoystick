@@ -12,7 +12,7 @@ namespace vJoyMapping.CHProducts.ProPedals
         public override String Name { get; } = "Pro Pedals";
 
         public Controller(
-            IArduino arduino,
+            IKeyboard arduino,
             EliteSharedState eliteSharedState,
             ISettings settings,
             IVirtualJoysticks virtualJoysticks,

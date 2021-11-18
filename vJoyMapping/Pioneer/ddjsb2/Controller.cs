@@ -44,12 +44,13 @@ namespace vJoyMapping.Pioneer.ddjsb2
         public EliteJoystickService.GameService GameService { get; set; }
 
         public Controller(
-            IArduino arduino,
+            IKeyboard arduino,
             GameService gameService,
             EliteSharedState eliteSharedState,
             ISettings settings,
             IVirtualJoysticks virtualJoysticks,
             IForceFeedbackController ForceFeedBackController,
+            IVoiceMeeterService voicemeeter,
             ILogger<Controller> log)
         {
             Arduino = arduino;

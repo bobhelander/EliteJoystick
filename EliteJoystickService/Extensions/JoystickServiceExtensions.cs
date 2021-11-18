@@ -49,7 +49,9 @@ namespace EliteJoystickService.Extensions
         {
             services.AddScoped<IForceFeedbackController, ForceFeedBackController.Controller>();    // msffb2: Force feedback connection
             services.AddScoped<IVirtualJoysticks, EliteVirtualJoysticks>();
-            services.AddScoped<IArduino, ArduinoCommunication.Arduino>();
+            //services.AddScoped<IKeyboard, ArduinoCommunication.Arduino>();
+            services.AddScoped<IKeyboard, vKeyboard.Keyboard>();
+            services.AddScoped<IVoiceMeeterService, VoiceMeeterService>();
             return services;
         }
 

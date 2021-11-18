@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick.Common.Interfaces
 {
-    public interface IArduino
+    public interface IArduino_bak
     {
         Task DepressKey(byte key);
         Task ReleaseKey(byte key);

@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForceFeedBackController", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArduinoCommunication", "ArduinoCommunication\ArduinoCommunication.csproj", "{672A790F-62AD-4EE0-85E5-A1E55A136FB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "CommonCommunication\CommonCommunication.csproj", "{84A05C88-F406-4740-9ACC-0FF120B0BB15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonCommunication", "CommonCommunication\CommonCommunication.csproj", "{84A05C88-F406-4740-9ACC-0FF120B0BB15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vKeyboard", "vKeyboard\vKeyboard.csproj", "{DBE66AE9-D953-43F6-B26D-397FA638FAFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84A05C88-F406-4740-9ACC-0FF120B0BB15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBE66AE9-D953-43F6-B26D-397FA638FAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBE66AE9-D953-43F6-B26D-397FA638FAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBE66AE9-D953-43F6-B26D-397FA638FAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBE66AE9-D953-43F6-B26D-397FA638FAFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

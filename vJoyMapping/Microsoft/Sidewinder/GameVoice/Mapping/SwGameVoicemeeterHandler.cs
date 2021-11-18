@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Logic;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,7 +23,8 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice.Mapping
             if ((value.Current.Buttons & (byte)Button.CommandButton) == (byte)Button.CommandButton)
             {
                 // Send "Shut Up" to Voice Attack  F7
-                System.Threading.Tasks.Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0xC8).ConfigureAwait(false));
+                //System.Threading.Tasks.Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0xC8).ConfigureAwait(false));
+                System.Threading.Tasks.Task.Run(async () => await controller.PressKey(0x00, KeyMap.KeyNameMap["KEY_F7"].Code).ConfigureAwait(false));
 
                 // Turn it off.  Previous state is stored in the device
                 controller.SetLights((byte)0);

@@ -91,6 +91,7 @@
     <Compile Include="Services\ControllersService.cs" />
     <Compile Include="Services\IpcService.cs" />
     <Compile Include="Services\MessageHandlingService.cs" />
+    <Compile Include="Services\VoiceMeeterService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -122,6 +123,10 @@
     <ProjectReference Include="..\vJoyMapping\vJoyMapping.csproj">
       <Project>{57d363bb-fbf9-4781-9ca8-2f3b8993ac74}</Project>
       <Name>vJoyMapping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vKeyboard\vKeyboard.csproj">
+      <Project>{45869b6d-801d-44bb-8b60-487f6a856586}</Project>
+      <Name>vKeyboard</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

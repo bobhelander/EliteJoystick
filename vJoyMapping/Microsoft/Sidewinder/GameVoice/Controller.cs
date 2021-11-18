@@ -17,7 +17,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
         public override String Name { get; } = "Game Voice";
 
         public Controller(
-            IArduino arduino,
+            IKeyboard arduino,
             EliteSharedState eliteSharedState,
             ISettings settings,
             IVirtualJoysticks virtualJoysticks,

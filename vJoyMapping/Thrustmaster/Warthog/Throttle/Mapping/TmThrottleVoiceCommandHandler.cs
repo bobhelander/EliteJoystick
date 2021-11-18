@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Logic;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,12 +18,14 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             if (Reactive.ButtonPressed(value, MIC))
             {
                 controller.SharedState.Mute = true;
-                controller.DepressKey(0xCA);  // KEY_F9    
+                //controller.DepressKey(0xCA);  // KEY_F9
+                controller.KeyAction(0x00, KeyMap.KeyNameMap["KEY_F9"].Code);
             }
             if (Reactive.ButtonReleased(value, MIC))
             {
                 controller.SharedState.Mute = false;
-                controller.ReleaseKey(0xCA);  // KEY_F9
+                //controller.ReleaseKey(0xCA);  // KEY_F9
+                controller.KeyAction(0x00, 0x00);
             }
         }
     }

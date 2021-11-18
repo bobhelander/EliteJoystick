@@ -27,7 +27,7 @@ namespace vJoyMapping.Common
 
         public ISettings Settings { get; set; }
 
-        public IArduino Arduino { get; set; }
+        public IKeyboard Arduino { get; set; }
 
         public EliteSharedState SharedState { get; set; }
 
@@ -58,6 +58,9 @@ namespace vJoyMapping.Common
         public void DepressKey(byte key) =>
             Arduino?.DepressKey(key).Wait();
 
+        public void KeyAction(byte modifiers, byte key) =>
+            Arduino?.KeyAction(modifiers, key).Wait();
+
         public void ReleaseKey(byte key) =>
             Arduino?.ReleaseKey(key).Wait();
 
@@ -79,6 +82,9 @@ namespace vJoyMapping.Common
         /// <returns></returns>
         public async Task SendKeyCombo(byte[] modifier, byte key) =>
             await Arduino.KeyCombo(modifier, key).ContinueWith(t => Utils.LogTaskResult(t, "Controller:SendKeyCombo", Logger)).ConfigureAwait(false);
+
+        public async Task PressKey(byte modifier, byte key) => 
+            await Arduino.PressKey(modifier, key).ContinueWith(t => Utils.LogTaskResult(t, "Controller:PressKey", Logger)).ConfigureAwait(false);
 
         #endregion
 

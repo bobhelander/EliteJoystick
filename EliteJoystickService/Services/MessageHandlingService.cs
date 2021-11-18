@@ -15,7 +15,7 @@ namespace EliteJoystickService.Services
     public class MessageHandlingService : MessageHandler, IDisposable
     {
         private readonly CommonCommunication.Client client;
-        private IDisposable voiceMeeterDisposable;
+        
         private IServiceScope controllerScope;
         private ControllersService controllersService;
 
@@ -65,9 +65,6 @@ namespace EliteJoystickService.Services
 
             log.LogDebug("Connecting to Controllers");
 
-            // Connect to Voicemeeter. Each remote is a handle across the entire service
-            voiceMeeterDisposable = VoiceMeeter.Remote.Initialize(Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result;
-
             // Create a service scope so we can release the joystick services when we receive the disconnect message.
             controllerScope = serviceProvider.CreateScope();
 
@@ -112,7 +109,6 @@ namespace EliteJoystickService.Services
 
         public void Dispose()
         {
-            voiceMeeterDisposable?.Dispose();
         }
     }
 }

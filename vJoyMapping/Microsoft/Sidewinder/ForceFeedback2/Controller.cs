@@ -15,7 +15,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2
         public override String Name { get; } = "Force Feedback 2";
 
         public Controller(
-            IArduino arduino,
+            IKeyboard arduino,
             EliteSharedState eliteSharedState,
             ISettings settings,
             IVirtualJoysticks virtualJoysticks,

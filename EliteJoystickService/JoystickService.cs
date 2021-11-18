@@ -17,13 +17,10 @@ namespace EliteJoystickService
         /// IpcService Starts the interprocess communication layer.
         /// MessageHandlingService processes the messages that come across IPC and connects the joysticks when it receives the message.
         /// </summary>
-        /// <param name="log"></param>
-        /// <param name="messageHandlingService"></param>
-        /// <param name="ipcService"></param>
-        public JoystickService(
-            ILogger<JoystickService> log,
+        public JoystickService(            
             MessageHandlingService messageHandlingService,
-            IpcService ipcService)
+            IpcService ipcService,
+            ILogger<JoystickService> log)
         {
             InitializeComponent();
             this.Log = log;

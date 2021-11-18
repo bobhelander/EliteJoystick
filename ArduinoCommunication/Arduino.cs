@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ArduinoCommunication
 {
-    public class Arduino : IArduino, IDisposable
+    public class Arduino : IKeyboard, IDisposable
     {
         private System.IO.Ports.SerialPort SerialPort { get; set; }
         private ILogger Logger { get; }
@@ -119,6 +119,25 @@ namespace ArduinoCommunication
         public void Dispose()
         {
             Close();
+        }
+
+        public Task DepressKey(string key) => DepressKey((byte)key[0]);
+
+        public Task ReleaseKey(string key) => ReleaseKey((byte)key[0]);
+
+        public Task KeyAction(byte modifiers, byte code0, byte code1 = 0, byte code2 = 0, byte code3 = 0, byte code4 = 0, byte code5 = 0x00)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PressKey(string value, int duration = 30)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PressKey(byte modifiers, byte code, int duration = 50)
+        {
+            throw new NotImplementedException();
         }
     }
 }

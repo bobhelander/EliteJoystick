@@ -16,7 +16,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle
     {
         public override String Name { get; } = "Warthog Throttle";
         public Controller(
-            IArduino arduino,
+            IKeyboard arduino,
             EliteSharedState eliteSharedState,
             ISettings settings,
             IVirtualJoysticks virtualJoysticks,

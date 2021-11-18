@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Logic;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,16 +20,24 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             if (controller.SharedState.HardpointsDeployed == false &&
                 Reactive.ButtonPressed(value, EORDown))
             {
+                // CTRL-ALT-H
                 controller.Logger.LogDebug($"Hardpoints out {controller.SharedState.HardpointsDeployed}");
-                Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48).ConfigureAwait(false));
+                //Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48).ConfigureAwait(false));
+                Task.Run(async () => await controller.PressKey(
+                    (byte)(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code | KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"].Code),
+                    KeyMap.KeyNameMap["KEY_H"].Code).ConfigureAwait(false));
                 controller.SharedState.HardpointsDeployed = true;
             }
 
             if (controller.SharedState.HardpointsDeployed &&
                 Reactive.ButtonReleased(value, EORDown))
             {
+                // CTRL-ALT-H
                 controller.Logger.LogDebug($"Hardpoints in {controller.SharedState.HardpointsDeployed}");
-                Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48).ConfigureAwait(false));
+                //Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48).ConfigureAwait(false));
+                Task.Run(async () => await controller.PressKey(
+                    (byte)(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code | KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"].Code),
+                    KeyMap.KeyNameMap["KEY_H"].Code).ConfigureAwait(false));
                 controller.SharedState.HardpointsDeployed = false;
             }
         }

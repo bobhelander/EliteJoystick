@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Logic;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,17 +24,23 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 controller.SharedState.CurrentMode == EliteSharedState.Mode.Mining))
             {
                 controller.SharedState.SecondaryFireActive = true;
-                controller.DepressKey(0x82);  // Left Alt
-                controller.DepressKey(0x84);  // Right Ctrl
-                controller.DepressKey(0x4C);  // L
+
+                controller.KeyAction(
+                    (byte)(KeyMap.ModifierKeyNameMap["KEY_MOD_RCTRL"].Code | KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"].Code),
+                    KeyMap.KeyNameMap["KEY_L"].Code);
+
+                //controller.DepressKey(0x82);  // Left Alt
+                //controller.DepressKey(0x84);  // Right Ctrl
+                //controller.DepressKey(0x4C);  // L
                 controller.SetJoystickButton(true, MappedButtons.SecondaryFire, vJoyTypes.Virtual);
             }
             else if (controller.SharedState.SecondaryFireActive)
             {
                 controller.SharedState.SecondaryFireActive = false;
-                controller.ReleaseKey(0x4C);  // L
-                controller.ReleaseKey(0x84);  // Right Ctrl
-                controller.ReleaseKey(0x82);  // Left Alt
+                controller.ReleaseAllKeys();
+                //controller.ReleaseKey(0x4C);  // L
+                //controller.ReleaseKey(0x84);  // Right Ctrl
+                //controller.ReleaseKey(0x82);  // Left Alt
                 controller.SetJoystickButton(false, MappedButtons.SecondaryFire, vJoyTypes.Virtual);
             }
         }

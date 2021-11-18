@@ -11,13 +11,13 @@ namespace ArduinoCommunication
 {
     public static class Utils
     {
-        public static async Task TypeFromClipboard(IArduino arduino, ILogger logger)
+        public static async Task TypeFromClipboard(IKeyboard arduino, ILogger logger)
         {
             var text = await Utils.CallClipboard().ConfigureAwait(false);
             await TypeFullString(arduino, text, logger).ConfigureAwait(false);
         }
 
-        public static Task TypeFullString(IArduino arduino, String text, ILogger logger)
+        public static Task TypeFullString(IKeyboard arduino, String text, ILogger logger)
         {
             return new SendText
             {
@@ -28,7 +28,7 @@ namespace ArduinoCommunication
             }.Play(logger);
         }
 
-        public static Task KeyCombo(IArduino arduino, byte[] modifier, byte key, ILogger logger)
+        public static Task KeyCombo(IKeyboard arduino, byte[] modifier, byte key, ILogger logger)
         {
             return new KeyCombination
             {

@@ -42,7 +42,8 @@ namespace EliteJoystick.Common
 
         public static string FocusWindow(string name)
         {
-            Process[] processes = Process.GetProcessesByName(name);
+            //Process[] processes = Process.GetProcessesByName(name);
+            //var testing = Process.GetProcesses().Select(x => x.ProcessName).ToList();
 
             foreach (Process p in Process.GetProcesses().Where(x => x.ProcessName == name))
             {
@@ -205,7 +206,7 @@ namespace EliteJoystick.Common
         {
             if (t.IsCanceled)
             {
-                logger.LogWarning($"{methodName} Canceled");
+                logger?.LogWarning($"{methodName} Canceled");
             }
             else if (t.IsFaulted)
             {
@@ -216,12 +217,12 @@ namespace EliteJoystick.Common
                 while (ex is AggregateException && ex.InnerException != null)
                     ex = ex.InnerException;
 
-                logger.LogError($"{methodName} Exception: {ex}");
+                logger?.LogError($"{methodName} Exception: {ex}");
             }
             else if (t.IsCompleted)
             {
                 // Enable when debugging TaskCanceledExceptions
-                //logger.LogDebug($"{methodName} Completed");
+                logger?.LogDebug($"{methodName} Completed");
             }
         }
     }
