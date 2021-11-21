@@ -41,6 +41,13 @@ namespace ForceFeedBackController.Handlers
                     case "Status.Overheating:True":
                         controller.PlayFileEffect("Vibrate.ffe", 750);
                         break;
+                    case "EliteAPI.Event.Models.SupercruiseEntryEvent":
+                        controller.PlayFileEffect("Supercruise2.ffe", 750);
+                        break;
+                    case "EliteAPI.Event.Models.HullDamageEvent":
+                        controller.PlayFileEffect("HullDamage.ffe", 250);
+                        break;
+
                 }
             }
             catch (Exception ex)
