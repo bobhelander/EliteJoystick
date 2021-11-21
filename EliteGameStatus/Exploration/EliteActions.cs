@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EliteAPI.Events;
+using EliteAPI.Event.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EliteGameStatus.Exploration
@@ -34,7 +30,7 @@ namespace EliteGameStatus.Exploration
             }
         }
 
-        internal static void OutputValuableBody(ScanInfo scanInfoEvent, ILogger logger) // "InGame" Logger
+        internal static void OutputValuableBody(ScanEvent scanInfoEvent, ILogger logger) // "InGame" Logger
         {
             if (null != scanInfoEvent)
             {

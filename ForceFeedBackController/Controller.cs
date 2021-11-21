@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common.Interfaces;
+using ForceFeedBackController.Handlers;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,8 @@ namespace ForceFeedBackController
 {
     public class Controller : IForceFeedbackController
     {
-        private EliteJoystickService.GameService gameService;
+        private EliteAPI.Abstractions.IEliteDangerousApi eliteDangerousApi;
+        private EliteAPI.Status.Ship.Abstractions.IShip ship;
         private ForceFeedbackSharpDx.ForceFeedbackController msffb2;
 
         private List<IDisposable> Disposables { get; } = new List<IDisposable>();
@@ -20,10 +22,12 @@ namespace ForceFeedBackController
         public ILogger Logger { get; set; }
 
         public Controller(
-            EliteJoystickService.GameService gameService,
+            EliteAPI.Abstractions.IEliteDangerousApi eliteDangerousApi,
+            EliteAPI.Status.Ship.Abstractions.IShip ship,
             ILogger<Controller> log)
         {
-            this.gameService = gameService;
+            this.eliteDangerousApi = eliteDangerousApi;
+            this.ship = ship;
             Logger = log;
 
             Initialize();
@@ -52,9 +56,7 @@ namespace ForceFeedBackController
         public void StopAllEffects() => msffb2.StopAllEffects();
         public void PlayFileEffect(string fileName, int duration) => msffb2.PlayFileEffect(fileName, duration);
 
-        public void Initialize() => Initialize(gameService);
-
-        public void Initialize(EliteJoystickService.GameService gameService)
+        public void Initialize()
         {
             msffb2 = new ForceFeedbackSharpDx.ForceFeedbackController() { Logger = Logger };
 
@@ -72,9 +74,41 @@ namespace ForceFeedBackController
             damperEffects = msffb2.GetEffectFromFile("Damper.ffe");
             vibrationEffects = msffb2.GetEffectFromFile("Vibrate.ffe");
 
-            Disposables.AddRange(new List<IDisposable> {
-                gameService.GameStatusObservable.Subscribe(x => ForceFeedBackController.Handlers.EffectHandler.Process(this, x, Logger)),
-            });
+            eliteDangerousApi.Events.AllEvent += (sender, eventArgs) =>
+                EffectHandler.Process(this, eventArgs.ToString(), Logger);
+
+            ship.Docked.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Docked:{eventArgs}", Logger);
+            ship.Landed.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Landed:{eventArgs}", Logger);
+            ship.Gear.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Gear:{eventArgs}", Logger);
+            ship.Shields.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Shields:{eventArgs}", Logger);
+            ship.Supercruise.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Supercruise:{eventArgs}", Logger);
+            ship.FlightAssist.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.FlightAssist:{eventArgs}", Logger);
+            ship.Hardpoints.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Hardpoints:{eventArgs}", Logger);
+            ship.Winging.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Winging:{eventArgs}", Logger);
+            ship.Lights.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Lights:{eventArgs}", Logger);
+            ship.CargoScoop.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.CargoScoop:{eventArgs}", Logger);
+            ship.SilentRunning.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.SilentRunning:{eventArgs}", Logger);
+            ship.Scooping.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Scooping:{eventArgs}", Logger);
+            ship.SrvHandbreak.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.SrvHandbreak:{eventArgs}", Logger);
+            ship.SrvTurrent.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.SrvTurrent:{eventArgs}", Logger);
+            ship.SrvNearShip.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.SrvNearShip:{eventArgs}", Logger);
+            ship.SrvDriveAssist.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.SrvDriveAssist:{eventArgs}", Logger);
+            ship.MassLocked.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.MassLocked:{eventArgs}", Logger);
+            ship.FsdCharging.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.FsdCharging:{eventArgs}", Logger);
+            ship.FsdCooldown.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.FsdCooldown:{eventArgs}", Logger);
+            ship.LowFuel.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.LowFuel:{eventArgs}", Logger);
+            ship.Overheating.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.Overheating:{eventArgs}", Logger);
+            ship.HasLatLong.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.HasLatLong:{eventArgs}", Logger);
+            ship.InDanger.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.InDanger:{eventArgs}", Logger);
+            ship.InInterdiction.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.InInterdiction:{eventArgs}", Logger);
+            ship.InMothership.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.InMothership:{eventArgs}", Logger);
+            ship.InFighter.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.InFighter:{eventArgs}", Logger);
+            ship.InSrv.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.InSrv:{eventArgs}", Logger);
+            ship.AnalysisMode.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.AnalysisMode:{eventArgs}", Logger);
+            ship.NightVision.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.NightVision:{eventArgs}", Logger);
+            ship.AltitudeFromAverageRadius.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.AltitudeFromAverageRadius:{eventArgs}", Logger);
+            ship.FsdJump.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.FsdJump:{eventArgs}", Logger);
+            ship.SrvHighBeam.OnChange += (obj, eventArgs) => EffectHandler.Process(this, $"Status.SrvHighBeam:{eventArgs}", Logger);
         }
 
         private void SetEffect(List<SharpDX.DirectInput.Effect> effects, bool on)

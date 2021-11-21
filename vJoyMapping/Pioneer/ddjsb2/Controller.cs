@@ -9,6 +9,7 @@ using EliteJoystick.Common;
 using Microsoft.Extensions.Logging;
 using EliteJoystick.Common.Interfaces;
 using EliteJoystickService;
+using EliteAPI.Event.Models.Abstractions;
 
 namespace vJoyMapping.Pioneer.ddjsb2
 {
@@ -282,11 +283,11 @@ namespace vJoyMapping.Pioneer.ddjsb2
             }
         }
 
-        private void Process(DDJSB2.PioneerDDJSB2 ddjsb2, EliteAPI.Events.IEvent statusEvent)
+        private void Process(DDJSB2.PioneerDDJSB2 ddjsb2, IEvent statusEvent)
         {
             Logger.LogDebug($"{statusEvent.GetType()}");
 
-            ddjsb2.LedControl(Leds.Deck.Deck1, Leds.PlayLed, false, GameService.GameStatusObservable.EliteAPI.Status.IsRunning);
+            //ddjsb2.LedControl(Leds.Deck.Deck1, Leds.PlayLed, false, GameService.GameStatusObservable.EliteAPI.Status.IsRunning);
         }
 
         // Use a LINQ Expression to send the boolean property to set

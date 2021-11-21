@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteAPI.Event.Models;
+using EliteAPI.Event.Models.Abstractions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,11 +11,11 @@ namespace EliteGameStatus.Handlers
 {
     public static class ScanEventHandler
     {
-        public static void Process(EliteAPI.Events.IEvent apiEvent, ILogger logger, ILogger inGameLogger)
+        public static void Process(IEvent apiEvent, ILogger logger, ILogger inGameLogger)
         {
             try
             {
-                var scanInfoEvent = apiEvent as EliteAPI.Events.ScanInfo;
+                var scanInfoEvent = apiEvent as ScanEvent;
 
                 if (null != scanInfoEvent)
                 {

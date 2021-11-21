@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteAPI.Event.Models;
+using EliteAPI.Event.Models.Abstractions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,13 +11,13 @@ namespace EliteGameStatus.Handlers
 {
     public static class AllFoundHandler
     {
-        public static void Process(EliteAPI.Events.IEvent apiEvent, ILogger logger, ILogger inGameLogger)
+        public static void Process(IEvent apiEvent, ILogger logger, ILogger inGameLogger)
         {
             try
             {
                 logger.LogDebug($"{apiEvent.GetType().ToString()}");
 
-                var allBodiesEvent = apiEvent as EliteAPI.Events.FSSAllBodiesFoundInfo;
+                var allBodiesEvent = apiEvent as FssAllBodiesFoundEvent;
 
                 if (null != allBodiesEvent)
                 {

@@ -8,12 +8,14 @@ namespace EliteJoystick.Common.Interfaces
     public interface IEliteGameStatus
     {
         // Location
+        /*
         string StarSystem { get; }
         string Body { get; }
         string BodyType { get; }
         string Station { get; }
-
+        */
         // Status
+        /*
         bool SrvHandbreak { get; }
         bool SrvNearShip { get; }
         bool SrvDriveAssist { get; }
@@ -56,5 +58,6 @@ namespace EliteJoystick.Common.Interfaces
         bool Lights { get; }
         bool CargoScoop { get; }
         bool Scooping { get; }
+        */
     }
 }

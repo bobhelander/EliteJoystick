@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteAPI.Event.Models.Abstractions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace EliteJoystickService.Mappings
 {
     public static class GameStatusMapping
     {
-        public static void Process(EliteAPI.Events.IEvent statusEvent, ILogger logger)
+        public static void Process(IEvent statusEvent, ILogger logger)
         {
             logger?.LogDebug($"{statusEvent.GetType()}");
         }

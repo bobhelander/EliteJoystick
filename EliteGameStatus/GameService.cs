@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using EliteJoystick.Common.Interfaces;
 using EliteJoystick.Common.EliteGame;
 using Microsoft.Extensions.Logging;
+using EliteAPI.Abstractions;
 
 namespace EliteJoystickService
 {
@@ -16,20 +17,26 @@ namespace EliteJoystickService
         private List<IDisposable> Disposables { get; set; }
         public Status GameStatusObservable { get; set; }
 
+        private IEliteDangerousApi eliteApi { get; set; }
+
         private ILogger log { get; set; }
         private ILogger inGameLogger { get; set; }
 
         public GameService(
+            IEliteDangerousApi eliteApi,
             ILogger<GameService> log,
             ILoggerFactory loggerFactory)
         {
+            this.eliteApi = eliteApi;
             this.log = log;
             this.inGameLogger = loggerFactory.CreateLogger("InGame");
         }
 
         public void Initialize()
         {
-            GameStatusObservable = new Status(log);
+            eliteApi.StartAsync().Wait();
+
+            GameStatusObservable = new Status(eliteApi, log);
             Disposables = new List<IDisposable> {
                 //GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
                 GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, log, inGameLogger)),
@@ -41,8 +48,9 @@ namespace EliteJoystickService
         public void Dispose() =>
             Disposables?.ForEach(disposable => disposable?.Dispose());
 
+        /*
         #region Game Status 
-        public string StarSystem => GameStatusObservable.EliteAPI.Location.StarSystem;
+        public string StarSystem => GameStatusObservable.EliteAPI.Ship.Location.StarSystem;
         public string Body => GameStatusObservable.EliteAPI.Location.Body;
         public string BodyType => GameStatusObservable.EliteAPI.Location.BodyType;
         public string Station => GameStatusObservable.EliteAPI.Location.Station;
@@ -90,5 +98,6 @@ namespace EliteJoystickService
         public bool Scooping => GameStatusObservable.EliteAPI.Status.Scooping;
 
         #endregion
+        */
     }
 }

@@ -3,6 +3,7 @@ using System.ServiceProcess;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using EliteJoystickService.Extensions;
+using EliteAPI;
 
 namespace EliteJoystickService
 {
@@ -23,7 +24,7 @@ namespace EliteJoystickService
                      service.AddEliteGameServices();
                      service.AddInputControllers();
                      service.AddOutputControllers();
-                     //service.AddEliteAPI();
+                     service.AddEliteAPI();
                      //service.AddTransient<Client>();
                  })
                  .Build();

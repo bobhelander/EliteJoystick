@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteAPI.Event.Models;
+using EliteAPI.Event.Models.Abstractions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,13 +11,13 @@ namespace EliteGameStatus.Handlers
 {
     public static class JumpHandler
     {
-        public static void Process(EliteAPI.Events.IEvent apiEvent, ILogger logger, ILogger inGameLogger) // "InGame" Logger
+        public static void Process(IEvent apiEvent, ILogger logger, ILogger inGameLogger) // "InGame" Logger
         {
             try
             {
                 logger.LogDebug($"{apiEvent.GetType().ToString()}");
 
-                var startJumpEvent = apiEvent as EliteAPI.Events.StartJumpInfo;
+                var startJumpEvent = apiEvent as StartJumpEvent;
 
                 if (null != startJumpEvent)
                 {
