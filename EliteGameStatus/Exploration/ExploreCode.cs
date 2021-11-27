@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EliteJoystick.Common.Interfaces;
+using EliteJoystick.Common.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,7 @@ namespace EliteGameStatus.Exploration
 
     public partial class Explore
     {
-        private readonly EdsmConnector.System starSystem;
-        internal Explore(EdsmConnector.System starSystem) { this.starSystem = starSystem; }
+        private readonly StarSystem starSystem;
+        internal Explore(StarSystem starSystem) { this.starSystem = starSystem; }
     }
 }

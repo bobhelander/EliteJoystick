@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace EdsmConnector
+namespace EliteJoystick.Common.Models
 {
-    public class System
+    public class StarSystem
     {
         public int? id { get; set; }
         public long? id64 { get; set; }

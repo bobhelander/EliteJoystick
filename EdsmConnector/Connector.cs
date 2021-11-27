@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using EliteJoystick.Common.Interfaces;
+using EliteJoystick.Common.Models;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,13 +10,21 @@ using System.Threading.Tasks;
 
 namespace EdsmConnector
 {
-    public static class Connector
+    public class Connector : IEdsmConnector
     {
         private const string GET_SYSTEM_BY_NAME = "/api-system-v1/bodies?systemName=";
 
-        private static readonly HttpClient client = new HttpClient() { BaseAddress = new Uri("https://www.edsm.net") };
+        private readonly HttpClient client;
 
-        public static async Task<System> GetSystem(string systemName)
+        private ILogger<Connector> logger;
+
+        public Connector(ILogger<Connector> logger)
+        {
+            this.logger = logger;
+            this.client = new HttpClient() { BaseAddress = new Uri("https://www.edsm.net") };
+        }
+
+        public async Task<StarSystem> GetSystem(string systemName)
         {
             try
             {
@@ -21,15 +32,15 @@ namespace EdsmConnector
                 using (var response = await client.GetAsync(url).ConfigureAwait(false))
                 {
                     response.EnsureSuccessStatusCode();
-                    var result = JsonConvert.DeserializeObject<System>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    var result = JsonConvert.DeserializeObject<StarSystem>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
                     if (string.IsNullOrEmpty(result?.name))
                     {
-                        result = new EdsmConnector.System
+                        result = new StarSystem
                         {
                             name = systemName,
                             bodyCount = -1,
-                            bodies = new EdsmConnector.Body[0]
+                            bodies = new EliteJoystick.Common.Models.Body[0]
                         };
                     }
 
@@ -38,11 +49,12 @@ namespace EdsmConnector
             }
             catch(Exception ex)
             {
-                return new EdsmConnector.System
+                logger.LogError("EdsmConnector error: {ex}", ex);
+                return new StarSystem
                 {
                     name = $"{systemName}  ERROR: {ex.Message}",
                     bodyCount = -1,
-                    bodies = new EdsmConnector.Body[0]
+                    bodies = new EliteJoystick.Common.Models.Body[0]
                 };
             }
         }

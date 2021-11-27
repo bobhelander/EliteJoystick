@@ -108,6 +108,10 @@
       <Project>{84a05c88-f406-4740-9acc-0ff120b0bb15}</Project>
       <Name>CommonCommunication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EdsmConnector\EdsmConnector.csproj">
+      <Project>{b3336b3c-b94a-48cc-8c6a-bc3fd32c78df}</Project>
+      <Name>EdsmConnector</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteApi\EliteAPI\EliteAPI.csproj">
       <Project>{79587b8e-94c8-4ae1-a5be-d50d37d7fd3f}</Project>
       <Name>EliteAPI</Name>

@@ -1,12 +1,14 @@
 ﻿using System;
 using EliteAPI.Event.Models;
+using EliteJoystick.Common.Interfaces;
+using EliteJoystick.Common.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EliteGameStatus.Exploration
 {
     public static class EliteActions
     {
-        public static void OutputValuableSystems(EdsmConnector.System starSystem, ILogger logger) // "InGame" Logger
+        public static void OutputValuableSystems(StarSystem starSystem, ILogger logger) // "InGame" Logger
         {
             logger.LogInformation($"-----------------------------------------------------------------------------------------------------------------");
             logger.LogInformation($"System: {starSystem.name}");
@@ -43,7 +45,7 @@ namespace EliteGameStatus.Exploration
             }
         }
 
-        public static string HttpOutputValuableSystems(EdsmConnector.System starSystem)
+        public static string HttpOutputValuableSystems(StarSystem starSystem)
         {
             var page = new Explore(starSystem);
             String pageContent = page.TransformText();

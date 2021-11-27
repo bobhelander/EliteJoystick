@@ -11,10 +11,13 @@
     <None Remove="Forces\Dock.ffe" />
     <None Remove="Forces\Gear.ffe" />
     <None Remove="Forces\Hardpoints.ffe" />
+    <None Remove="Forces\HullDamage.ffe" />
     <None Remove="Forces\Landed.ffe" />
     <None Remove="Forces\SuperCruise.ffe" />
+    <None Remove="Forces\Supercruise2.ffe" />
     <None Remove="Forces\Vibrate.ffe" />
     <None Remove="Forces\VibrateSide.ffe" />
+    <None Remove="Forces\VibrateSmall.ffe" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,16 +39,25 @@
     <Content Include="Forces\Hardpoints.ffe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Forces\HullDamage.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Forces\Landed.ffe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Forces\SuperCruise.ffe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Forces\Supercruise2.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Forces\Vibrate.ffe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Forces\VibrateSide.ffe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Forces\VibrateSmall.ffe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

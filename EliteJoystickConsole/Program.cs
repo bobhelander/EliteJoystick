@@ -18,11 +18,11 @@ namespace EliteJoystickConsole
             {
                 //var test = EdsmConnector.Connector.GetSystem("Maia").Result;
                 //var test = EdsmConnector.Connector.GetSystem("Sol").Result;
-                var test = EdsmConnector.Connector.GetSystem("Hypoae Aewsy CG-F d11-4").Result;
+                //var test = EdsmConnector.Connector.GetSystem("Hypoae Aewsy CG-F d11-4").Result;
 
                 //EliteGameStatus.Exploration.EliteActions.OutputValuableSystems(test);
 
-                var test2 = test.name;
+                //var test2 = test.name;
             }
             if (false)
             {

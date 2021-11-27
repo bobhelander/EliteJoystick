@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
@@ -8,9 +9,9 @@ namespace EliteGameStatus
 {
     public static class StatusHandlers
     {
-        public static void AddHandlers(Status status, ILogger logger, ILogger inGameLogger)
+        public static void AddHandlers(Status status, IEdsmConnector edsmConnector, ILogger logger, ILogger inGameLogger)
         {
-            status.Subscribe(x => Handlers.JumpHandler.Process(x, logger, inGameLogger));
+            status.Subscribe(x => Handlers.JumpHandler.Process(x, edsmConnector, logger, inGameLogger));
         }
     }
 }

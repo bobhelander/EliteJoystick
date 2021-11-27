@@ -18,16 +18,19 @@ namespace EliteJoystickService
         public Status GameStatusObservable { get; set; }
 
         private IEliteDangerousApi eliteApi { get; set; }
+        private IEdsmConnector edsmConnector { get; set; }
 
         private ILogger log { get; set; }
         private ILogger inGameLogger { get; set; }
 
         public GameService(
             IEliteDangerousApi eliteApi,
+            IEdsmConnector edsmConnector,
             ILogger<GameService> log,
             ILoggerFactory loggerFactory)
         {
             this.eliteApi = eliteApi;
+            this.edsmConnector = edsmConnector;
             this.log = log;
             this.inGameLogger = loggerFactory.CreateLogger("InGame");
         }
@@ -39,8 +42,8 @@ namespace EliteJoystickService
             GameStatusObservable = new Status(eliteApi, log);
             Disposables = new List<IDisposable> {
                 //GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, log, inGameLogger)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, log, inGameLogger)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, edsmConnector, log, inGameLogger)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, edsmConnector, log, inGameLogger)),
                 GameStatusObservable
             };
         }

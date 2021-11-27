@@ -40,7 +40,7 @@ namespace vJoyMapping.CHProducts.ProPedals
 
                 Logger?.LogDebug($"Added {Name}");
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 if (altProductId == false)
                 {

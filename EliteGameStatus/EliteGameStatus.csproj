@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EdsmConnector\EdsmConnector.csproj" />
     <ProjectReference Include="..\EliteApi\EliteAPI\EliteAPI.csproj" />
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
   </ItemGroup>

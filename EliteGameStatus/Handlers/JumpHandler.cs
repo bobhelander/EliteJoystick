@@ -1,5 +1,6 @@
 ﻿using EliteAPI.Event.Models;
 using EliteAPI.Event.Models.Abstractions;
+using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace EliteGameStatus.Handlers
 {
     public static class JumpHandler
     {
-        public static void Process(IEvent apiEvent, ILogger logger, ILogger inGameLogger) // "InGame" Logger
+        public static void Process(IEvent apiEvent, IEdsmConnector edsmConnector, ILogger logger, ILogger inGameLogger) // "InGame" Logger
         {
             try
             {
@@ -29,7 +30,7 @@ namespace EliteGameStatus.Handlers
 
                         Task.Run(async () =>
                         {
-                            var system = await EdsmConnector.Connector.GetSystem(startJumpEvent.StarSystem).ConfigureAwait(false);
+                            var system = await edsmConnector.GetSystem(startJumpEvent.StarSystem).ConfigureAwait(false);
 
                             logger.LogDebug($"System Received {system?.name}");
 
