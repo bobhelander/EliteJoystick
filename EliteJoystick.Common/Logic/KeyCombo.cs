@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick.Common.Logic
 {
+    /*
     public class KeyCombo
     {
         public Timer Timer { get; set; }
@@ -52,4 +53,5 @@ namespace EliteJoystick.Common.Logic
             Timer.Change(Delay, Timeout.Infinite);
         }
     }
+    */
 }

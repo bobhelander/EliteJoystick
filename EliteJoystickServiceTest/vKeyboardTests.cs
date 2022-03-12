@@ -77,26 +77,33 @@ namespace EliteJoystickServiceTest
         {
             var keyboard = new Keyboard(null);
 
-            keyboard.DepressKey("b");
-            Thread.Sleep(100);
-            keyboard.ReleaseKey("b");
-            Thread.Sleep(100);
+            await keyboard.PressKey("b", null, -1);
+            await Task.Delay(100);
+            await keyboard.ReleaseKey("b", null);
+            await Task.Delay(100);
 
-            keyboard.DepressKey("o");
-            Thread.Sleep(100);
-            keyboard.ReleaseKey("o");
-            Thread.Sleep(100);
+            await keyboard.PressKey("o", null, -1);
+            await Task.Delay(100);
+            await keyboard.ReleaseKey("o", null);
+            await Task.Delay(100);
 
-            keyboard.DepressKey("b");
-            Thread.Sleep(100);
-            keyboard.ReleaseKey("b");
-            Thread.Sleep(100);
+            await keyboard .PressKey("b", null, -1);
+            await Task.Delay(100);
+            await keyboard .ReleaseKey("b", null);
+            await Task.Delay(100);
         }
 
         [TestMethod]
         public async Task TestTypeFullString()
         {
+            var loggerFactory = LoggerFactory.Create(builder => 
+                builder.AddSimpleConsole(options => { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; }).SetMinimumLevel(LogLevel.Debug));
+            
+            ILogger<Keyboard> logger = loggerFactory.CreateLogger<Keyboard>();
+
+            //var keyboard = new Keyboard(logger);
             var keyboard = new Keyboard(new NullLogger<Keyboard>());
+
             var enter = KeyMap.KeyNameMap["KEY_ENTER"].Code;
 
             await keyboard.TypeFullString("Hello World!");
@@ -115,21 +122,37 @@ namespace EliteJoystickServiceTest
             var key_esc = KeyMap.KeyNameMap["KEY_ESC"].Code;
             var key_end = KeyMap.KeyNameMap["KEY_END"].Code;
 
-            await keyboard.PressKey(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code, key_a);
-            await keyboard.PressKey(0x00, key_delete);
+            await keyboard.PressKey(key_a, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"] });
+            await keyboard.PressKey(key_delete);
 
             await keyboard.TypeFullString("Blank Page");
-            await keyboard.PressKey(0x00, enter);
-            await keyboard.TypeFullString("Hello World!");
-            await keyboard.PressKey(0x00, enter);
-
-            await keyboard.PressKey(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code, key_a);
-            await keyboard.PressKey(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code, key_c);
-            await keyboard.PressKey(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code, key_end);
             await keyboard.PressKey(enter);
-            await keyboard.PressKey(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code, key_v);
-            await keyboard.PressKey(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code, key_v);
-            await keyboard.PressKey(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code, key_v);
+            await keyboard.TypeFullString("Hello World!");
+            await keyboard.PressKey(enter);
+
+            await keyboard.PressKey(key_a, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"] });
+            await keyboard.PressKey(key_c, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"] });
+            await keyboard.PressKey(key_end, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"] });
+            await keyboard.PressKey(enter);
+            await keyboard.PressKey(key_v, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"] });
+            await keyboard.PressKey(key_v, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"] });
+            await keyboard.PressKey(key_v, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"] });
+        }
+
+        [TestMethod]
+        public async Task TestHold()
+        {
+            var keyboard = new Keyboard(new NullLogger<Keyboard>());
+            var enter = KeyMap.KeyNameMap["KEY_ENTER"].Code;
+            var key_a = KeyMap.KeyNameMap["KEY_A"].Code;
+
+            await keyboard.PressKey(key_a, null, -1);
+            await Task.Delay(5000); // Five seconds
+            await keyboard.PressKey(key_a, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LSHIFT"] }, -1);
+            await Task.Delay(10000); // Five seconds
+            await keyboard.ReleaseKey(0, new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LSHIFT"] });
+            await Task.Delay(10000); // Five seconds
+            await keyboard.ReleaseKey(key_a, null);
         }
     }
 }

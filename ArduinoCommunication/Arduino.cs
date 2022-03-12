@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ArduinoCommunication
 {
+    /// https://www.arduino.cc/en/Reference/KeyboardModifiers
     public class Arduino : IKeyboard, IDisposable
     {
         private System.IO.Ports.SerialPort SerialPort { get; set; }
@@ -136,6 +137,26 @@ namespace ArduinoCommunication
         }
 
         public Task PressKey(byte modifiers, byte code, int duration = 50)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PressKey(byte code, EliteJoystick.Common.Logic.KeyCode[] modifiers = null, int duration = 50)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ReleaseKey(byte code, EliteJoystick.Common.Logic.KeyCode[] modifiers = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PressKey(string value, EliteJoystick.Common.Logic.KeyCode[] modifiers = null, int duration = 50)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ReleaseKey(string value, EliteJoystick.Common.Logic.KeyCode[] modifiers = null)
         {
             throw new NotImplementedException();
         }

@@ -18,14 +18,13 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             if (Reactive.ButtonPressed(value, MIC))
             {
                 controller.SharedState.Mute = true;
-                //controller.DepressKey(0xCA);  // KEY_F9
-                controller.KeyAction(0x00, KeyMap.KeyNameMap["KEY_F9"].Code);
+                // KEY_F9
+                controller.PressKey(KeyMap.KeyNameMap["KEY_F9"].Code, null, -1);
             }
             if (Reactive.ButtonReleased(value, MIC))
             {
                 controller.SharedState.Mute = false;
-                //controller.ReleaseKey(0xCA);  // KEY_F9
-                controller.KeyAction(0x00, 0x00);
+                controller.ReleaseKey(KeyMap.KeyNameMap["KEY_F9"].Code, null);
             }
         }
     }

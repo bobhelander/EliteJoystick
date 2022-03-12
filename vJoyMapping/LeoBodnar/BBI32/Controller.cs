@@ -22,7 +22,7 @@ namespace vJoyMapping.LeoBodnar.BBI32
             IVirtualJoysticks virtualJoysticks,
             ILogger<Controller> log)
         {
-            Arduino = arduino;
+            Keyboard = arduino;
             SharedState = eliteSharedState;
             Settings = settings;
             VirtualJoysticks = virtualJoysticks;

@@ -28,13 +28,13 @@ namespace EliteJoystick.Common.Logic
 
             foreach (var character in text)
             {
-                await keyboard.PressKey(character.ToString(), delay)
+                await keyboard.PressKey(character.ToString(), null, delay)
                     .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendKeys:Character", logger)).ConfigureAwait(false);
             }
 
             if (newline)
             {
-                await keyboard.PressKey(0xB0, delay)
+                await keyboard.PressKey(0xB0, null, delay)
                     .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendKeys:Newline", logger)).ConfigureAwait(false);
             }
         }

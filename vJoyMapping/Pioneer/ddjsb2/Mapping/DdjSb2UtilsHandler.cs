@@ -47,11 +47,12 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
             {
                 // Send "Shut Up" to Voice Attack  F7
                 //System.Threading.Tasks.Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0xC8).ConfigureAwait(false));
-                System.Threading.Tasks.Task.Run(async () => await controller.PressKey(0x00, KeyMap.KeyNameMap["KEY_F7"].Code).ConfigureAwait(false));
+
+                controller.PressKey(KeyMap.KeyNameMap["KEY_F7"].Code);
             }
         }
 
-        public static int subsystemValue = 0;
+        public static int subsystemValue, hostileValue = 0;
 
         public static void TargetSubsystem(Controller controller, IState state)
         {
@@ -76,6 +77,33 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
                         controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 100);
                     else if (state.Value < (encoder.Cutoff))
                         controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleNextSubsystem, 100);
+                }
+            }
+        }
+
+        public static void TargetHostile(Controller controller, IState state)
+        {
+            var encoder = state.Control as DDJSB2.Controls.Encoder;
+
+            if (encoder.NoteNumber == state.Number && state.Value > 0)
+            {
+                // reset the hostile value
+                hostileValue = 0;
+            }
+
+            if (encoder.ControlNumber == state.Number)
+            {
+                hostileValue += (state.Value - encoder.Cutoff);
+
+                // Every ten values
+                if (Math.Abs(hostileValue) > 100)
+                {
+                    hostileValue = 0;
+
+                    if (state.Value > encoder.Cutoff)
+                        controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleNextHostile, 100);
+                    else if (state.Value < (encoder.Cutoff))
+                        controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CyclePrevHostile, 100);
                 }
             }
         }

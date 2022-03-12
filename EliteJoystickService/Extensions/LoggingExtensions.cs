@@ -19,13 +19,13 @@ namespace EliteJoystickService.Extensions
         public static IServiceCollection AddCustomLogging(this IServiceCollection services)
         {
             services.AddLogging(builder =>
-                        builder
-                            .AddSimpleConsole(options => { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; })
+                        builder                            
+                            //.AddSimpleConsole()
                             .AddFile(
                                 minimumLevel: LogLevel.Debug,
                                 pathFormat: "%LOCALAPPDATA%/EliteJoystick/log/EliteJoystick.log",
                                 levelOverrides: new Dictionary<string, LogLevel> {
-                                    { "InGame", LogLevel.None },
+                                    { "EliteGameStatus.Services.ExplorationService", LogLevel.None },
                                 })
                             .AddFile(
                                 minimumLevel: LogLevel.None,
@@ -33,8 +33,9 @@ namespace EliteJoystickService.Extensions
                                 outputTemplate: "{Message}{NewLine}",
                                 levelOverrides: new Dictionary<string, LogLevel> {
                                     { "EliteJoystickService.JoystickService", LogLevel.None },
-                                    { "InGame", LogLevel.Information },
+                                    { "EliteGameStatus.Services.ExplorationService", LogLevel.Information },
                                 })
+                            .AddSimpleConsole(options => { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; })
                             .SetMinimumLevel(LogLevel.Debug));
 
             return services;

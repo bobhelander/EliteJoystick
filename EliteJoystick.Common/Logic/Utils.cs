@@ -14,7 +14,7 @@ namespace EliteJoystick.Common.Logic
         public static async Task TypeFromClipboard(IKeyboard keyboard, ILogger logger)
         {
             var text = await Utils.CallClipboard().ConfigureAwait(false);
-            await TypeFullString(keyboard, text, logger).ConfigureAwait(false);
+            await keyboard.TypeFullString(text).ConfigureAwait(false);
         }
 
         public static Task TypeFullString(IKeyboard keyboard, String text, ILogger logger)
@@ -28,6 +28,7 @@ namespace EliteJoystick.Common.Logic
             }.Play(logger);
         }
 
+        /*
         public static Task KeyCombo(IKeyboard keyboard, byte[] modifier, byte key, ILogger logger)
         {
             return new KeyCombination
@@ -38,6 +39,7 @@ namespace EliteJoystick.Common.Logic
                 Keyboard = keyboard
             }.Play(logger);
         }
+        */
 
         static public async Task<string> CallClipboard() =>
             await StartSTATask<string>(() => Clipboard.GetText()).ConfigureAwait(false);

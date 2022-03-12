@@ -28,13 +28,13 @@ namespace ArduinoCommunication
 
             foreach (var character in text)
             {
-                await arduino.PressKey((byte)character, delay)
+                await arduino.PressKey(character.ToString(), null, delay)
                     .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendKeys:Character", logger)).ConfigureAwait(false);
             }
 
             if (newline)
             {
-                await arduino.PressKey(0xB0, delay)
+                await arduino.PressKey(0xB0, null, delay)
                     .ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "SendKeys:Newline", logger)).ConfigureAwait(false);
             }
         }

@@ -47,7 +47,6 @@ namespace ForceFeedBackController.Handlers
                     case "EliteAPI.Event.Models.HullDamageEvent":
                         controller.PlayFileEffect("HullDamage.ffe", 250);
                         break;
-
                 }
             }
             catch (Exception ex)

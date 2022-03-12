@@ -21,5 +21,11 @@ namespace EliteJoystick.Common.Logic
             ShiftedValue = shiftedValue;
             Description = description;
         }
+
+        public KeyCode Combine(KeyCode value)
+        {
+            Code |= value.Code;
+            return this;
+        }
     }
 }

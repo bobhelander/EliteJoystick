@@ -9,8 +9,8 @@ namespace ForceFeedBackController
 {
     public class Controller : IForceFeedbackController
     {
-        private EliteAPI.Abstractions.IEliteDangerousApi eliteDangerousApi;
-        private EliteAPI.Status.Ship.Abstractions.IShip ship;
+        private readonly EliteAPI.Abstractions.IEliteDangerousApi eliteDangerousApi;
+        private readonly EliteAPI.Status.Ship.Abstractions.IShip ship;
         private ForceFeedbackSharpDx.ForceFeedbackController msffb2;
 
         private List<IDisposable> Disposables { get; } = new List<IDisposable>();
@@ -158,8 +158,6 @@ namespace ForceFeedBackController
                 foreach (var effect in vibrationEffects)
                     effect.Dispose();
             }
-
-            
         }
     }
 }

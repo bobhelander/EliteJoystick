@@ -22,12 +22,12 @@
   <ItemGroup>
     <PackageReference Include="DDJSB2" Version="1.0.6" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Usb.GameControllers" Version="2.0.2" />
+    <PackageReference Include="Usb.GameControllers" Version="2.0.5" />
     <PackageReference Include="vJoy.Wrapper" Version="1.0.0.5" />
-    <PackageReference Include="VoicemeeterRemote" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\VoicemeeterRemote\Voicemeeter\Voicemeeter.csproj" />
     <ProjectReference Include="..\EliteGameStatus\EliteGameStatus.csproj" />
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
     <ProjectReference Include="..\ForceFeedBackController\ForceFeedBackController.csproj" />

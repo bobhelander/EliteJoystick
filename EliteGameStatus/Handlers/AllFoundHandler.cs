@@ -1,5 +1,6 @@
 ﻿using EliteAPI.Event.Models;
 using EliteAPI.Event.Models.Abstractions;
+using EliteGameStatus.Services;
 using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +13,7 @@ namespace EliteGameStatus.Handlers
 {
     public static class AllFoundHandler
     {
-        public static void Process(IEvent apiEvent, IEdsmConnector edsmConnector, ILogger logger, ILogger inGameLogger)
+        public static void Process(IEvent apiEvent, IEdsmConnector edsmConnector, ExplorationService explorationService, ILogger logger)
         {
             try
             {
@@ -30,7 +31,7 @@ namespace EliteGameStatus.Handlers
 
                         logger.LogDebug($"System Received {system?.name}");
 
-                        Exploration.EliteActions.OutputValuableSystems(system, inGameLogger);
+                        explorationService.OutputValuableSystems(system);
 
                     }).ContinueWith(t =>
                     {

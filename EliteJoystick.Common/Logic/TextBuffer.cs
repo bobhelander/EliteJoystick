@@ -28,11 +28,11 @@ namespace EliteJoystick.Common.Logic
             bool finished = false;
             if (!pressed)
             {
-                Keyboard?.DepressKey(key);
+                Keyboard?.PressKey(key, null, -1);
             }
             else
             {
-                Keyboard?.ReleaseKey(key);
+                Keyboard?.ReleaseKey(key, null);
                 finished = true;
             }
             pressed = !pressed;

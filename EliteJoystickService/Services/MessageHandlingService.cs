@@ -1,4 +1,5 @@
 ﻿using CommonCommunication;
+using EliteGameStatus.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +16,6 @@ namespace EliteJoystickService.Services
     public class MessageHandlingService : MessageHandler, IDisposable
     {
         private readonly CommonCommunication.Client client;
-        
         private IServiceScope controllerScope;
         private ControllersService controllersService;
 

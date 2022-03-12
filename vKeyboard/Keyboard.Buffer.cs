@@ -9,9 +9,9 @@ namespace vKeyboard
 {
     public partial class Keyboard
     {
-        private const uint TIMEOUT = 5000;  //approx five seconds
+        private const uint TIMEOUT = 10000;  //approx ten seconds
 
-        public async Task SendAsync(Byte modifiers, Byte padding, Byte key0, Byte key1, Byte key2, Byte key3, Byte key4, Byte key5)
+        private async Task SendAsync(Byte modifiers, Byte padding, Byte key0, Byte key1, Byte key2, Byte key3, Byte key4, Byte key5)
         {
             // The virtual keyboard takes SetFeature messages to press the keys
             var featureMessage = GetFeatureMessage(modifiers, padding, key0, key1, key2, key3, key4, key5);
@@ -24,10 +24,9 @@ namespace vKeyboard
 
         public async Task Key(byte modifier, byte key, bool press)
         {
-            if (press)
-                await SendAsync(modifier, 0, key, 0, 0, 0, 0, 0);
-            else
-                await SendAsync(0, 0, 0, 0, 0, 0, 0, 0);
+            // Set the values
+            Modifier(modifier, press);
+            Key(key, press);
         }
 
         private static byte[] GetFeatureMessage(Byte modifiers, Byte padding, Byte key0, Byte key1, Byte key2, Byte key3, Byte key4, Byte key5)

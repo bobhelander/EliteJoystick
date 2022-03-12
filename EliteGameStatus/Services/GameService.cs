@@ -1,16 +1,11 @@
-﻿using EliteGameStatus;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reactive.Linq;
 using EliteJoystick.Common.Interfaces;
-using EliteJoystick.Common.EliteGame;
 using Microsoft.Extensions.Logging;
 using EliteAPI.Abstractions;
 
-namespace EliteJoystickService
+namespace EliteGameStatus.Services
 {
     public class GameService : IGameService, IEliteGameStatus
     {
@@ -20,19 +15,20 @@ namespace EliteJoystickService
         private IEliteDangerousApi eliteApi { get; set; }
         private IEdsmConnector edsmConnector { get; set; }
 
+        private ExplorationService explorationService { get; set; }
+
         private ILogger log { get; set; }
-        private ILogger inGameLogger { get; set; }
 
         public GameService(
             IEliteDangerousApi eliteApi,
             IEdsmConnector edsmConnector,
-            ILogger<GameService> log,
-            ILoggerFactory loggerFactory)
+            ExplorationService explorationService,
+            ILogger<GameService> log)
         {
             this.eliteApi = eliteApi;
             this.edsmConnector = edsmConnector;
+            this.explorationService = explorationService;
             this.log = log;
-            this.inGameLogger = loggerFactory.CreateLogger("InGame");
         }
 
         public void Initialize()
@@ -42,8 +38,8 @@ namespace EliteJoystickService
             GameStatusObservable = new Status(eliteApi, log);
             Disposables = new List<IDisposable> {
                 //GameStatusObservable.Subscribe(x => Mappings.GameStatusMapping.Process(x)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, edsmConnector, log, inGameLogger)),
-                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, edsmConnector, log, inGameLogger)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.JumpHandler.Process(x, edsmConnector, explorationService, log)),
+                GameStatusObservable.Subscribe(x => EliteGameStatus.Handlers.AllFoundHandler.Process(x, edsmConnector, explorationService, log)),
                 GameStatusObservable
             };
         }

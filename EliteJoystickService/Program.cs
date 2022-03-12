@@ -25,7 +25,6 @@ namespace EliteJoystickService
                      service.AddInputControllers();
                      service.AddOutputControllers();
                      service.AddEliteAPI();
-                     //service.AddTransient<Client>();
                  })
                  .Build();
 

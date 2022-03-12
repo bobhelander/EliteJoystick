@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EliteJoystick.Common.Logic
 {
+    /*
     public class KeyCombination
     {
         public int Delay { get; set; }
@@ -38,4 +39,5 @@ namespace EliteJoystick.Common.Logic
             }
         }
     }
+    */
 }

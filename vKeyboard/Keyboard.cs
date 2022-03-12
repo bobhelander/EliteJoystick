@@ -18,10 +18,12 @@ namespace vKeyboard
 
             //InitializeDevice(); // Use my code instead
             InitializeController();
+            StartKeyboardCommunication();
         }
 
         public void Dispose()
         {
+            DisposeCommunication();
             DisposeController();
             DisposeDevice();
         }
@@ -31,51 +33,23 @@ namespace vKeyboard
             throw new NotImplementedException();
         }
 
-        public Task DepressKey(byte code) => KeyAction(0x00, code, true);
-        public Task DepressKey(string key) => KeyAction(key, true);
-
-        public Task ReleaseKey(byte code) => KeyAction(0x00, code, false);
-        public Task ReleaseKey(string key) => KeyAction(key, false);
-
-        public Task ReleaseAll() => KeyAction(0x00, 0x00, false);
-
-        public async Task KeyAction(byte modifiers, byte code0, byte code1 = 0, byte code2 = 0, byte code3 = 0, byte code4 = 0, byte code5 = 0)
-            => await SendAsync(modifiers, 0x00, code0, code1, code2, code3, code4, code5).ConfigureAwait(false);
-
+        /// <summary>
+        /// Use keycode to press or release a key.  Adds or removes the key codes to the current keys buffer.
+        /// </summary>
+        /// <param name="modifier"></param>
+        /// <param name="code"></param>
+        /// <param name="pressed"></param>
+        /// <returns></returns>
         private async Task KeyAction(byte modifier, byte code, bool pressed) =>
             await Key(modifier, code, pressed).ConfigureAwait(false);
 
-        private async Task KeyAction(string key, bool pressed)
+        private async Task PressKey(byte modifiers, byte code, int duration = 50)
         {
-            (var modifier, var code) = FindCode(key);
-            await KeyAction(modifier, code, pressed).ConfigureAwait(false);
-        }
-
-        public async Task TypeFromClipboard() =>
-            await Utils.TypeFromClipboard(this, log).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "TypeFromClipboard", log)).ConfigureAwait(false);
-
-        public async Task PressKey(string value, int duration = 30)
-        {
-            (var modifier, var code) = FindCode(value);
-            await PressKey(modifier, code, duration).ConfigureAwait(false);
-        }
-
-        public async Task PressKey(byte code, int duration = 50) =>
-            await PressKey(0x00, code, duration).ConfigureAwait(false);
-
-        public async Task PressKey(byte modifiers, byte code, int duration = 50)
-        {
-            await KeyAction(modifiers, code).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:DepressKey", log)).ConfigureAwait(false);
+            await KeyAction(modifiers, code, true).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:DepressKey", log)).ConfigureAwait(false);
             await Task.Delay(duration).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:Delay", log)).ConfigureAwait(false);
-            await KeyAction(0x00, 0x00).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:ReleaseKey", log)).ConfigureAwait(false);
+            await KeyAction(modifiers, code, false).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKey:ReleaseKey", log)).ConfigureAwait(false);
             await Task.Delay(duration).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "After ReleaseKey:Delay", log)).ConfigureAwait(false);
         }
-
-        public async Task TypeFullString(String text) =>
-            await Utils.TypeFullString(this, text, log).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "TypeFullString", log)).ConfigureAwait(false);
-
-        public async Task KeyCombo(byte[] modifier, byte key) =>
-            await Utils.KeyCombo(this, modifier, key, log).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "KeyCombo", log)).ConfigureAwait(false);
 
         private static (byte modifier, byte code) FindCode(string key)
         {
@@ -86,5 +60,61 @@ namespace vKeyboard
 
             return (0x00, 0x00);
         }
+
+        /// <summary>
+        /// Add the modifiers together, if any.
+        /// </summary>
+        /// <param name="modifiers"></param>
+        /// <returns></returns>
+        private static byte CombineModifiers(KeyCode[] modifiers) =>
+            modifiers?.Aggregate((keyCode, modifier) => keyCode.Combine(modifier)).Code ?? (byte)0;
+
+        #region IKeyboard
+        public async Task PressKey(byte code, KeyCode[] modifiers = null, int duration = 50)
+        {
+            byte modiferKeys = CombineModifiers(modifiers);
+
+            if (duration == -1) // Press the combination
+                await KeyAction(modiferKeys, code, true).ConfigureAwait(false);
+            else // Press and release
+                await PressKey(modiferKeys, code, duration).ConfigureAwait(false);
+        }
+
+        public async Task ReleaseKey(byte code, KeyCode[] modifiers = null)
+        {
+            byte modiferKeys = CombineModifiers(modifiers);
+            await KeyAction(modiferKeys, code, false).ConfigureAwait(false);
+        }
+
+        public Task ReleaseAll()
+        {
+            Release(true, true);
+            return Task.CompletedTask;
+        }
+
+        public async Task PressKey(string value, KeyCode[] modifiers = null, int duration = 50)
+        {
+            (var modifier, var code) = FindCode(value);
+            byte modiferKeys = (byte)(CombineModifiers(modifiers) | modifier);
+
+            if (duration == -1) // Press the combination
+                await KeyAction(modiferKeys, code, true).ConfigureAwait(false);
+            else // Press and release
+                await PressKey(modiferKeys, code, duration).ConfigureAwait(false);
+        }
+
+        public async Task ReleaseKey(string value, KeyCode[] modifiers = null)
+        {
+            (var modifier, var code) = FindCode(value);
+            byte modiferKeys = (byte)(CombineModifiers(modifiers) | modifier);
+            await KeyAction(modiferKeys, code, false).ConfigureAwait(false);
+        }
+
+        public async Task TypeFullString(String text) =>
+            await Utils.TypeFullString(this, text, log).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "TypeFullString", log)).ConfigureAwait(false);
+
+        public async Task TypeFromClipboard() =>
+            await Utils.TypeFromClipboard(this, log).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "TypeFromClipboard", log)).ConfigureAwait(false);
+        #endregion
     }
 }

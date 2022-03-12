@@ -32,7 +32,7 @@ namespace ArduinoCommunication
             foreach (var key in keys)
             {
                 if (pressKeys)
-                    await arduino.DepressKey(key).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKeys:DepressKey", logger)).ConfigureAwait(false);
+                    await arduino.PressKey(key).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKeys:DepressKey", logger)).ConfigureAwait(false);
                 else
                     await arduino.ReleaseKey(key).ContinueWith(t => EliteJoystick.Common.Utils.LogTaskResult(t, "PressKeys:ReleaseKey", logger)).ConfigureAwait(false);
             }

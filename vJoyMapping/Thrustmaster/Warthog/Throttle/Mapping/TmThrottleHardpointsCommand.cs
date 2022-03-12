@@ -13,6 +13,9 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 {
     public static class TmThrottleHardpointsCommand
     {
+        private static readonly KeyCode[] L_CTRL_L_ALT = new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"], KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"] };
+        private static readonly byte KEY_H_CODE = KeyMap.KeyNameMap["KEY_H"].Code;
+
         private const UInt32 EORDown = (UInt32)Button.Button19;
 
         public static void Process(States value, Controller controller)
@@ -22,10 +25,9 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             {
                 // CTRL-ALT-H
                 controller.Logger.LogDebug($"Hardpoints out {controller.SharedState.HardpointsDeployed}");
-                //Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48).ConfigureAwait(false));
-                Task.Run(async () => await controller.PressKey(
-                    (byte)(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code | KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"].Code),
-                    KeyMap.KeyNameMap["KEY_H"].Code).ConfigureAwait(false));
+
+                controller.PressKey(KEY_H_CODE, L_CTRL_L_ALT);
+
                 controller.SharedState.HardpointsDeployed = true;
             }
 
@@ -34,10 +36,9 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
             {
                 // CTRL-ALT-H
                 controller.Logger.LogDebug($"Hardpoints in {controller.SharedState.HardpointsDeployed}");
-                //Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x48).ConfigureAwait(false));
-                Task.Run(async () => await controller.PressKey(
-                    (byte)(KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"].Code | KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"].Code),
-                    KeyMap.KeyNameMap["KEY_H"].Code).ConfigureAwait(false));
+
+                controller.PressKey(KEY_H_CODE, L_CTRL_L_ALT);
+
                 controller.SharedState.HardpointsDeployed = false;
             }
         }

@@ -8,8 +8,8 @@ using DDJSB2.Controls;
 using EliteJoystick.Common;
 using Microsoft.Extensions.Logging;
 using EliteJoystick.Common.Interfaces;
-using EliteJoystickService;
 using EliteAPI.Event.Models.Abstractions;
+using EliteGameStatus.Services;
 
 namespace vJoyMapping.Pioneer.ddjsb2
 {
@@ -38,11 +38,11 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
         private IForceFeedbackController msffb2;
 
-        private IDisposable skippingSubscription = null;
+        private readonly IDisposable skippingSubscription;
         private DateTime lastPause = DateTime.UtcNow;
         private bool playLed = false;
 
-        public EliteJoystickService.GameService GameService { get; set; }
+        public GameService GameService { get; set; }
 
         public Controller(
             IKeyboard arduino,
@@ -54,7 +54,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
             IVoiceMeeterService voicemeeter,
             ILogger<Controller> log)
         {
-            Arduino = arduino;
+            Keyboard = arduino;
             SharedState = eliteSharedState;
             Settings = settings;
             VirtualJoysticks = virtualJoysticks;
@@ -173,6 +173,11 @@ namespace vJoyMapping.Pioneer.ddjsb2
                 // Deck 1 Touch Jog Wheel: Shut up Voice Attack
                 (ddjsb2.ChannelControls[1].First(x => x.Name == "Jog Dial") as DDJSB2.Controls.Encoder)
                     .Subscribe(x => DdjSb2UtilsHandler.ShutUpVoiceAttack(this, x),
+                    ex => Logger.LogError($"Exception : {ex}")),
+
+                // Deck 2 Jog Wheel: Target subsystem
+                (ddjsb2.ChannelControls[1].First(x => x.Name == "Jog Dial") as DDJSB2.Controls.Encoder)
+                    .Subscribe(x => DdjSb2UtilsHandler.TargetHostile(this, x),
                     ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Jog Wheel: Target subsystem

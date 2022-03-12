@@ -4,6 +4,8 @@ using vJoyMapping.Common;
 using EliteJoystick.Common;
 using EliteJoystickService.Services;
 using EdsmConnector;
+using System;
+using EliteGameStatus.Extensions;
 
 namespace EliteJoystickService.Extensions
 {
@@ -63,10 +65,15 @@ namespace EliteJoystickService.Extensions
         /// <returns></returns>
         public static IServiceCollection AddEliteGameServices(this IServiceCollection services)
         {
-            services.AddSingleton<GameService>();
+            services.AddGameServices();
             services.AddSingleton<IEdsmConnector, Connector>();
             services.AddSingleton<EliteSharedState>();
             return services;
+        }
+
+        private static void AddGameServices()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

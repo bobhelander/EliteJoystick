@@ -12,8 +12,8 @@ namespace vKeyboard.Logic
 {
     public class Device : IDisposable
     {
-        private String devicePathName { get; set; }
-        private SafeFileHandle deviceFileHandle { get; set; }
+        private String DevicePathName { get; set; }
+        private SafeFileHandle DeviceFileHandle { get; set; }
 
         public ushort ProductID { get; set; }
         public ushort VendorID { get; set; }
@@ -35,7 +35,7 @@ namespace vKeyboard.Logic
             }
         }
 
-        void Connect(IntPtr hDeviceInfoSet, WinApi.SP_DEVICE_INTERFACE_DATA deviceInterfaceData, uint sizeNeeded, ILogger log)
+        private void Connect(IntPtr hDeviceInfoSet, WinApi.SP_DEVICE_INTERFACE_DATA deviceInterfaceData, uint sizeNeeded, ILogger log)
         {
             using (var deviceInterfaceDetailData = new WinApi.UnmanagedMemory(sizeNeeded))
             {
@@ -57,9 +57,9 @@ namespace vKeyboard.Logic
                 }
 
                 IntPtr pDevicePathName = new IntPtr(deviceInterfaceDetailData.Ptr.ToInt32() + 4);
-                devicePathName = Marshal.PtrToStringAuto(pDevicePathName);
+                DevicePathName = Marshal.PtrToStringAuto(pDevicePathName);
 
-                var fileHandle = OpenFileHandle(devicePathName);
+                var fileHandle = OpenFileHandle(DevicePathName);
 
                 if (fileHandle.IsInvalid == false)
                 {
@@ -79,7 +79,7 @@ namespace vKeyboard.Logic
 
         public void Open()
         {
-            deviceFileHandle = OpenFileHandle(devicePathName);
+            DeviceFileHandle = OpenFileHandle(DevicePathName);
         }
 
         private static SafeFileHandle OpenFileHandle(string devicePathName)
@@ -110,8 +110,7 @@ namespace vKeyboard.Logic
         }
 
         public async Task SetFeature(byte[] featureMessage) =>
-            await SetFeatureAsync(deviceFileHandle, featureMessage, (uint)featureMessage.Length);
-
+            await SetFeatureAsync(DeviceFileHandle, featureMessage, (uint)featureMessage.Length);
 
         public static Task<bool> SetFeatureAsync(SafeFileHandle fileHandle, byte[] Buffer, uint BufferLength)
         {
@@ -121,24 +120,9 @@ namespace vKeyboard.Logic
             return Task.FromResult(false);
         }
 
-        //read data from the driver.  This ideally should be in a thread
-        //in this example, we oversimplified the possible effects of overlapped data reads since readfilex is asynchronous
-        public Boolean ReadData(SafeFileHandle fileHandle, byte[] Buffer, uint BufferLength)
-        {
-            bool res = false;
-            if (fileHandle.IsInvalid == false)
-            {
-                var overlapped = new NativeOverlapped();
-                overlapped.EventHandle = IntPtr.Zero;
-                bool res1 = WinApi.ReadFileEx(fileHandle, Buffer, BufferLength, ref overlapped, IntPtr.Zero);
-                res = true;
-            }
-            return res;
-        }
-
         public void Dispose()
         {
-            deviceFileHandle?.Close();
+            DeviceFileHandle?.Close();
         }
     }
 }

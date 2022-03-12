@@ -25,7 +25,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
             IVirtualJoysticks virtualJoysticks,
             ILogger<Controller> log)
         {
-            Arduino = arduino;
+            Keyboard = arduino;
             SharedState = eliteSharedState;
             Settings = settings;
             VirtualJoysticks = virtualJoysticks;

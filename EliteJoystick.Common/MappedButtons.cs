@@ -13,6 +13,8 @@ namespace EliteJoystick.Common
     public static class MappedButtons
     {
         // Virtual Joystick (Virtual)
+        public static uint CycleNextHostile = 7;
+        public static uint CyclePrevHostile = 8;
         public static uint CycleNextSubsystem = 9;
         // Trying to determine if 1-9 are used elsewhere.  Might have been the 
         public static uint CycleSubsystem = 10;
