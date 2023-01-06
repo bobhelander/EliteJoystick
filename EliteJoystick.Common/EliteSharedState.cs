@@ -34,6 +34,7 @@ namespace EliteJoystick.Common
         public bool HardpointsDeployed { get; set; }
         public bool CameraActive { get; set; }
         public bool SecondaryFireActive { get; set; }
+        public bool FieldNeutraliser { get; set; }
 
         public bool Mute { get; set; }
 

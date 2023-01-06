@@ -218,7 +218,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
                         ChannelNumber = 2  // Strip #2 - Left Audio
                     }
                 };
-
+            /*
             // Subscribe to the levels from Voicemeeter
             var levels = new Voicemeeter.Levels(channels, 20);  // Update every 20 miliseconds
             Disposables.Add(levels.Subscribe(x => LevelsUpdate(ddjsb2, x)));
@@ -226,7 +226,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
             // Watch for changes
             var parameters = new Voicemeeter.Parameters();
             Disposables.Add(parameters.Subscribe(x => ParametersUpdate(ddjsb2, x)));
-
+            */
             Disposables.Add(GameService.GameStatusObservable.Subscribe(x => Process(ddjsb2, x)));
 
             // Init 

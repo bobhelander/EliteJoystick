@@ -37,7 +37,7 @@ namespace EliteJoystick.Common
         public static uint LockRotationToggle = 27;
         public static uint HeatSink = 28;
         public static uint ShieldCell = 29;
-        //public static uint BlurDecrease = 30;
+        public static uint FieldNeutraliser = 30;
         //public static uint BlurIncrease = 31;
 
         // Combined Joystick (StickAndPedals)

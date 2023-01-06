@@ -13,11 +13,12 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
         {
             var current = value.Current as State;
 
-            int y = ((current.Y * -1) + 511) * 32;
-            int x = ((current.X * -1) + 511) * 32;
+            int y = ((current.Y * -1) + 511) * 32;      // -511 - +512  (Shift value up to 0 - 1024) Then multiply by 32
+            int x = ((current.X * -1) + 511) * 32;      // -511 - +512
+            double minPercent = current.Slider / 127;   // 0 - 127  Control the curve with the slider
 
-            x = Curves.Calculate(x - (16 * 1024), (16 * 1024), .4) + 16 * 1024;
-            y = Curves.Calculate(y - (16 * 1024), (16 * 1024), .4) + 16 * 1024;
+            x = Curves.Calculate(x - (16 * 1024), (16 * 1024), minPercent) + 16 * 1024;
+            y = Curves.Calculate(y - (16 * 1024), (16 * 1024), minPercent) + 16 * 1024;
 
             controller.SetJoystickAxis(x, (int)vJoy.Wrapper.Axis.HID_USAGE_X, vJoyTypes.StickAndPedals);
             controller.SetJoystickAxis(y, (int)vJoy.Wrapper.Axis.HID_USAGE_Y, vJoyTypes.StickAndPedals);

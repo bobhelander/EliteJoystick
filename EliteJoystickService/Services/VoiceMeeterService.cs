@@ -1,8 +1,10 @@
 ﻿using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EliteJoystickService.Services
@@ -11,10 +13,20 @@ namespace EliteJoystickService.Services
     {
         private IDisposable voiceMeeterDisposable;
 
-        public VoiceMeeterService()
+        public VoiceMeeterService(ILogger<VoiceMeeterService> logger)
         {
-            // Connect to Voicemeeter. Each remote is a handle across the entire service
-            voiceMeeterDisposable = VoiceMeeter.Remote.Initialize(Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result;
+            retry:
+
+            try
+            {
+                // Connect to Voicemeeter. Each remote is a handle across the entire service
+                voiceMeeterDisposable = VoiceMeeter.Remote.Initialize(Voicemeeter.RunVoicemeeterParam.VoicemeeterBanana).Result;
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex.Message);
+                goto retry;
+            }
         }
 
         public void Dispose()

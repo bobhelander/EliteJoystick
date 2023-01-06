@@ -21,29 +21,44 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
 
         private const UInt32 SpeedbrakeForward = (UInt32)Button.Button07;
 
+        //public static void Process(States value, Controller controller)
+        //{
+        //    if (Reactive.ButtonPressed(value, SpeedbrakeForward) &&
+        //        controller.SharedState.CurrentMode == EliteSharedState.Mode.Fighting)
+        //    {
+        //        if (null == cycleSubsystems)
+        //        {
+        //            cycleSubsystems = timer.Subscribe(x =>
+        //            {
+        //                controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 200);
+        //                controller.Logger.LogDebug("Cycle Subsystem: Next");
+        //            });
+        //            controller.Logger.LogDebug("Cycle Subsystem: Running");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (null != cycleSubsystems)
+        //        {
+        //            cycleSubsystems.Dispose();
+        //            cycleSubsystems = null;
+        //            controller.Logger.LogDebug("Cycle Subsystem: Stopped");
+        //        }
+        //    }
+        //}
+
         public static void Process(States value, Controller controller)
         {
-            if (Reactive.ButtonPressed(value, SpeedbrakeForward) &&
+            // Use the speedbrake to lock the FieldNeutraliser button down.  
+
+            if (Reactive.ButtonDown(value, SpeedbrakeForward) &&
                 controller.SharedState.CurrentMode == EliteSharedState.Mode.Fighting)
             {
-                if (null == cycleSubsystems)
-                {
-                    cycleSubsystems = timer.Subscribe(x =>
-                    {
-                        controller.CallActivateButton(vJoyTypes.Virtual, MappedButtons.CycleSubsystem, 200);
-                        controller.Logger.LogDebug("Cycle Subsystem: Next");
-                    });
-                    controller.Logger.LogDebug("Cycle Subsystem: Running");
-                }
+                controller.SetJoystickButton(true, MappedButtons.FieldNeutraliser, vJoyTypes.Virtual);
             }
-            else
+            else if (controller.SharedState.SecondaryFireActive)
             {
-                if (null != cycleSubsystems)
-                {
-                    cycleSubsystems.Dispose();
-                    cycleSubsystems = null;
-                    controller.Logger.LogDebug("Cycle Subsystem: Stopped");
-                }
+                controller.SetJoystickButton(false, MappedButtons.FieldNeutraliser, vJoyTypes.Virtual);
             }
         }
     }
