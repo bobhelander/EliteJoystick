@@ -24,7 +24,7 @@ namespace EliteJoystickService
                      service.AddEliteGameServices();
                      service.AddInputControllers();
                      service.AddOutputControllers();
-                     service.AddEliteAPI();
+                     service.AddEliteApi();
                  })
                  .Build();
 

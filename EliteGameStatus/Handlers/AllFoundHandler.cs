@@ -1,12 +1,9 @@
-﻿using EliteAPI.Event.Models;
-using EliteAPI.Event.Models.Abstractions;
+﻿using EliteAPI.Abstractions.Events;
+using EliteAPI.Events;
 using EliteGameStatus.Services;
 using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EliteGameStatus.Handlers
@@ -19,9 +16,7 @@ namespace EliteGameStatus.Handlers
             {
                 logger.LogDebug($"{apiEvent.GetType().ToString()}");
 
-                var allBodiesEvent = apiEvent as FssAllBodiesFoundEvent;
-
-                if (null != allBodiesEvent)
+                if (apiEvent is FssAllBodiesFoundEvent allBodiesEvent)
                 {
                     logger.LogDebug($"All Found: {allBodiesEvent.SystemName}");
 

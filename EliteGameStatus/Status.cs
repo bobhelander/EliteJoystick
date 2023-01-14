@@ -1,5 +1,6 @@
 ﻿using EliteAPI.Abstractions;
-using EliteAPI.Event.Models.Abstractions;
+using EliteAPI.Abstractions.Events;
+using EliteAPI.Events;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,11 @@ namespace EliteGameStatus
             try
             {
                 Initialized = true;
-                EliteAPI.Events.AllEvent += Events_AllEvent;
+                EliteAPI.Events.OnAny(e => Events_AllEvent(this, e));
 
-                EliteAPI.Events.StartJumpEvent += Events_StartJumpEvent;
-                EliteAPI.Events.FssAllBodiesFoundEvent += Events_FSSAllBodiesFoundEvent;
-                EliteAPI.Events.ScanEvent += Events_ScanEvent;
+                EliteAPI.Events.On<StartJumpEvent>(e => Events_StartJumpEvent(this, e));
+                EliteAPI.Events.On<FssAllBodiesFoundEvent>(e => Events_FSSAllBodiesFoundEvent(this, e));
+                EliteAPI.Events.On<ScanEvent>(e => Events_ScanEvent(this, e));
             }
             catch(Exception ex)
             {
@@ -34,19 +35,19 @@ namespace EliteGameStatus
             }
         }
 
-        private void Events_ScanEvent(object sender, EliteAPI.Event.Models.ScanEvent e)
+        private void Events_ScanEvent(object sender, ScanEvent e)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
-        private void Events_FSSAllBodiesFoundEvent(object sender, EliteAPI.Event.Models.FssAllBodiesFoundEvent e)
+        private void Events_FSSAllBodiesFoundEvent(object sender, FssAllBodiesFoundEvent e)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
-        private void Events_StartJumpEvent(object sender, EliteAPI.Event.Models.StartJumpEvent e)
+        private void Events_StartJumpEvent(object sender, StartJumpEvent e)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);

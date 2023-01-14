@@ -6,6 +6,7 @@ using EliteJoystickService.Services;
 using System;
 using EliteGameStatus.Extensions;
 using EdsmConnector;
+using EliteDesktopApp;
 
 namespace EliteJoystickService.Extensions
 {

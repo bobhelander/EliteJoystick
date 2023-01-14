@@ -1,15 +1,14 @@
-﻿using System;
+﻿using DDJSB2;
+using DDJSB2.Controls;
+using EliteAPI.Abstractions.Events;
+using EliteGameStatus.Services;
+using EliteJoystick.Common;
+using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using DDJSB2;
 using System.Linq;
 using vJoyMapping.Pioneer.ddjsb2.Mapping;
-using DDJSB2.Controls;
-using EliteJoystick.Common;
-using Microsoft.Extensions.Logging;
-using EliteJoystick.Common.Interfaces;
-using EliteAPI.Event.Models.Abstractions;
-using EliteGameStatus.Services;
 
 namespace vJoyMapping.Pioneer.ddjsb2
 {

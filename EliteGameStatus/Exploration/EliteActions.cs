@@ -1,8 +1,7 @@
-﻿using System;
-using EliteAPI.Event.Models;
-using EliteJoystick.Common.Interfaces;
+﻿using EliteAPI.Events;
 using EliteJoystick.Common.Models;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace EliteGameStatus.Exploration
 {
@@ -34,14 +33,11 @@ namespace EliteGameStatus.Exploration
 
         internal static void OutputValuableBody(ScanEvent scanInfoEvent, ILogger logger) // "InGame" Logger
         {
-            if (null != scanInfoEvent)
+            var output = String.Empty;
+            if (false == string.IsNullOrEmpty(scanInfoEvent.TerraformState))
             {
-                var output = String.Empty;
-                if (false == string.IsNullOrEmpty(scanInfoEvent.TerraformState))
-                {
-                    output = $"Body {scanInfoEvent.BodyName} is {scanInfoEvent.TerraformState}";
-                    logger.LogInformation(output);
-                }
+                output = $"Body {scanInfoEvent.BodyName} is {scanInfoEvent.TerraformState}";
+                logger.LogInformation(output);
             }
         }
 

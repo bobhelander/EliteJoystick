@@ -1,11 +1,6 @@
-﻿using EliteAPI.Event.Models;
-using EliteAPI.Event.Models.Abstractions;
+﻿using EliteAPI.Abstractions.Events;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EliteGameStatus.Handlers
 {
@@ -15,11 +10,9 @@ namespace EliteGameStatus.Handlers
         {
             try
             {
-                var scanInfoEvent = apiEvent as ScanEvent;
-
-                if (null != scanInfoEvent)
+                if (apiEvent is EliteAPI.Events.ScanEvent)
                 {
-                    Exploration.EliteActions.OutputValuableBody(scanInfoEvent, inGameLogger);
+                    Exploration.EliteActions.OutputValuableBody((EliteAPI.Events.ScanEvent)apiEvent, inGameLogger);
                 }
             }
             catch (Exception ex)

@@ -31,6 +31,7 @@ namespace EliteJoystickService
         internal void TestStartupAndStop(string[] args)
         {
             this.OnStart(args);
+            System.Threading.Thread.Sleep(60000);
             Console.ReadLine();
             this.OnStop();
         }

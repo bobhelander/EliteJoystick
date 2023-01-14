@@ -1,12 +1,9 @@
-﻿using EliteAPI.Event.Models;
-using EliteAPI.Event.Models.Abstractions;
+﻿using EliteAPI.Abstractions.Events;
+using EliteAPI.Events;
 using EliteGameStatus.Services;
 using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EliteGameStatus.Handlers
@@ -17,17 +14,17 @@ namespace EliteGameStatus.Handlers
         {
             try
             {
-                logger.LogDebug($"{apiEvent.GetType()}");
+                logger.LogDebug($"{apiEvent.GetType()}");                
 
-                var startJumpEvent = apiEvent as StartJumpEvent;
-
-                if (null != startJumpEvent)
+                if (apiEvent is StartJumpEvent)
                 {
-                    logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent?.StarSystem}");
+                    var startJumpEvent = (StartJumpEvent)apiEvent;
 
-                    if (startJumpEvent.JumpType == "Hyperspace" && null != startJumpEvent?.StarSystem)
+                    logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent.StarSystem}");
+
+                    if (startJumpEvent.JumpType == "Hyperspace" && null != startJumpEvent.StarSystem)
                     {
-                        logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent?.StarSystem}: Validated");
+                        logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent.StarSystem}: Validated");
 
                         Task.Run(async () =>
                         {

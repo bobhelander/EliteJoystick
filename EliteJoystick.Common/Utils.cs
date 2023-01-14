@@ -26,6 +26,13 @@ namespace EliteJoystick.Common
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, int wParam, IntPtr lParam);
 
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetConsoleWindow();
+        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool AllocConsole();
+
         [DllImport("vJoyInstall.dll", EntryPoint = "refresh_vjoy_specific")]
         private static extern void refresh_vjoy_specific(ushort Revision);
 

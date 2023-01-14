@@ -1,10 +1,5 @@
-﻿using EliteAPI.Event.Models.Abstractions;
-using EliteAPI.Status.Raw;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForceFeedBackController.Handlers
 {
