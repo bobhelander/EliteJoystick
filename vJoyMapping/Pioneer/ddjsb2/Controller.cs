@@ -65,7 +65,6 @@ namespace vJoyMapping.Pioneer.ddjsb2
             Logger?.LogDebug($"Added {Name}");
         }
 
-
         public void Initialize(IForceFeedbackController msffb2)
         {
             this.msffb2 = msffb2;

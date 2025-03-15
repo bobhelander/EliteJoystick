@@ -1,11 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EliteJoystickConsole
@@ -60,8 +54,10 @@ namespace EliteJoystickConsole
             if (true)
             {
                 using (ILoggerFactory loggerFactory =
-                LoggerFactory.Create(builder => builder.AddSimpleConsole(options =>
-                    { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; }).SetMinimumLevel(LogLevel.Debug)))
+                    LoggerFactory.Create(builder => builder.AddSimpleConsole(options => { 
+                        options.SingleLine = true; 
+                        options.TimestampFormat = "hh:mm:ss "; 
+                    }).SetMinimumLevel(LogLevel.Debug)))
                 {
                     ILogger<EliteJoystickClient.Client> logger = loggerFactory.CreateLogger<EliteJoystickClient.Client>();
 

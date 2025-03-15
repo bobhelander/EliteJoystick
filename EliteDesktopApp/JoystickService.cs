@@ -38,7 +38,7 @@ namespace EliteDesktopApp
 
         public void Start()
         {
-            this.OnStart(null);
+            this.OnStart(Array.Empty<string>());
         }
 
         public void OnStart(string[] args)

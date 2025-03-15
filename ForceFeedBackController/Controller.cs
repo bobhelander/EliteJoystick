@@ -1,5 +1,5 @@
 ﻿using EliteAPI.Abstractions;
-using EliteAPI.Events.Status.Ship.Events;
+using EliteAPI.Status.Ship.Events;
 using EliteJoystick.Common.Interfaces;
 using ForceFeedBackController.Handlers;
 using Microsoft.Extensions.Logging;

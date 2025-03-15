@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="DDJSB2" Version="1.1.0" />
-    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="Usb.GameControllers" Version="2.1.0" />
     <PackageReference Include="vJoy.Wrapper" Version="1.0.0.5" />
   </ItemGroup>

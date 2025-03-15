@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using vKeyboard.Models;
 
@@ -22,11 +20,13 @@ namespace vKeyboard
                 await device.SetFeature(featureMessage).ConfigureAwait(false);
         }
 
-        public async Task Key(byte modifier, byte key, bool press)
+        public Task Key(byte modifier, byte key, bool press)
         {
             // Set the values
             Modifier(modifier, press);
             Key(key, press);
+
+            return Task.CompletedTask;
         }
 
         private static byte[] GetFeatureMessage(Byte modifiers, Byte padding, Byte key0, Byte key1, Byte key2, Byte key3, Byte key4, Byte key5)
