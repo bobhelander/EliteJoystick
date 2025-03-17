@@ -2,8 +2,6 @@
 using DDJSB2.Controls;
 using EliteJoystick.Common;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace vJoyMapping.Pioneer.ddjsb2.Mapping
 {
@@ -47,7 +45,7 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
             }
         }
 
-        public static void SpotifySkipCommerical(
+        public static IDisposable SpotifySkipCommerical(
             PioneerDDJSB2 ddjsb2,
             string patchParameter,
             IDisposable skippingSubscription,
@@ -76,6 +74,8 @@ namespace vJoyMapping.Pioneer.ddjsb2.Mapping
                     skippingSubscription = skipping.Subscribe(x => ReenableSound(ddjsb2, patchParameter, skippingSubscription, deck, group, led, skipping));
                 }
             }
+
+            return skippingSubscription;
         }
 
         private static void ReenableSound(

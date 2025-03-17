@@ -1,37 +1,38 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteAPI.Abstractions.Events;
+using EliteAPI.Events;
+using EliteGameStatus.Services;
+using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EliteGameStatus.Handlers
 {
     public static class JumpHandler
     {
-        public static void Process(EliteAPI.Events.IEvent apiEvent, ILogger logger, ILogger inGameLogger) // "InGame" Logger
+        public static void Process(IEvent apiEvent, IEdsmConnector edsmConnector, ExplorationService explorationService, ILogger logger)
         {
             try
             {
-                logger.LogDebug($"{apiEvent.GetType().ToString()}");
+                logger.LogDebug($"{apiEvent.GetType()}");                
 
-                var startJumpEvent = apiEvent as EliteAPI.Events.StartJumpInfo;
-
-                if (null != startJumpEvent)
+                if (apiEvent is StartJumpEvent)
                 {
-                    logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent?.StarSystem}");
+                    var startJumpEvent = (StartJumpEvent)apiEvent;
 
-                    if (startJumpEvent.JumpType == "Hyperspace" && null != startJumpEvent?.StarSystem)
+                    logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent.StarSystem}");
+
+                    if (startJumpEvent.JumpType == "Hyperspace" && null != startJumpEvent.StarSystem)
                     {
-                        logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent?.StarSystem}: Validated");
+                        logger.LogDebug($"{startJumpEvent.JumpType} Jump Started: {startJumpEvent.StarSystem}: Validated");
 
                         Task.Run(async () =>
                         {
-                            var system = await EdsmConnector.Connector.GetSystem(startJumpEvent.StarSystem).ConfigureAwait(false);
+                            var system = await edsmConnector.GetSystem(startJumpEvent.StarSystem).ConfigureAwait(false);
 
                             logger.LogDebug($"System Received {system?.name}");
 
-                            Exploration.EliteActions.OutputValuableSystems(system, inGameLogger);
+                            explorationService.OutputValuableSystems(system);
 
                         }).ContinueWith(t =>
                         {

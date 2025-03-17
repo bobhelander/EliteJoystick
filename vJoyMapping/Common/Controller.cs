@@ -1,5 +1,7 @@
 ﻿using EliteJoystick.Common;
 using EliteJoystick.Common.Interfaces;
+//using EliteJoystick.Common.Logic;
+//using EliteJoystick.Common.Logic;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,18 +23,21 @@ namespace vJoyMapping.Common
 
         public ILogger Logger { get; set; }
 
-        public String Name { get; set; }
+        public virtual String Name { get; }
 
-        public EliteVirtualJoysticks VirtualJoysticks { get; set; }
+        public IVirtualJoysticks VirtualJoysticks { get; set; }
 
-        public Settings Settings { get; set; }
+        public ISettings Settings { get; set; }
 
-        public IArduino Arduino { get; set; }
+        public IKeyboard Keyboard { get; set; }
 
         public EliteSharedState SharedState { get; set; }
 
-        public void Dispose() =>
-            Disposables.ForEach(disposable => { try { disposable?.Dispose(); disposable = null; } catch (Exception) {;} });
+        public void Dispose()
+        {
+            ReleaseAllKeys();
+            Disposables.ForEach(disposable => { try { disposable?.Dispose(); disposable = null; } catch (Exception) {; } });
+        }
 
         #region  Virtual Joystick Actions
 
@@ -45,7 +50,7 @@ namespace vJoyMapping.Common
         public void SetJoystickButtons(uint buttons, string vJoyType, uint mask) =>
             VirtualJoysticks.SetJoystickButtons(buttons, Settings.vJoyMapper.GetJoystickId(vJoyType), mask);
 
-        public void SetJoystickAxis(int value, Axis usage, string vJoyType) =>
+        public void SetJoystickAxis(int value, int usage, string vJoyType) =>
             VirtualJoysticks.SetJoystickAxis(value, usage, Settings.vJoyMapper.GetJoystickId(vJoyType));
 
         public void SetJoystickHat(int value, string vJoyType, uint hatNumber) =>
@@ -53,32 +58,52 @@ namespace vJoyMapping.Common
 
         #endregion
 
-        #region  Arduino keyboard actions
-
-        public void DepressKey(byte key) =>
-            Arduino?.DepressKey(key).Wait();
-
-        public void ReleaseKey(byte key) =>
-            Arduino?.ReleaseKey(key).Wait();
-
-        public void ReleaseAllKeys() =>
-            Arduino?.ReleaseAll().Wait();
+        #region  Keyboard actions
 
         public async Task TypeFullString(String text) =>
-            await Arduino.TypeFullString(text).ContinueWith(t => Utils.LogTaskResult(t, "Controller:TypeFullString", Logger)).ConfigureAwait(false);
+            await Keyboard.TypeFullString(text).ContinueWith(t => Utils.LogTaskResult(t, "Controller:TypeFullString", Logger)).ConfigureAwait(false);
 
         public async Task TypeFromClipboard() =>
-            await Arduino.TypeFromClipboard().ContinueWith(t => Utils.LogTaskResult(t, "Controller:TypeFromClipboard", Logger)).ConfigureAwait(false);
+            await Keyboard.TypeFromClipboard().ContinueWith(t => Utils.LogTaskResult(t, "Controller:TypeFromClipboard", Logger)).ConfigureAwait(false);
 
         /// <summary>
-        /// Press keyboard keys. Modifier array are the keys to press first and then the key is pressed.
-        /// https://www.arduino.cc/en/Reference/KeyboardModifiers
+        /// Press key. Do not wait.
         /// </summary>
-        /// <param name="modifier"></param>
         /// <param name="key"></param>
+        /// <param name="modifiers"></param>
+        /// <param name="duration"></param>
+        public void PressKey(byte key, EliteJoystick.Common.Logic.KeyCode[] modifiers = null, int duration = 50) =>
+            Task.Run(async () => await Keyboard.PressKey(key, modifiers, duration).ConfigureAwait(false))
+            .ContinueWith(t =>
+            {
+                if (t.IsCanceled) Logger.LogError("PressKey Canceled");
+                else if (t.IsFaulted) Logger.LogError($"PressKey Exception: {t.Exception}");
+                else Logger.LogDebug($"PressKey: 0x{key:X}");
+            }).ConfigureAwait(false);
+
+        /// <summary>
+        /// Press key asynchronous.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modifiers"></param>
+        /// <param name="duration"></param>
         /// <returns></returns>
-        public async Task SendKeyCombo(byte[] modifier, byte key) =>
-            await Arduino.KeyCombo(modifier, key).ContinueWith(t => Utils.LogTaskResult(t, "Controller:SendKeyCombo", Logger)).ConfigureAwait(false);
+        public Task PressKeyAsync(byte key, EliteJoystick.Common.Logic.KeyCode[] modifiers = null, int duration = 50) =>
+            Keyboard.PressKey(key, modifiers, duration).ContinueWith(t => Utils.LogTaskResult(t, "Controller:PressKey", Logger));
+
+        /// <summary>
+        /// Release key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modifiers"></param>
+        public void ReleaseKey(byte key, EliteJoystick.Common.Logic.KeyCode[] modifiers = null) =>
+            Keyboard?.ReleaseKey(key, modifiers).Wait();
+
+        /// <summary>
+        /// Clear all keys.
+        /// </summary>
+        public void ReleaseAllKeys() =>
+            Keyboard?.ReleaseAll().Wait();
 
         #endregion
 

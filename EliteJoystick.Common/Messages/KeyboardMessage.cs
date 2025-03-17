@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EliteJoystick.Common.Messages
+﻿namespace EliteJoystick.Common.Messages
 {
     public class KeyboardMessage
     {

@@ -1,17 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using EliteJoystick.Common.Interfaces;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EliteJoystick.Common
 {
     /// <summary>
     /// Settings Object to save and load the settings from disk
     /// </summary>
-    public class Settings
+    public class Settings : ISettings
     {
         public vJoyMapper vJoyMapper { get; set; } = new vJoyMapper();
         public String ArduinoCommPort { get; set; } = "COM6";

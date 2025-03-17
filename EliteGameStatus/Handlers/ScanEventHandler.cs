@@ -1,23 +1,18 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteAPI.Abstractions.Events;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EliteGameStatus.Handlers
 {
     public static class ScanEventHandler
     {
-        public static void Process(EliteAPI.Events.IEvent apiEvent, ILogger logger, ILogger inGameLogger)
+        public static void Process(IEvent apiEvent, ILogger logger, ILogger inGameLogger)
         {
             try
             {
-                var scanInfoEvent = apiEvent as EliteAPI.Events.ScanInfo;
-
-                if (null != scanInfoEvent)
+                if (apiEvent is EliteAPI.Events.ScanEvent)
                 {
-                    Exploration.EliteActions.OutputValuableBody(scanInfoEvent, inGameLogger);
+                    Exploration.EliteActions.OutputValuableBody((EliteAPI.Events.ScanEvent)apiEvent, inGameLogger);
                 }
             }
             catch (Exception ex)

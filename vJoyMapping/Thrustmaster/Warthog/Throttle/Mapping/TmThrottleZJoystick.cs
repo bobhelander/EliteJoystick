@@ -30,7 +30,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 // Move the value back up
                 z = shifted_value + (1024 * 16);
 
-                controller.SetJoystickAxis(z, vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.Throttle);
+                controller.SetJoystickAxis(z, (int)vJoy.Wrapper.Axis.HID_USAGE_RZ, vJoyTypes.Throttle);
             }
 
             if (controller.SharedState.RightThrottleEnabled)
@@ -67,7 +67,7 @@ namespace vJoyMapping.Thrustmaster.Warthog.Throttle.Mapping
                 // Invert the value again
                 //z = (1024 * 32) - z_inverted;
 
-                controller.SetJoystickAxis(z, vJoy.Wrapper.Axis.HID_USAGE_Z, vJoyTypes.Throttle);
+                controller.SetJoystickAxis(z, (int)vJoy.Wrapper.Axis.HID_USAGE_Z, vJoyTypes.Throttle);
             }
         }
     }

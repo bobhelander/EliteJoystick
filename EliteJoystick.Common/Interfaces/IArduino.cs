@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace EliteJoystick.Common.Interfaces
 {
-    public interface IArduino
+    public interface IArduino_bak
     {
         Task DepressKey(byte key);
         Task ReleaseKey(byte key);
@@ -13,5 +10,9 @@ namespace EliteJoystick.Common.Interfaces
         Task TypeFullString(string text);
         Task TypeFromClipboard();
         Task KeyCombo(byte[] modifier, byte key);
+
+        Task PressKey(byte key, int duration = 30);
+
+        void Close();
     }
 }

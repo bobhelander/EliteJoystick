@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,28 @@ namespace vJoyMapping.Microsoft.Sidewinder.GameVoice
 {
     public class Controller : Common.Controller
     {
+        public override String Name { get; } = "Game Voice";
+
+        public Controller(
+            IKeyboard arduino,
+            EliteSharedState eliteSharedState,
+            ISettings settings,
+            IVirtualJoysticks virtualJoysticks,
+            ILogger<Controller> log)
+        {
+            Keyboard = arduino;
+            SharedState = eliteSharedState;
+            Settings = settings;
+            VirtualJoysticks = virtualJoysticks;
+            Logger = log;
+
+            Initialize(Controller.GetDevicePath(
+                Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick.VendorId,
+                Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick.ProductId));
+
+            Logger?.LogDebug($"Added {Name}");
+        }
+
         private Usb.GameControllers.Microsoft.Sidewinder.GameVoice.Joystick joystick;
 
         //Observable.Interval: To create the heartbeat the the button will be pressed on

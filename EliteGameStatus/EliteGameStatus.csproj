@@ -5,15 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EliteAPI" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.CodeDom" Version="5.0.0" />
-    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="EliteAPI" Version="3.3.10" />
+    <PackageReference Include="System.CodeDom" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EdsmConnector\EdsmConnector.csproj" />
     <ProjectReference Include="..\EliteJoystick.Common\EliteJoystick.Common.csproj" />
   </ItemGroup>
 

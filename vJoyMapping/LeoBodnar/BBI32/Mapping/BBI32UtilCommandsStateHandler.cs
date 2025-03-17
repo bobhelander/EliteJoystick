@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Logic;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -50,13 +51,15 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button5))
             {
                 controller.Logger.LogDebug("Kill process");
-                Utils.KillProcess("EliteDangerous64").Wait();
+                EliteJoystick.Common.Utils.KillProcess("EliteDangerous64").Wait();
             }
 
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button12))
             {
                 // Take Picture  ALT-F10
-                Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x82 }, 0xCB).ConfigureAwait(false));
+                controller.PressKey(
+                    KeyMap.KeyNameMap["KEY_F10"].Code,
+                    new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"] });
                 controller.Logger.LogDebug("Take Picture");
             }
         }
@@ -96,7 +99,8 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button9))
             {
                 // CRTL+ALT+G
-                Task.Run(async () => await controller.SendKeyCombo(new byte[] { 0x80, 0x82 }, 0x47).ConfigureAwait(false));
+                controller.PressKey( KeyMap.KeyNameMap["KEY_G"].Code,
+                    new KeyCode[] { KeyMap.ModifierKeyNameMap["KEY_MOD_LCTRL"], KeyMap.ModifierKeyNameMap["KEY_MOD_LALT"] });
 
                 controller.Logger.LogDebug("Toggle HeadsUpDisplay");
             }
@@ -121,7 +125,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button9))
             {
                 // J Key
-                Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0x4A).ConfigureAwait(false));
+                controller.PressKey(KeyMap.KeyNameMap["KEY_J"].Code);
             }
 
             // Vanity Camera Next
@@ -155,7 +159,7 @@ namespace vJoyMapping.LeoBodnar.BBI32.Mapping
             if (Reactive.ButtonPressed(value, (uint)BBI32Button.Button9))
             {
                 // J Key
-                Task.Run(async () => await controller.SendKeyCombo(new byte[] { }, 0x4A).ConfigureAwait(false));
+                controller.PressKey(KeyMap.KeyNameMap["KEY_J"].Code);
             }
 
             // World Lock Toggle

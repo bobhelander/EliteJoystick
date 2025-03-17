@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EliteJoystick.Common
@@ -26,6 +24,13 @@ namespace EliteJoystick.Common
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, int wParam, IntPtr lParam);
 
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetConsoleWindow();
+        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool AllocConsole();
+
         [DllImport("vJoyInstall.dll", EntryPoint = "refresh_vjoy_specific")]
         private static extern void refresh_vjoy_specific(ushort Revision);
 
@@ -42,7 +47,8 @@ namespace EliteJoystick.Common
 
         public static string FocusWindow(string name)
         {
-            Process[] processes = Process.GetProcessesByName(name);
+            //Process[] processes = Process.GetProcessesByName(name);
+            //var testing = Process.GetProcesses().Select(x => x.ProcessName).ToList();
 
             foreach (Process p in Process.GetProcesses().Where(x => x.ProcessName == name))
             {
@@ -205,7 +211,7 @@ namespace EliteJoystick.Common
         {
             if (t.IsCanceled)
             {
-                logger.LogWarning($"{methodName} Canceled");
+                logger?.LogWarning($"{methodName} Canceled");
             }
             else if (t.IsFaulted)
             {
@@ -216,12 +222,12 @@ namespace EliteJoystick.Common
                 while (ex is AggregateException && ex.InnerException != null)
                     ex = ex.InnerException;
 
-                logger.LogError($"{methodName} Exception: {ex}");
+                logger?.LogError($"{methodName} Exception: {ex}");
             }
             else if (t.IsCompleted)
             {
                 // Enable when debugging TaskCanceledExceptions
-                //logger.LogDebug($"{methodName} Completed");
+                logger?.LogDebug($"{methodName} Completed");
             }
         }
     }

@@ -1,0 +1,3 @@
+[submodule "EliteApi"]
+	path = EliteApi
+	url = https://github.com/EliteAPI/EliteAPI.git

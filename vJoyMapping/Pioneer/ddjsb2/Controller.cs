@@ -1,17 +1,21 @@
-﻿using System;
+﻿using DDJSB2;
+using DDJSB2.Controls;
+using EliteAPI.Abstractions.Events;
+using EliteGameStatus.Services;
+using EliteJoystick.Common;
+using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using DDJSB2;
 using System.Linq;
 using vJoyMapping.Pioneer.ddjsb2.Mapping;
-using DDJSB2.Controls;
-using EliteJoystick.Common;
-using Microsoft.Extensions.Logging;
 
 namespace vJoyMapping.Pioneer.ddjsb2
 {
     public class Controller : Common.Controller
     {
+        public override String Name { get; } = "DDJSB2";
+
         // Voicemeeter Settings
         private const string WindowsDefault = "Strip[5].Gain";
         private const string EliteDangerous = "Strip[7].Gain";
@@ -31,15 +35,37 @@ namespace vJoyMapping.Pioneer.ddjsb2
         private const string EliteDangerousEqGain2 = "Strip[7].EQGain2";
         private const string EliteDangerousEqGain3 = "Strip[7].EQGain3";
 
-        private ForceFeedBackController.Controller msffb2;
+        private IForceFeedbackController msffb2;
 
-        private IDisposable skippingSubscription = null;
+        private IDisposable skippingSubscription;
         private DateTime lastPause = DateTime.UtcNow;
         private bool playLed = false;
 
-        public EliteJoystickService.GameService GameService { get; set; }
+        public GameService GameService { get; set; }
 
-        public void Initialize(ForceFeedBackController.Controller msffb2)
+        public Controller(
+            IKeyboard arduino,
+            GameService gameService,
+            EliteSharedState eliteSharedState,
+            ISettings settings,
+            IVirtualJoysticks virtualJoysticks,
+            IForceFeedbackController ForceFeedBackController,
+            IVoiceMeeterService voicemeeter,
+            ILogger<Controller> log)
+        {
+            Keyboard = arduino;
+            SharedState = eliteSharedState;
+            Settings = settings;
+            VirtualJoysticks = virtualJoysticks;
+            GameService = gameService;
+            Logger = log;
+
+            Initialize(ForceFeedBackController);
+
+            Logger?.LogDebug($"Added {Name}");
+        }
+
+        public void Initialize(IForceFeedbackController msffb2)
         {
             this.msffb2 = msffb2;
 
@@ -109,8 +135,9 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
                 // Deck 2 In (Hot Que): Spotify Skip Commerical (Headphones - A3)
                 (ddjsb2.ChannelControls[9].First(x => x.Name == "In (Hot Que)") as Button)
-                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifySkipCommerical(ddjsb2, SpotifyA3Patch, skippingSubscription, Leds.Deck.Deck2, Leds.PadGroup.hotCue, Leds.InLed, x, lastPause),
-                    ex => Logger.LogError($"Exception : {ex}")),
+                    .Subscribe(x => {
+                        skippingSubscription = DdjSb2SpotifyHandler.SpotifySkipCommerical(ddjsb2, SpotifyA3Patch, skippingSubscription, Leds.Deck.Deck2, Leds.PadGroup.hotCue, Leds.InLed, x, lastPause);
+                    }, ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Out (Hot Que): Voicemeeter Restart Audio
                 (ddjsb2.ChannelControls[9].First(x => x.Name == "Out (Hot Que)") as Button)
@@ -145,6 +172,11 @@ namespace vJoyMapping.Pioneer.ddjsb2
                 // Deck 1 Touch Jog Wheel: Shut up Voice Attack
                 (ddjsb2.ChannelControls[1].First(x => x.Name == "Jog Dial") as DDJSB2.Controls.Encoder)
                     .Subscribe(x => DdjSb2UtilsHandler.ShutUpVoiceAttack(this, x),
+                    ex => Logger.LogError($"Exception : {ex}")),
+
+                // Deck 2 Jog Wheel: Target subsystem
+                (ddjsb2.ChannelControls[1].First(x => x.Name == "Jog Dial") as DDJSB2.Controls.Encoder)
+                    .Subscribe(x => DdjSb2UtilsHandler.TargetHostile(this, x),
                     ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Jog Wheel: Target subsystem
@@ -185,7 +217,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
                         ChannelNumber = 2  // Strip #2 - Left Audio
                     }
                 };
-
+            /*
             // Subscribe to the levels from Voicemeeter
             var levels = new Voicemeeter.Levels(channels, 20);  // Update every 20 miliseconds
             Disposables.Add(levels.Subscribe(x => LevelsUpdate(ddjsb2, x)));
@@ -193,7 +225,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
             // Watch for changes
             var parameters = new Voicemeeter.Parameters();
             Disposables.Add(parameters.Subscribe(x => ParametersUpdate(ddjsb2, x)));
-
+            */
             Disposables.Add(GameService.GameStatusObservable.Subscribe(x => Process(ddjsb2, x)));
 
             // Init 
@@ -255,11 +287,11 @@ namespace vJoyMapping.Pioneer.ddjsb2
             }
         }
 
-        private void Process(DDJSB2.PioneerDDJSB2 ddjsb2, EliteAPI.Events.IEvent statusEvent)
+        private void Process(DDJSB2.PioneerDDJSB2 ddjsb2, IEvent statusEvent)
         {
             Logger.LogDebug($"{statusEvent.GetType()}");
 
-            ddjsb2.LedControl(Leds.Deck.Deck1, Leds.PlayLed, false, GameService.GameStatusObservable.EliteAPI.Status.IsRunning);
+            //ddjsb2.LedControl(Leds.Deck.Deck1, Leds.PlayLed, false, GameService.GameStatusObservable.EliteAPI.Status.IsRunning);
         }
 
         // Use a LINQ Expression to send the boolean property to set

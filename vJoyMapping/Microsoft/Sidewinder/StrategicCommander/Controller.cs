@@ -1,4 +1,5 @@
 ﻿using EliteJoystick.Common;
+using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,28 @@ namespace vJoyMapping.Microsoft.Sidewinder.StrategicCommander
 {
     public class Controller : Common.Controller
     {
+        public override String Name { get; } = "Strategic Commander";
+
+        public Controller(
+            IKeyboard arduino,
+            EliteSharedState eliteSharedState,
+            ISettings settings,
+            IVirtualJoysticks virtualJoysticks,
+            ILogger<Controller> log)
+        {
+            Keyboard = arduino;
+            SharedState = eliteSharedState;
+            Settings = settings;
+            VirtualJoysticks = virtualJoysticks;
+            Logger = log;
+
+            Initialize(Controller.GetDevicePath(
+                Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick.VendorId,
+                Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick.ProductId));
+
+            Logger?.LogDebug($"Added {Name}");
+        }
+
         public void Initialize(string devicePath)
         {
             var joystick = new Usb.GameControllers.Microsoft.Sidewinder.StrategicCommander.Joystick(devicePath, Logger);

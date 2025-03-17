@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EliteAPI.Events;
+﻿using EliteAPI.Events;
+using EliteJoystick.Common.Models;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace EliteGameStatus.Exploration
 {
     public static class EliteActions
     {
-        public static void OutputValuableSystems(EdsmConnector.System starSystem, ILogger logger) // "InGame" Logger
+        public static void OutputValuableSystems(StarSystem starSystem, ILogger logger) // "InGame" Logger
         {
             logger.LogInformation($"-----------------------------------------------------------------------------------------------------------------");
             logger.LogInformation($"System: {starSystem.name}");
@@ -34,20 +31,17 @@ namespace EliteGameStatus.Exploration
             }
         }
 
-        internal static void OutputValuableBody(ScanInfo scanInfoEvent, ILogger logger) // "InGame" Logger
+        internal static void OutputValuableBody(ScanEvent scanInfoEvent, ILogger logger) // "InGame" Logger
         {
-            if (null != scanInfoEvent)
+            var output = String.Empty;
+            if (false == string.IsNullOrEmpty(scanInfoEvent.TerraformState))
             {
-                var output = String.Empty;
-                if (false == string.IsNullOrEmpty(scanInfoEvent.TerraformState))
-                {
-                    output = $"Body {scanInfoEvent.BodyName} is {scanInfoEvent.TerraformState}";
-                    logger.LogInformation(output);
-                }
+                output = $"Body {scanInfoEvent.BodyName} is {scanInfoEvent.TerraformState}";
+                logger.LogInformation(output);
             }
         }
 
-        public static string HttpOutputValuableSystems(EdsmConnector.System starSystem)
+        public static string HttpOutputValuableSystems(StarSystem starSystem)
         {
             var page = new Explore(starSystem);
             String pageContent = page.TransformText();

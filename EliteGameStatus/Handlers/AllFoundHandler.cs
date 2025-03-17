@@ -1,33 +1,32 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EliteAPI.Abstractions.Events;
+using EliteAPI.Events;
+using EliteGameStatus.Services;
+using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EliteGameStatus.Handlers
 {
     public static class AllFoundHandler
     {
-        public static void Process(EliteAPI.Events.IEvent apiEvent, ILogger logger, ILogger inGameLogger)
+        public static void Process(IEvent apiEvent, IEdsmConnector edsmConnector, ExplorationService explorationService, ILogger logger)
         {
             try
             {
                 logger.LogDebug($"{apiEvent.GetType().ToString()}");
 
-                var allBodiesEvent = apiEvent as EliteAPI.Events.FSSAllBodiesFoundInfo;
-
-                if (null != allBodiesEvent)
+                if (apiEvent is FssAllBodiesFoundEvent allBodiesEvent)
                 {
                     logger.LogDebug($"All Found: {allBodiesEvent.SystemName}");
 
                     Task.Run(async () =>
                     {
-                        var system = await EdsmConnector.Connector.GetSystem(allBodiesEvent.SystemName).ConfigureAwait(false);
+                        var system = await edsmConnector.GetSystem(allBodiesEvent.SystemName).ConfigureAwait(false);
 
                         logger.LogDebug($"System Received {system?.name}");
 
-                        Exploration.EliteActions.OutputValuableSystems(system, inGameLogger);
+                        explorationService.OutputValuableSystems(system);
 
                     }).ContinueWith(t =>
                     {

@@ -1,11 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EliteJoystickConsole
@@ -18,11 +12,11 @@ namespace EliteJoystickConsole
             {
                 //var test = EdsmConnector.Connector.GetSystem("Maia").Result;
                 //var test = EdsmConnector.Connector.GetSystem("Sol").Result;
-                var test = EdsmConnector.Connector.GetSystem("Hypoae Aewsy CG-F d11-4").Result;
+                //var test = EdsmConnector.Connector.GetSystem("Hypoae Aewsy CG-F d11-4").Result;
 
                 //EliteGameStatus.Exploration.EliteActions.OutputValuableSystems(test);
 
-                var test2 = test.name;
+                //var test2 = test.name;
             }
             if (false)
             {
@@ -60,8 +54,10 @@ namespace EliteJoystickConsole
             if (true)
             {
                 using (ILoggerFactory loggerFactory =
-                LoggerFactory.Create(builder => builder.AddSimpleConsole(options =>
-                    { options.SingleLine = true; options.TimestampFormat = "hh:mm:ss "; }).SetMinimumLevel(LogLevel.Debug)))
+                    LoggerFactory.Create(builder => builder.AddSimpleConsole(options => { 
+                        options.SingleLine = true; 
+                        options.TimestampFormat = "hh:mm:ss "; 
+                    }).SetMinimumLevel(LogLevel.Debug)))
                 {
                     ILogger<EliteJoystickClient.Client> logger = loggerFactory.CreateLogger<EliteJoystickClient.Client>();
 
@@ -77,6 +73,13 @@ namespace EliteJoystickConsole
                     var task = Task.Run(async () => await client.ConnectJoysticks().ConfigureAwait(false))
                         .ContinueWith(t => Console.WriteLine($"ConnectJoysticks Exception: {t.Exception}"),
                         TaskContinuationOptions.OnlyOnFaulted);
+
+                    Console.ReadKey();
+
+                    var task2 = Task.Run(async () => await client.DisconnectJoysticks().ConfigureAwait(false))
+                        .ContinueWith(t => Console.WriteLine($"DisconnectJoysticks Exception: {t.Exception}"),
+                        TaskContinuationOptions.OnlyOnFaulted);
+
                 }
             }
             if (false)

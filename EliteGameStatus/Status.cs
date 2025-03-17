@@ -1,36 +1,33 @@
-﻿using EliteAPI;
-using EliteJoystick.Common.EliteGame;
+﻿using EliteAPI.Abstractions;
+using EliteAPI.Abstractions.Events;
+using EliteAPI.Events;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reactive.Linq;
-using System.Text;
 
 namespace EliteGameStatus
 {
-    public class Status : IObservable<EliteAPI.Events.IEvent>, IDisposable
+    public class Status : IObservable<IEvent>, IDisposable
     {
         private ILogger logger { get; }
-        private bool Initialized { get; } = false;
-        private readonly List<IObserver<EliteAPI.Events.IEvent>> observers = new List<IObserver<EliteAPI.Events.IEvent>>();
+        private bool Initialized { get; }
 
-        public EliteDangerousAPI EliteAPI { get; set; }
+        private readonly List<IObserver<IEvent>> observers = new List<IObserver<IEvent>>();
 
-        public Status(ILogger logger)
+        public IEliteDangerousApi EliteAPI { get; set; }
+
+        public Status(IEliteDangerousApi eliteApi, ILogger logger)
         {
             this.logger = logger;
-            EliteAPI = new EliteDangerousAPI();
+            EliteAPI = eliteApi;
             try
             {
-                EliteAPI.Start();
                 Initialized = true;
-                EliteAPI.Events.AllEvent += Events_AllEvent;
+                EliteAPI.Events.OnAny(e => Events_AllEvent(this, e));
 
-                EliteAPI.Events.StartJumpEvent += Events_StartJumpEvent;
-                EliteAPI.Events.FSSAllBodiesFoundEvent += Events_FSSAllBodiesFoundEvent;
-                EliteAPI.Events.ScanEvent += Events_ScanEvent;
+                EliteAPI.Events.On<StartJumpEvent>(e => Events_StartJumpEvent(this, e));
+                EliteAPI.Events.On<FssAllBodiesFoundEvent>(e => Events_FSSAllBodiesFoundEvent(this, e));
+                EliteAPI.Events.On<ScanEvent>(e => Events_ScanEvent(this, e));
             }
             catch(Exception ex)
             {
@@ -38,25 +35,25 @@ namespace EliteGameStatus
             }
         }
 
-        private void Events_ScanEvent(object sender, EliteAPI.Events.ScanInfo e)
+        private void Events_ScanEvent(object sender, ScanEvent e)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
-        private void Events_FSSAllBodiesFoundEvent(object sender, EliteAPI.Events.FSSAllBodiesFoundInfo e)
+        private void Events_FSSAllBodiesFoundEvent(object sender, FssAllBodiesFoundEvent e)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
-        private void Events_StartJumpEvent(object sender, EliteAPI.Events.StartJumpInfo e)
+        private void Events_StartJumpEvent(object sender, StartJumpEvent e)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);
         }
 
-        private static void Process(EliteAPI.Events.IEvent e, List<IObserver<EliteAPI.Events.IEvent>> observers)
+        private static void Process(IEvent e, List<IObserver<IEvent>> observers)
         {
             foreach (var observer in observers)
                 observer.OnNext(e);
@@ -64,11 +61,11 @@ namespace EliteGameStatus
 
         private void Events_AllEvent(object sender, dynamic e)
         {
-            if (e is EliteAPI.Events.IEvent)
+            if (e is IEvent)
                 Process(e, observers);
         }
 
-        public IDisposable Subscribe(IObserver<EliteAPI.Events.IEvent> observer)
+        public IDisposable Subscribe(IObserver<IEvent> observer)
         {
             lock (observers)
             {
@@ -83,17 +80,17 @@ namespace EliteGameStatus
         {
             if (Initialized)
             {
-                EliteAPI?.Stop();
+                EliteAPI?.StopAsync().Wait();
                 EliteAPI = null;
             }
         }
 
         private class Unsubscriber : IDisposable
         {
-            private readonly List<IObserver<EliteAPI.Events.IEvent>> _observers;
-            private readonly IObserver<EliteAPI.Events.IEvent> _observer;
+            private readonly List<IObserver<IEvent>> _observers;
+            private readonly IObserver<IEvent> _observer;
 
-            public Unsubscriber(List<IObserver<EliteAPI.Events.IEvent>> observers, IObserver<EliteAPI.Events.IEvent> observer)
+            public Unsubscriber(List<IObserver<IEvent>> observers, IObserver<IEvent> observer)
             {
                 this._observers = observers;
                 this._observer = observer;

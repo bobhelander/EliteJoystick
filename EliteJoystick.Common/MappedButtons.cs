@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EliteJoystick.Common
+﻿namespace EliteJoystick.Common
 {
     /// <summary>
     /// Defined output buttons for the vJoyType.Virtual controller
@@ -13,6 +7,8 @@ namespace EliteJoystick.Common
     public static class MappedButtons
     {
         // Virtual Joystick (Virtual)
+        public static uint CycleNextHostile = 7;
+        public static uint CyclePrevHostile = 8;
         public static uint CycleNextSubsystem = 9;
         // Trying to determine if 1-9 are used elsewhere.  Might have been the 
         public static uint CycleSubsystem = 10;
@@ -35,7 +31,7 @@ namespace EliteJoystick.Common
         public static uint LockRotationToggle = 27;
         public static uint HeatSink = 28;
         public static uint ShieldCell = 29;
-        //public static uint BlurDecrease = 30;
+        public static uint FieldNeutraliser = 30;
         //public static uint BlurIncrease = 31;
 
         // Combined Joystick (StickAndPedals)

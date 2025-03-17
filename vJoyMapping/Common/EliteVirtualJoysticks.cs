@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteJoystick.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace vJoyMapping.Common
     /// <summary>
     /// Container for all of the EliteVirtualJoystick controllers 
     /// </summary>
-    public class EliteVirtualJoysticks
+    public class EliteVirtualJoysticks : IVirtualJoysticks, IDisposable
     {
         private List<VirtualJoystick> Joysticks { get; }
             = new List<VirtualJoystick>(
@@ -19,6 +20,11 @@ namespace vJoyMapping.Common
                     new VirtualJoystick(2),
                     new VirtualJoystick(3),
                     new VirtualJoystick(4) });
+
+        public EliteVirtualJoysticks()
+        {
+            Initialize();
+        }
 
         public void Initialize() =>
             Joysticks.ForEach(joystick => joystick.Aquire());
@@ -38,10 +44,15 @@ namespace vJoyMapping.Common
         public void SetJoystickButtons(UInt32 buttons, uint vJoyId, UInt32 mask = 0xFFFFFFFF) =>
             Joysticks[(int)(vJoyId-1)].SetJoystickButtons(buttons, mask);
 
-        public void SetJoystickAxis(int value, Axis usage, uint vJoyId) =>
-            Joysticks[(int)(vJoyId-1)].SetJoystickAxis(value, usage);
+        public void SetJoystickAxis(int value, int usage, uint vJoyId) =>
+            Joysticks[(int)(vJoyId-1)].SetJoystickAxis(value, (Axis)usage);
 
         public void SetJoystickHat(int value, uint hatNumber, uint vJoyId) =>
             Joysticks[(int)(vJoyId-1)].SetJoystickHat(value, (Hats)hatNumber);
+
+        public void Dispose()
+        {
+            Release();
+        }
     }
 }

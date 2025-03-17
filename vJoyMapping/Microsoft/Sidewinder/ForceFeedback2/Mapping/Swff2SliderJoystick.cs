@@ -18,7 +18,7 @@ namespace vJoyMapping.Microsoft.Sidewinder.ForceFeedback2.Mapping
             // 0-127 0 = up  127 = down
 
             int slider = current.Slider * 8 * 32;
-            controller.SetJoystickAxis(slider, vJoy.Wrapper.Axis.HID_USAGE_SL0, vJoyTypes.StickAndPedals);
+            controller.SetJoystickAxis(slider, (int)vJoy.Wrapper.Axis.HID_USAGE_SL0, vJoyTypes.StickAndPedals);
 
             // Switch to Elite
             if (false == processSet && slider > 30000)

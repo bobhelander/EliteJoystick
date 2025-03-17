@@ -1,19 +1,21 @@
 ﻿using EliteJoystick.Common.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EliteJoystick.Common
 {
     /// <summary>
     /// Holds the shared state values for all the controllers.   
     /// </summary>
-    public class EliteSharedState : IDisposable
+    public class EliteSharedState : IJoystickServiceBase
     {
+        public EliteSharedState()
+        {
+        }
+
+        public void Initialize() { }
+
         #region Normal Properties
 
         public bool ThrottleShift1 { get; set; }
@@ -28,10 +30,11 @@ namespace EliteJoystick.Common
         public bool HardpointsDeployed { get; set; }
         public bool CameraActive { get; set; }
         public bool SecondaryFireActive { get; set; }
+        public bool FieldNeutraliser { get; set; }
 
         public bool Mute { get; set; }
 
-        public IEliteGameStatus EliteGameStatus { get; set; }
+        //public IEliteGameStatus EliteGameStatus { get; set; }
 
         #endregion
 
