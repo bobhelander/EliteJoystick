@@ -1,12 +1,8 @@
-﻿using CommonCommunication;
-using EliteGameStatus.Services;
+﻿using EliteGameStatus.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
-using EliteDesktopApp;
 
-namespace EliteJoystickService.Services
+namespace EliteDesktopApp.Services
 {
     /// <summary>
     /// This service is the glue between messages received on the IPC message bus and the handler of those messages.  The service
@@ -17,15 +13,15 @@ namespace EliteJoystickService.Services
     public class MessageHandlingService : MessageHandler, IDisposable
     {
         private readonly CommonCommunication.Client client;
-        private IServiceScope controllerScope;
-        private ControllersService controllersService;
+        private IServiceScope? controllerScope;
+        private ControllersService? controllersService;
 
         public MessageHandlingService(
             IServiceProvider serviceProvider,
             GameService gameService,
             ILogger<MessageHandlingService> log)
         {
-            ClientActions.ClientAction += ClientActions_ClientAction;
+            CommonCommunication.ClientActions.ClientAction += ClientActions_ClientAction;
             client = new CommonCommunication.Client()
             {
                 Logger = log
@@ -45,11 +41,11 @@ namespace EliteJoystickService.Services
 
         public void ReceiveMessage(string message)
         {
-            Logger.LogDebug($"Message: {message}");
-            if (String.IsNullOrEmpty(message) == false)
+            Logger?.LogDebug("Message: {message}", message);
+            if (string.IsNullOrEmpty(message) == false)
             {
-                var task = Task.Run(async () => await HandleMessage(message).ConfigureAwait(false))
-                    .ContinueWith(t => Logger?.LogError($"Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
+                Task.Run(async () => await HandleMessage(message).ConfigureAwait(false))
+                    .ContinueWith(t => Logger?.LogError("Message Exception: {exception}", t.Exception), TaskContinuationOptions.OnlyOnFaulted);
             }
         }
 
@@ -70,7 +66,7 @@ namespace EliteJoystickService.Services
             controllerScope = serviceProvider.CreateScope();
 
             // Get the service from that service scope
-            controllersService = controllerScope.ServiceProvider.GetRequiredService<Services.ControllersService>();
+            controllersService = controllerScope.ServiceProvider.GetRequiredService<ControllersService>();
         }
 
         private void HandleStopControllers(ILogger log)
@@ -102,10 +98,10 @@ namespace EliteJoystickService.Services
         }
         */
 
-        private void ClientActions_ClientAction(object sender, ClientActions.ClientEventArgs e)
+        private void ClientActions_ClientAction(object? sender, CommonCommunication.ClientActions.ClientEventArgs e)
         {
-            Task.Run(() => client.SendMessageAsync(e.Message))
-                .ContinueWith(t => Logger?.LogError($"Send Message Exception: {t.Exception}"), TaskContinuationOptions.OnlyOnFaulted);
+            var task = Task.Run(async() => await client.SendMessageAsync(e.Message))
+                .ContinueWith(t => Logger?.LogError("Send Message Exception: {exception}", t.Exception), TaskContinuationOptions.OnlyOnFaulted);
         }
 
         public void Dispose()

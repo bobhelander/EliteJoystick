@@ -2,9 +2,7 @@
 using EliteJoystick.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Text;
 
 namespace EliteGameStatus
 {

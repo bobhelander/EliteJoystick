@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceProcess;
 using Microsoft.Extensions.Logging;
-using EliteJoystickService.Services;
+using EliteDesktopApp.Services;
 
 namespace EliteDesktopApp
 {

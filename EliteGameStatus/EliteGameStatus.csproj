@@ -6,9 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="EliteAPI" Version="3.3.10" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
     <PackageReference Include="System.CodeDom" Version="9.0.3" />
-    <PackageReference Include="System.Reactive" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

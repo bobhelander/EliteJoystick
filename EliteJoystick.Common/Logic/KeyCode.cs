@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EliteJoystick.Common.Logic
+﻿namespace EliteJoystick.Common.Logic
 {
     public class KeyCode
     {

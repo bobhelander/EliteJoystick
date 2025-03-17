@@ -5,21 +5,21 @@ namespace EliteDesktopApp
 {
     public class MessageHandler
     {
-        public CommonCommunication.Client Client { get; set; }
-        public Action ConnectJoysticks { get; set; }
-        public Action DisconnectJoysticks { get; set; }
-        public Action ConnectArduino { get; set; }
-        public Action DisconnectArduino { get; set; }
-        public Action ReconnectArduino { get; set; }
-        public Action<string> KeyPress { get; set; }
-        public ILogger Logger { get; set; }
+        public required CommonCommunication.Client Client { get; set; }
+        public required Action ConnectJoysticks { get; set; }
+        public required Action DisconnectJoysticks { get; set; }
+        public required Action ConnectArduino { get; set; }
+        public required Action DisconnectArduino { get; set; }
+        public required Action ReconnectArduino { get; set; }
+        public required Action<string> KeyPress { get; set; }
+        public ILogger? Logger { get; set; }
 
         public async Task HandleMessage(
             string rawMessage)
         {
             var message = JsonConvert.DeserializeObject<CommonCommunication.Message>(rawMessage);
 
-            Logger?.LogDebug($"Message Type received: {message.Type}");
+            Logger?.LogDebug("Message Type received: {messageType}", message?.Type);
 
             switch (message?.Type)
             {

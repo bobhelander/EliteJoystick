@@ -1,7 +1,7 @@
 ﻿using EliteAPI.Abstractions.Events;
 using Microsoft.Extensions.Logging;
 
-namespace EliteJoystickService.Mappings
+namespace EliteDesktopApp.Mappings
 {
     public static class GameStatusMapping
     {

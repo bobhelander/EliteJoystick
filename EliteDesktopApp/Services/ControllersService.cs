@@ -5,13 +5,13 @@ using Microsoft.Extensions.Logging;
 using System.Reactive.Linq;
 using vJoyMapping.Common;
 
-namespace EliteJoystickService.Services
+namespace EliteDesktopApp.Services
 {
     public class ControllersService : IDisposable
     {
-        private readonly ILogger Log;
-        private IDisposable virtualControllerUpdater;
-        private List<Controller> Controllers { get; set; }
+        private readonly ILogger? Log;
+        private readonly IDisposable virtualControllerUpdater;
+        private List<Controller> Controllers { get; set; } = [];
 
         /// <summary>
         /// This service defines all of the current joysticks being connected.  Each of these controllers are created and injected
@@ -43,7 +43,7 @@ namespace EliteJoystickService.Services
             Log = log;
 
             // Hold on to the created services
-            Controllers = new List<Controller>() { ffb2, swsc, warthog, proPedals, bbi32, ddjsb2 };
+            Controllers = [ffb2, swsc, warthog, proPedals, bbi32, ddjsb2];
 
             // State Handlers
             var subscription = eliteSharedState.GearChanged.Subscribe(
@@ -61,15 +61,13 @@ namespace EliteJoystickService.Services
         {
             virtualControllerUpdater?.Dispose();
 
-            Controllers = null;
+            Controllers = [];
 
             Log?.LogDebug("Controllers Unloaded");
         }
 
-        private IDisposable StartUpdateData(IVirtualJoysticks eliteVirtualJoysticks, int updateFrequency = 100)
-        {
-            // Send an update message every x milliseconds
-            return Observable.Interval(TimeSpan.FromMilliseconds(updateFrequency)).Subscribe(_ => eliteVirtualJoysticks.UpdateAll());
-        }
+        // Create an Observable that sends an update message every x milliseconds
+        private static IDisposable StartUpdateData(IVirtualJoysticks eliteVirtualJoysticks, int updateFrequency = 100) =>
+            Observable.Interval(TimeSpan.FromMilliseconds(updateFrequency)).Subscribe(_ => eliteVirtualJoysticks.UpdateAll());
     }
 }

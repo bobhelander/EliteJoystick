@@ -1,12 +1,4 @@
-﻿using EliteJoystick.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace EliteJoystick.Common.Logic
+﻿namespace EliteJoystick.Common.Logic
 {
     /*
     public class KeyCombo

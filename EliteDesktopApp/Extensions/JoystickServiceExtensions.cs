@@ -1,14 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using EliteJoystick.Common.Interfaces;
-using vJoyMapping.Common;
-using EliteJoystick.Common;
-using EliteJoystickService.Services;
-using System;
+﻿using EliteDesktopApp.Services;
 using EliteGameStatus.Extensions;
-using EdsmConnector;
-using EliteDesktopApp;
+using EliteJoystick.Common;
+using EliteJoystick.Common.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using vJoyMapping.Common;
 
-namespace EliteJoystickService.Extensions
+namespace EliteDesktopApp.Extensions
 {
     public static class JoystickServiceExtensions
     {
@@ -67,7 +64,7 @@ namespace EliteJoystickService.Extensions
         public static IServiceCollection AddEliteGameServices(this IServiceCollection services)
         {
             services.AddGameServices();
-            services.AddSingleton<IEdsmConnector, Connector>();
+            services.AddSingleton<IEdsmConnector, EdsmConnector.Connector>();
             services.AddSingleton<EliteSharedState>();
             return services;
         }

@@ -6,7 +6,7 @@ namespace EliteDesktopApp
     public partial class Form1 : Form
     {
         private readonly JoystickService _service;
-        private readonly ILogger<Form1> _log;
+        private readonly ILogger<Form1>? _log;
 
         public Form1(
             JoystickService service,

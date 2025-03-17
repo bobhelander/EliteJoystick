@@ -37,7 +37,7 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
         private IForceFeedbackController msffb2;
 
-        private readonly IDisposable skippingSubscription;
+        private IDisposable skippingSubscription;
         private DateTime lastPause = DateTime.UtcNow;
         private bool playLed = false;
 
@@ -135,8 +135,9 @@ namespace vJoyMapping.Pioneer.ddjsb2
 
                 // Deck 2 In (Hot Que): Spotify Skip Commerical (Headphones - A3)
                 (ddjsb2.ChannelControls[9].First(x => x.Name == "In (Hot Que)") as Button)
-                    .Subscribe(x => DdjSb2SpotifyHandler.SpotifySkipCommerical(ddjsb2, SpotifyA3Patch, skippingSubscription, Leds.Deck.Deck2, Leds.PadGroup.hotCue, Leds.InLed, x, lastPause),
-                    ex => Logger.LogError($"Exception : {ex}")),
+                    .Subscribe(x => {
+                        skippingSubscription = DdjSb2SpotifyHandler.SpotifySkipCommerical(ddjsb2, SpotifyA3Patch, skippingSubscription, Leds.Deck.Deck2, Leds.PadGroup.hotCue, Leds.InLed, x, lastPause);
+                    }, ex => Logger.LogError($"Exception : {ex}")),
 
                 // Deck 2 Out (Hot Que): Voicemeeter Restart Audio
                 (ddjsb2.ChannelControls[9].First(x => x.Name == "Out (Hot Que)") as Button)

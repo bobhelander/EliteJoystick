@@ -1,7 +1,6 @@
-using EliteJoystickService.Extensions;
+using EliteDesktopApp.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Usb.Hid.Connection;
 
 namespace EliteDesktopApp
 {
@@ -43,7 +42,7 @@ namespace EliteDesktopApp
 
                     Console.WriteLine("Success");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Console.WriteLine("Error Occured");
                 }
